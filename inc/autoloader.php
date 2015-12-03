@@ -6,7 +6,7 @@
  *
  * @internal
  *
- * @since 2.0.0
+ * @since 1.0.0
  */
 
 namespace POMOEdit_Autoloader;
@@ -16,7 +16,7 @@ namespace POMOEdit_Autoloader;
  *
  * @internal
  *
- * @since 2.0.0
+ * @since 1.0.0
  *
  * @param string $type The type to try and look under (class, trait, etc.)
  * @param string $name The symbol name of the asset being requested.
@@ -49,7 +49,7 @@ function find( $type, $name ) {
  *
  * @internal
  *
- * @since 2.0.0
+ * @since 1.0.0
  *
  * @uses find() to find and load the class if it exists.
  *
@@ -70,7 +70,7 @@ function find_class( $class ) {
  *
  * @internal
  *
- * @since 2.0.0
+ * @since 1.0.0
  *
  * @uses find() to find and load the class if it exists.
  *
@@ -85,7 +85,7 @@ function find_abstract( $class ) {
  *
  * @internal
  *
- * @since 2.0.0
+ * @since 1.0.0
  *
  * @uses find() to find and load the trait if it exists.
  *

@@ -7,7 +7,7 @@
  *
  * @internal
  *
- * @since 2.0.0
+ * @since 1.0.0
  */
 
 namespace POMOEdit;
@@ -25,7 +25,7 @@ namespace POMOEdit;
  *
  * @internal
  *
- * @since 2.0.0
+ * @since 1.0.0
  */
 
 abstract class Handler {
@@ -34,7 +34,7 @@ abstract class Handler {
 	 *
 	 * @internal Should be called by the autoloader.
 	 *
-	 * @since 2.0.0
+	 * @since 1.0.0
 	 */
 	public static function init() {
 		static::$name = get_called_class();
@@ -45,7 +45,7 @@ abstract class Handler {
 	 *
 	 * @api
 	 *
-	 * @since 2.0.0
+	 * @since 1.0.0
 	 *
 	 * @see add_filter() for details.
 	 *
@@ -70,7 +70,7 @@ abstract class Handler {
 	 *
 	 * @api
 	 *
-	 * @since 2.0.0
+	 * @since 1.0.0
 	 *
 	 * @see remove_filter() for details.
 	 *
@@ -94,7 +94,7 @@ abstract class Handler {
 	 *
 	 * @api
 	 *
-	 * @since 2.0.0
+	 * @since 1.0.0
 	 *
 	 * @see Handler::add_filter() for argument details.
 	 *
@@ -119,7 +119,8 @@ abstract class Handler {
 	 *
 	 * @internal Should be called by System::init().
 	 *
-	 * @since 2.0.0
+	 * @since 1.0.0
 	 */
 	abstract public static function register_hooks();
 }
+
