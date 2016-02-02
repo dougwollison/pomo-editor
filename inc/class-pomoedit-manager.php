@@ -42,7 +42,6 @@ class Manager extends Handler {
 
 		// Settings & Pages
 		static::add_action( 'admin_menu', 'add_menu_pages' );
-		static::add_action( 'admin_init', 'register_settings' );
 	}
 
 	// =========================
@@ -59,30 +58,17 @@ class Manager extends Handler {
 	 * @since 1.0.0
 	 */
 	public static function add_menu_pages() {
-		// to be written
+		add_management_page(
+			__( 'PO/MO Editor' ), // page title
+			__( 'PO/MO Editor' ), // menu title
+			'manage_options', // capability
+			'pomoedit', // slug
+			array( get_called_class(), 'admin_page' ) // callback
+		);
 	}
 
 	// =========================
-	// ! Settings Registration
-	// =========================
-
-	/**
-	 * Register the settings/fields for the admin pages.
-	 *
-	 * @since 1.0.0
-	 */
-	public static function register_settings() {
-		// to be written
-	}
-
-	// =========================
-	// ! Settings Fields Setup
-	// =========================
-
-	// to be written
-
-	// =========================
-	// ! Settings Page Output
+	// ! Admin Pages Output
 	// =========================
 
 	/**
@@ -92,17 +78,57 @@ class Manager extends Handler {
 	 *
 	 * @global $plugin_page The slug of the current admin page.
 	 */
-	public static function settings_page() {
+	public static function admin_page() {
 		global $plugin_page;
+
+		$editing = false;
+		if ( isset( $_GET['pomoedit_file'] ) ) {
+			$file = $_GET['pomoedit_file'];
+			$path = realpath( WP_CONTENT_DIR . '/' . $file );
+			if ( ! file_exists( $path ) ) {
+				wp_die( sprintf( __( 'That file cannot be found: %s' ), $path ) );
+			} else {
+				// Load the entries
+				$translation = Parser::load( $path );
+				$editing = true;
+			}
+		}
 ?>
 		<div class="wrap">
 			<h2><?php echo get_admin_page_title(); ?></h2>
-			<?php settings_errors(); ?>
-			<form method="post" action="options.php" id="<?php echo $plugin_page; ?>-form">
-				<?php settings_fields( $plugin_page ); ?>
-				<?php do_settings_sections( $plugin_page ); ?>
-				<?php submit_button(); ?>
+
+			<?php if ( ! $editing ) : ?>
+			<form method="get" action="tools.php" id="<?php echo $plugin_page; ?>-form">
+				<input type="hidden" name="page" value="<?php echo $plugin_page; ?>" />
+
+				<label for="pomoedit_file"><?php _e( 'Path to PO file:' ); ?></label>
+				<input type="text" name="pomoedit_file" id="pomoedit_file" />
+
+				<p class="submit">
+					<button type="submit" class="button button-primary"><?php _e( 'Open Translation' ); ?></button>
+				</p>
 			</form>
+			<?php else: ?>
+			<form method="post" action="tools.php?page=<?php echo $plugin_page; ?>" id="<?php echo $plugin_page; ?>-form">
+				<input type="hidden" name="pomoedit_file" value="<?php echo $file; ?>" />
+
+				<h2><?php printf( __( 'Editing: <code>%s</code>' ), $file ); ?></h2>
+
+				<table id="pomoedit-listing" class="widefat">
+					<thead>
+						<tr>
+							<th class="pomoedit-entry-source">Source Text</th>
+							<th class="pomoedit-entry-translation">Translated Text</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+
+				<script>
+					var POMOEDIT_TRANSLATION_DATA = <?php echo json_encode( $translation->entries ); ?>;
+				</script>
+			</form>
+			<?php endif;?>
 		</div>
 		<?php
 	}

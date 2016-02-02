@@ -25,4 +25,26 @@ namespace POMOEdit;
  */
 
 class Parser {
+	/**
+	 * Proxy for importing a PO file into a PO object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $filename The name of the file to open.
+	 *
+	 * @return \PO The PO object.
+	 */
+	public static function load( $filename ) {
+		require_once( ABSPATH . WPINC . '/pomo/po.php' );
+
+		$po = new \PO();
+
+		if ( ! file_exists( $filename ) ) {
+			throw new Exception( 'PO file not found.' );
+		}
+
+		$po->import_from_file( $filename );
+
+		return $po;
+	}
 }
