@@ -47,6 +47,9 @@ class Backend extends Handler {
 
 		// Plugin information
 		static::add_action( 'in_plugin_update_message-' . plugin_basename( PME_PLUGIN_FILE ), 'update_notice' );
+
+		// Script/Style Enqueues
+		static::add_action( 'admin_enqueue_scripts', 'enqueue_assets' );
 	}
 
 	// =========================
@@ -93,6 +96,33 @@ class Backend extends Handler {
 		if ( $notice ) {
 			echo apply_filters( 'the_content', $notice );
 		}
+	}
+
+	// =========================
+	// ! Script/Style Enqueues
+	// =========================
+
+	/**
+	 * Enqueue necessary styles and scripts.
+	 *
+	 * @since 1.0.0
+	 */
+	public static function enqueue_assets(){
+		// Only bother if we're viewing the editor screen
+		if ( get_current_screen()->id != 'tools_page_pomoedit' ) {
+			return;
+		}
+
+		// Admin styling
+		wp_enqueue_style( 'pomoedit-interface', plugins_url( 'css/interface.css', PME_PLUGIN_FILE ), '1.0.0', 'screen' );
+
+		// Admin javascript
+		wp_enqueue_script( 'pomoedit-interface-js', plugins_url( 'js/interface.js', PME_PLUGIN_FILE ), array( 'backbone' ), '1.0.0' );
+
+		// Localize the javascript
+		wp_localize_script( 'pomoedit-interface-js', 'pomoeditL10n', array(
+			// to be written
+		) );
 	}
 }
 
