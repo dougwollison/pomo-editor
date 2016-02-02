@@ -22,7 +22,7 @@ Text Domain: pomoedit
  *
  * @var string
  */
-define( 'POMOEDIT_PLUGIN_SELF', __FILE__ );
+define( 'POMOEDIT_PLUGIN_FILE', __FILE__ );
 
 /**
  * Reference to the plugin directory.
@@ -31,7 +31,7 @@ define( 'POMOEDIT_PLUGIN_SELF', __FILE__ );
  *
  * @var string
  */
-define( 'POMOEDIT_PLUGIN_DIR', __DIR__ );
+define( 'POMOEDIT_PLUGIN_DIR', dirname( POMOEDIT_PLUGIN_FILE ) );
 
 // =========================
 // ! Includes
