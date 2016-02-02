@@ -34,8 +34,6 @@ class System extends Handler {
 	 * @since 1.0.0
 	 */
 	public static function setup() {
-		global $wpdb;
-
 		// Register the loader hooks
 		Loader::register_hooks();
 

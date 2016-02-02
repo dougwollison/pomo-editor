@@ -22,7 +22,7 @@ Text Domain: pomoedit
  *
  * @var string
  */
-define( 'POMOEDIT_PLUGIN_FILE', __FILE__ );
+define( 'PME_PLUGIN_FILE', __FILE__ );
 
 /**
  * Reference to the plugin directory.
@@ -31,14 +31,14 @@ define( 'POMOEDIT_PLUGIN_FILE', __FILE__ );
  *
  * @var string
  */
-define( 'POMOEDIT_PLUGIN_DIR', dirname( POMOEDIT_PLUGIN_FILE ) );
+define( 'PME_PLUGIN_DIR', dirname( PME_PLUGIN_FILE ) );
 
 // =========================
 // ! Includes
 // =========================
 
-require( POMOEDIT_PLUGIN_DIR . '/inc/autoloader.php' );
-require( POMOEDIT_PLUGIN_DIR . '/inc/functions-pomoedit.php' );
+require( PME_PLUGIN_DIR . '/inc/autoloader.php' );
+require( PME_PLUGIN_DIR . '/inc/functions-pomoedit.php' );
 
 // =========================
 // ! Setup

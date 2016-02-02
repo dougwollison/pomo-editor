@@ -14,8 +14,7 @@ namespace POMOEdit;
  * The Translator API
  *
  * A toolkit for opening, editing, and recompiling
- * gettext files, using the POMO_Reader class from
- * WordPress.
+ * gettext files, using the POMO libraries from WordPress.
  *
  * @package POMOEdit
  * @subpackage Tools
@@ -26,5 +25,4 @@ namespace POMOEdit;
  */
 
 class Parser {
-	
 }
