@@ -54,7 +54,7 @@ class Backend extends Handler {
 		if ( ! is_backend() ) {
 			return;
 		}
-		
+
 		// to be written
 	}
 }

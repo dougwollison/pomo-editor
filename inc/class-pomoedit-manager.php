@@ -91,7 +91,7 @@ class Manager extends Handler {
 	// =========================
 	// ! Settings Fields Setup
 	// =========================
-	
+
 	// to be written
 
 	// =========================

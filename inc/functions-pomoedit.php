@@ -52,42 +52,42 @@ function is_backend() {
  * @see __()
  */
 function __( $string ) {
-	return \__( $string, PM_TXTDMN );
+	return \__( $string, 'pomoedit' );
 }
 
 /**
  * @see _e()
  */
 function _e( $string ) {
-	return \_e( $string, PM_TXTDMN );
+	return \_e( $string, 'pomoedit' );
 }
 
 /**
  * @see _n()
  */
 function _n( $single, $plural, $number ) {
-	return \_n( $single, $plural, $number, PM_TXTDMN );
+	return \_n( $single, $plural, $number, 'pomoedit' );
 }
 
 /**
  * @see _x()
  */
 function _x( $string, $context ) {
-	return \_x( $string, PM_TXTDMN );
+	return \_x( $string, 'pomoedit' );
 }
 
 /**
  * @see _ex()
  */
 function _ex( $string, $context ) {
-	\_ex( $string, PM_TXTDMN );
+	\_ex( $string, 'pomoedit' );
 }
 
 /**
  * @see _nx()
  */
 function _nx( $single, $plural, $number, $context ) {
-	return \_nx( $single, $plural, $number, $context, PM_TXTDMN );
+	return \_nx( $single, $plural, $number, $context, 'pomoedit' );
 }
 
 // =========================

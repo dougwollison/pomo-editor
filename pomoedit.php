@@ -8,7 +8,7 @@ Author: Doug Wollison
 Author URI: http://dougw.me
 Tags: pomo, po file, mo file, gettext, file editor
 License: GPL2
-Text Domain: POMOEdit
+Text Domain: pomoedit
 */
 
 // =========================
@@ -22,7 +22,7 @@ Text Domain: POMOEdit
  *
  * @var string
  */
-define( 'PM_SELF', __FILE__ );
+define( 'POMOEDIT_PLUGIN_SELF', __FILE__ );
 
 /**
  * Reference to the plugin directory.
@@ -31,23 +31,14 @@ define( 'PM_SELF', __FILE__ );
  *
  * @var string
  */
-define( 'PM_DIR', __DIR__ );
-
-/**
- * Shortcut for the TextDomain.
- *
- * @since 1.0.0
- *
- * @var string
- */
-define( 'PM_TXTDMN', 'POMOEdit' );
+define( 'POMOEDIT_PLUGIN_DIR', __DIR__ );
 
 // =========================
 // ! Includes
 // =========================
 
-require( PM_DIR . '/inc/autoloader.php' );
-require( NL_DIR . '/inc/functions-pomoedit.php' );
+require( POMOEDIT_PLUGIN_DIR . '/inc/autoloader.php' );
+require( POMOEDIT_PLUGIN_DIR . '/inc/functions-pomoedit.php' );
 
 // =========================
 // ! Setup
