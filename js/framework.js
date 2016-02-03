@@ -5,6 +5,7 @@
 
 	var Translation = Framework.Translation = Backbone.Model.extend( {
 		defaults: {
+			is_plural: false,
 			context: '',
 			singular: '',
 			plural: '',
@@ -25,6 +26,13 @@
 			if ( ! ( this.attributes.flags instanceof Array ) ) {
 				this.attributes.flags = [];
 			}
+
+			this.on( 'change:translations', function() {
+				var translations = this.get( 'translations' );
+				if ( ! this.get( 'is_plural' ) ) {
+					this.attributes.translations = translations.splice( 0, 1 );
+				}
+			} );
 		},
 
 		key: function() {
@@ -66,6 +74,7 @@
 
 		events: {
 			'click': 'toggle',
+			'click .pme-save': 'save',
 		},
 
 		initialize: function( options ) {
@@ -78,9 +87,11 @@
 			}
 
 			this.$el.toggleClass( 'has-context', this.model.get( 'context' ) !== null );
-			this.$el.toggleClass( 'has-plural', this.model.get( 'plural' ) !== null );
+			this.$el.toggleClass( 'has-plural', this.model.get( 'is_plural' ) !== null );
 
-			this.listenTo( this.model, 'change', this.render );
+			this.listenTo( this.model, 'change:singular change:plural', this.renderSource );
+			this.listenTo( this.model, 'change:translations', this.renderTranslation );
+
 			this.render();
 		},
 
@@ -88,6 +99,27 @@
 			var template = this.template( this.model.attributes );
 			this.$el.html( template );
 			return this;
+		},
+
+		renderSource: function() {
+			var singular = this.model.get( 'singular' );
+			var plural = this.model.get( 'plural' );
+
+			this.$el.find( '.pme-source .pme-value.pme-singular' ).text( singular );
+			this.$el.find( '.pme-source .pme-input.pme-singular' ).text( singular );
+
+			this.$el.find( '.pme-source .pme-value.pme-plural' ).text( plural );
+			this.$el.find( '.pme-source .pme-input.pme-plural' ).text( plural );
+		},
+
+		renderTranslation: function() {
+			var translations = this.model.get( 'translations' );
+
+			this.$el.find( '.pme-translation .pme-value.pme-singular' ).text( translations[0] );
+			this.$el.find( '.pme-translation .pme-input.pme-singular' ).text( translations[0] );
+
+			this.$el.find( '.pme-translation .pme-value.pme-plural' ).text( translations[1] );
+			this.$el.find( '.pme-translation .pme-input.pme-plural' ).text( translations[1] );
 		},
 
 		toggle: function( e ) {
@@ -100,6 +132,18 @@
 				this.$el.siblings().removeClass( 'open' );
 			}
 			return this;
+		},
+
+		save: function() {
+			this.model.set( 'singular', this.$el.find( '.pme-source .pme-input.pme-singular' ).val() );
+			this.model.set( 'plural', this.$el.find( '.pme-source .pme-input.pme-plural' ).val() );
+
+			this.model.set( 'translations', [
+				this.$el.find( '.pme-translation .pme-input.pme-singular' ).val(),
+				this.$el.find( '.pme-translation .pme-input.pme-plural' ).val()
+			] );
+
+			this.$el.removeClass( 'open' );
 		}
 	} );
 
