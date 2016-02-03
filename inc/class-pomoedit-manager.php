@@ -114,18 +114,47 @@ class Manager extends Handler {
 
 				<h2><?php printf( __( 'Editing: <code>%s</code>' ), $file ); ?></h2>
 
-				<table id="pomoedit-listing" class="widefat">
+				<table id="pomoedit-listing" class="fixed striped widefat">
 					<thead>
 						<tr>
-							<th class="pomoedit-entry-source">Source Text</th>
-							<th class="pomoedit-entry-translation">Translated Text</th>
+							<th class="pme-source"><?php _e( 'Source Text' ); ?></th>
+							<th class="pme-translation"><?php _e( 'Translated Text' ); ?></th>
 						</tr>
 					</thead>
 					<tbody></tbody>
 				</table>
 
+				<script type="text/template" id="pomoedit-entry-template">
+					<td class="pme-entry pme-source" data-context="<%- context %>">
+						<span class="pme-value pme-singular"><%- singular %></span>
+						<span class="pme-value pme-plural"><%- plural %></span>
+
+						<div class="pme-fields">
+							<textarea class="pme-input pme-singular"><%- singular %></textarea>
+							<textarea class="pme-input pme-plural"><%- plural %></textarea>
+						</div>
+					</td>
+					<td class="pme-entry pme-translation">
+						<span class="pme-value pme-singular"><%- translations[0] %></span>
+						<span class="pme-value pme-plural"><%- translations[1] %></span>
+
+						<div class="pme-fields">
+							<textarea class="pme-input pme-singular"><%- translations[0] %></textarea>
+							<textarea class="pme-input pme-plural"><%- translations[1] %></textarea>
+						</div>
+					</td>
+				</script>
+
 				<script>
-					var POMOEDIT_TRANSLATION_DATA = <?php echo json_encode( $translation->entries ); ?>;
+				POMOEdit.Project = new POMOEdit.Framework.Project(<?php echo json_encode( $translation ); ?>);
+
+				POMOEdit.Editor = new POMOEdit.Framework.ProjectTable( {
+					el: document.getElementById( 'pomoedit-listing' ),
+
+					model: POMOEdit.Project,
+
+					rowTemplate: document.getElementById( 'pomoedit-entry-template' ),
+				} );
 				</script>
 			</form>
 			<?php endif;?>
