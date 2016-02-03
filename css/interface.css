@@ -1,0 +1,29 @@
+#pomoedit-listing > tbody > tr {
+  cursor: pointer; }
+
+.pme-entry td {
+  position: relative; }
+
+.pme-value {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+  .pme-entry.open .pme-value {
+    display: none; }
+
+.pme-fields {
+  display: none; }
+  .pme-entry.open .pme-fields {
+    display: block; }
+
+.pme-input {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 0; }
+
+.pme-plural {
+  display: none; }
+  .pme-entry.has-plural .pme-plural {
+    display: block; }
