@@ -45,6 +45,9 @@ class Parser {
 
 		$po->import_from_file( $filename );
 
+		// Convert entries to a numeric array
+		$po->entries = array_values( $po->entries );
+
 		return $po;
 	}
 }
