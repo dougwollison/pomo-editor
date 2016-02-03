@@ -82,8 +82,8 @@ class Manager extends Handler {
 		global $plugin_page;
 
 		$editing = false;
-		if ( isset( $_GET['pomoedit_file'] ) ) {
-			$file = $_GET['pomoedit_file'];
+		if ( isset( $_REQUEST['pomoedit_file'] ) ) {
+			$file = $_REQUEST['pomoedit_file'];
 			$path = realpath( WP_CONTENT_DIR . '/' . $file );
 			if ( ! file_exists( $path ) ) {
 				wp_die( sprintf( __( 'That file cannot be found: %s' ), $path ) );
@@ -98,7 +98,7 @@ class Manager extends Handler {
 			<h2><?php echo get_admin_page_title(); ?></h2>
 
 			<?php if ( ! $editing ) : ?>
-			<form method="get" action="tools.php" id="<?php echo $plugin_page; ?>-form">
+			<form method="get" action="tools.php" id="<?php echo $plugin_page; ?>-open">
 				<input type="hidden" name="page" value="<?php echo $plugin_page; ?>" />
 
 				<label for="pomoedit_file"><?php _e( 'Path to PO file:' ); ?></label>
@@ -109,7 +109,7 @@ class Manager extends Handler {
 				</p>
 			</form>
 			<?php else: ?>
-			<form method="post" action="tools.php?page=<?php echo $plugin_page; ?>" id="<?php echo $plugin_page; ?>-form">
+			<form method="post" action="tools.php?page=<?php echo $plugin_page; ?>" id="<?php echo $plugin_page; ?>-manage">
 				<input type="hidden" name="pomoedit_file" value="<?php echo $file; ?>" />
 
 				<h2><?php printf( __( 'Editing: <code>%s</code>' ), $file ); ?></h2>
@@ -124,6 +124,8 @@ class Manager extends Handler {
 					<tbody></tbody>
 				</table>
 
+				<?php submit_button( __( 'Update Project' ) ); ?>
+
 				<script type="text/template" id="pomoedit-entry-template">
 					<td class="pme-entry pme-source" data-context="<%- context %>">
 						<span class="pme-value pme-singular"><%- singular %></span>
@@ -132,6 +134,8 @@ class Manager extends Handler {
 						<div class="pme-fields">
 							<textarea class="pme-input pme-singular"><%- singular %></textarea>
 							<textarea class="pme-input pme-plural"><%- plural %></textarea>
+
+							<button type="button" class="pme-save button button-secondary"><?php _e( 'Save' ); ?></button>
 						</div>
 					</td>
 					<td class="pme-entry pme-translation">
