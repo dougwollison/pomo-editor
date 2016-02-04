@@ -158,7 +158,6 @@
 
 	var ProjectTable = Framework.ProjectTable = Backbone.View.extend( {
 		initialize: function( options ) {
-			console.log(options);
 			this.model.Translations.each( function( entry ) {
 				var row = new TranslationRow( {
 					model: entry,
