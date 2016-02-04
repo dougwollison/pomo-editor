@@ -51,6 +51,124 @@ class Manager extends Handler {
 	// ! Utilities
 	// =========================
 
+	/**
+	 * Scan a directory for .po files.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $dir The directory to search.
+	 *
+	 * @return array The list of files found.
+	 */
+	protected static function find_projects( $dir ) {
+		$files = array();
+
+		foreach ( scandir( $dir ) as $file ) {
+			if ( substr( $file, 0, 1 ) == '.' ) {
+				continue;
+			}
+
+			$path = "$dir/$file";
+			// If it's a directory (but not a link) scan it
+			if ( is_dir( $path ) && ! is_link( $path ) ) {
+				$files = array_merge( $files, static::find_projects( $path ) );
+			} else
+			// If it's a file with the .po extension, add it
+			if ( is_file( $path ) && substr( $file, -3 ) === '.po' ) {
+				$files[] = $path;
+			}
+		}
+
+		return $files;
+	}
+
+	/**
+	 * Attempt to identify a .po file.
+	 *
+	 * Will identify language and project context if possible.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $file    The path to the file to identify.
+	 * @param string $context A context to use for identifying the project.
+	 *
+	 * @return string An identifying name for the file.
+	 */
+	protected static function identify_project( $file, $context ) {
+		// First, identify the language.
+		$language = 'Unknown Language';
+		if ( preg_match( '/(.*?)-?(\w+)\.po$/', $file, $matches ) ) {
+			list(, $project, $language ) = $matches;
+		} else {
+			return basename( $file );
+		}
+
+		// Get and cache all themes/plugins available
+		if ( ! $themes = wp_cache_get( 'pomoedit', 'all themes' ) ) {
+			$themes = wp_get_themes();
+			wp_cache_set( 'pomoedit', $themes, 'all themes' );
+		}
+		if ( ! $plugins = wp_cache_get( 'pomoedit', 'all plugins' ) ) {
+			$plugins = get_plugins();
+			wp_cache_set( 'pomoedit', $plugins, 'all plugins' );
+		}
+
+		switch ( $context ) {
+			case 'theme':
+				$path = substr( $file, strlen( WP_CONTENT_DIR . '/themes/' ) );
+				$path = explode( '/', $path );
+				$project = array_shift( $path );
+
+				if ( isset( $themes[ $project ] ) ) {
+					$project = $themes[ $project ]->name;
+				}
+				break;
+
+			case 'plugin':
+				$path = substr( $file, strlen( WP_PLUGIN_DIR . '/' ) );
+				$path = explode( '/', $path );
+				$project = array_shift( $path );
+
+				foreach ( $plugins as $basename => $data ) {
+					if ( dirname( $basename ) == $project ) {
+						$project = $data['Name'];
+						break;
+					}
+				}
+				break;
+
+			default:
+				$path = substr( $project, strlen( WP_CONTENT_DIR . '/languages/' ) );
+				$path = explode( '/', $path );
+				$project = array_shift( $path );
+
+				switch ( $project ) {
+					case 'themes':
+						// It's for a theme, fake the path and run it again as such
+						$path = WP_CONTENT_DIR . '/themes/' . implode( '/', $path ) . '/' . $language . '.po';
+						return static::identify_project( $path, 'theme' );
+
+					case 'plugins':
+						// It's for a plugin, fake the path and run it again as such
+						$path = WP_PLUGIN_DIR . '/' . implode( '/', $path ) . '/' . $language . '.po';
+						return static::identify_project( $path, 'plugin' );
+
+					case 'admin':
+						$project = 'WordPress Admin';
+						break;
+					case 'admin-network':
+						$project = 'WordPress Network Admin';
+						break;
+					case '':
+						$project = 'WordPress Core';
+						break;
+				}
+				break;
+		}
+
+		return sprintf( '%s [%s]', $project, Dictionary::identify_language( $language ) );
+	}
+
 	// =========================
 	// ! Admin Page Setup
 	// =========================
@@ -135,8 +253,33 @@ class Manager extends Handler {
 			<form method="get" action="tools.php" id="<?php echo $plugin_page; ?>-open">
 				<input type="hidden" name="page" value="<?php echo $plugin_page; ?>" />
 
-				<label for="pomoedit_file"><?php _e( 'Path to PO file:' ); ?></label>
-				<input type="text" name="pomoedit_file" id="pomoedit_file" />
+				<p>
+					<label for="pomoedit_file"><?php _e( 'Select PO File to Edit' ); ?></label>
+					<select name="pomoedit_file" id="pomoedit_file">
+						<option value=""><?php _e( 'Select File' ); ?></option>
+						<?php if ( $files = static::find_projects( WP_CONTENT_DIR . '/languages' ) ) :?>
+						<optgroup label="Installed Languages">
+							<?php foreach ( $files as $file ) : ?>
+							<option value="<?php echo $file; ?>"><?php echo static::identify_project( $file ); ?></option>
+							<?php endforeach; ?>
+						</optgroup>
+						<?php endif;?>
+						<?php if ( $files = static::find_projects( WP_CONTENT_DIR . '/themes' ) ) :?>
+						<optgroup label="Installed Themes">
+							<?php foreach ( $files as $file ) : ?>
+							<option value="<?php echo $file; ?>"><?php echo static::identify_project( $file, 'theme' ); ?></option>
+							<?php endforeach; ?>
+						</optgroup>
+						<?php endif;?>
+						<?php if ( $files = static::find_projects( WP_PLUGIN_DIR ) ) :?>
+						<optgroup label="Installed Plugins">
+							<?php foreach ( $files as $file ) : ?>
+							<option value="<?php echo $file; ?>"><?php echo static::identify_project( $file, 'plugin' ); ?></option>
+							<?php endforeach; ?>
+						</optgroup>
+						<?php endif;?>
+					</select>
+				</p>
 
 				<p class="submit">
 					<button type="submit" class="button button-primary"><?php _e( 'Open Translation' ); ?></button>
