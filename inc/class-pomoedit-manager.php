@@ -40,8 +40,11 @@ class Manager extends Handler {
 			return;
 		}
 
-		// Settings & Pages
+		// Pages
 		static::add_action( 'admin_menu', 'add_menu_pages' );
+
+		// Processing
+		static::add_action( 'admin_init', 'process_request' );
 	}
 
 	// =========================
@@ -49,7 +52,7 @@ class Manager extends Handler {
 	// =========================
 
 	// =========================
-	// ! Settings Page Setup
+	// ! Admin Page Setup
 	// =========================
 
 	/**
@@ -68,7 +71,51 @@ class Manager extends Handler {
 	}
 
 	// =========================
-	// ! Admin Pages Output
+	// ! Admin Page Processing
+	// =========================
+
+	/**
+	 * Check if a file is specified for loading.
+	 *
+	 * Also save changes to it if posted.
+	 *
+	 * @since 1.0.0
+	 */
+	public static function process_request() {
+		// Skip if no file is specified
+		if ( ! isset( $_REQUEST['pomoedit_file'] ) ) {
+			return;
+		}
+
+		// If file was specified via $_POST, check for manage nonce action
+		if ( isset( $_POST['pomoedit_file'] ) && ( ! isset( $_POST['_pomoedit_nonce'] ) || ! wp_verify_nonce( $_POST['_pomoedit_nonce'], 'pomoedit-manage-' . md5( $_POST['pomoedit_file'] ) ) ) ) {
+			cheatin();
+		}
+
+		// Check if the file exists...
+		$file = $_REQUEST['pomoedit_file'];
+		$path = realpath( WP_CONTENT_DIR . '/' . $file );
+		if ( ! file_exists( $path ) ) {
+			wp_die( sprintf( __( 'That file cannot be found: %s' ), $path ) );
+		} else {
+			// Load the file
+			$project = new Project( $path );
+
+			// Check if update info was passed
+			if ( isset( $_POST['pomoedit_data'] ) ) {
+				// Update
+				$project->update( json_decode( stripslashes( $_POST['pomoedit_data'] ), true ) );
+				// Save
+				$project->export();
+			}
+
+			// Stash it in the cache for global access
+			wp_cache_set( 'pomoedit', $project, $file );
+		}
+	}
+
+	// =========================
+	// ! Admin Page Output
 	// =========================
 
 	/**
@@ -76,28 +123,15 @@ class Manager extends Handler {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @global $plugin_page The slug of the current admin page.
+	 * @global string $plugin_page The slug of the current admin page.
 	 */
 	public static function admin_page() {
 		global $plugin_page;
-
-		$editing = false;
-		if ( isset( $_REQUEST['pomoedit_file'] ) ) {
-			$file = $_REQUEST['pomoedit_file'];
-			$path = realpath( WP_CONTENT_DIR . '/' . $file );
-			if ( ! file_exists( $path ) ) {
-				wp_die( sprintf( __( 'That file cannot be found: %s' ), $path ) );
-			} else {
-				// Load the entries
-				$translation = Parser::load( $path );
-				$editing = true;
-			}
-		}
 ?>
 		<div class="wrap">
 			<h2><?php echo get_admin_page_title(); ?></h2>
 
-			<?php if ( ! $editing ) : ?>
+			<?php if ( ! isset( $_GET['pomoedit_file'] ) ) : ?>
 			<form method="get" action="tools.php" id="<?php echo $plugin_page; ?>-open">
 				<input type="hidden" name="page" value="<?php echo $plugin_page; ?>" />
 
@@ -108,9 +142,14 @@ class Manager extends Handler {
 					<button type="submit" class="button button-primary"><?php _e( 'Open Translation' ); ?></button>
 				</p>
 			</form>
-			<?php else: ?>
+			<?php else:
+			$file = $_GET['pomoedit_file'];
+			// Load the file from the cache
+			$project = wp_cache_get( 'pomoedit', $file );
+			?>
 			<form method="post" action="tools.php?page=<?php echo $plugin_page; ?>" id="<?php echo $plugin_page; ?>-manage">
 				<input type="hidden" name="pomoedit_file" value="<?php echo $file; ?>" />
+				<?php wp_nonce_field( 'pomoedit-manage-' . md5( $file ), '_pomoedit_nonce' ); ?>
 
 				<h2><?php printf( __( 'Editing: <code>%s</code>' ), $file ); ?></h2>
 
@@ -150,7 +189,7 @@ class Manager extends Handler {
 				</script>
 
 				<script>
-				POMOEdit.Project = new POMOEdit.Framework.Project(<?php echo json_encode( $translation ); ?>);
+				POMOEdit.Project = new POMOEdit.Framework.Project(<?php echo json_encode( $project->dump() ); ?>);
 
 				POMOEdit.Editor = new POMOEdit.Framework.ProjectTable( {
 					el: document.getElementById( 'pomoedit-listing' ),
