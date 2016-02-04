@@ -87,7 +87,7 @@
 			}
 
 			this.$el.toggleClass( 'has-context', this.model.get( 'context' ) !== null );
-			this.$el.toggleClass( 'has-plural', this.model.get( 'is_plural' ) !== null );
+			this.$el.toggleClass( 'has-plural', this.model.get( 'is_plural' ) );
 
 			this.listenTo( this.model, 'change:singular change:plural', this.renderSource );
 			this.listenTo( this.model, 'change:translations', this.renderTranslation );
