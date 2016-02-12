@@ -42,6 +42,36 @@ class Project {
 	protected $filename = '';
 
 	/**
+	 * The language tag of the project.
+	 *
+	 * @internal
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access protected
+	 *
+	 * @var string
+	 */
+	protected $language = '';
+
+	/**
+	 * The metadata of the package it belongs to.
+	 *
+	 * @internal
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access protected
+	 *
+	 * @var array
+	 */
+	protected $package = array(
+		'name' => '',
+		'slug' => '',
+		'type' => '',
+	);
+
+	/**
 	 * The PO interface.
 	 *
 	 * @internal
@@ -55,29 +85,186 @@ class Project {
 	protected $po;
 
 	// =========================
+	// ! Property Access
+	// =========================
+
+	/**
+	 * Get the file of the project, relative to the wp-content directory if applicable.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The file path.
+	 */
+	public function file() {
+		if ( strpos( $this->filename, WP_CONTENT_DIR ) === false ) {
+			return $this->filename;
+		} else {
+			return substr( $this->filename, strlen( WP_CONTENT_DIR . '/' ) );
+		}
+	}
+
+	/**
+	 * Get a field of the package metadata.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $field The field to retrieve from the package metadata array.
+	 *
+	 * @return mixed The value of specified field.
+	 */
+	public function package( $field ) {
+		return $this->package[ $field ];
+	}
+
+	/**
+	 * Get the language of the project.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param bool|string $slug Optional Return just the slug or the language name?
+	 *
+	 * @return string The language name or slug.
+	 */
+	public function language( $slug = false ) {
+		if ( $slug ) {
+			return $this->language;
+		} else {
+			return Dictionary::identify_language( $this->language );
+		}
+	}
+
+	// =========================
 	// ! Methods
 	// =========================
 
 	/**
-	 * Create a new object from provided details,
-	 * or load a specified file.
+	 * Create a new project with an assigned file location.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array|string $data Optional The data of the object or the path to a file to open.
+	 * @param string $file The path to the file this will import from and export to.
 	 */
-	public function __construct( $data = null ) {
+	public function __construct( $file = null ) {
 		// Load necessary libraries
 		require_once( ABSPATH . WPINC . '/pomo/po.php' );
 
 		// Create the PO interface
 		$this->po = new \PO();
 
-		if ( is_array( $data ) ) {
-			$this->update( $data );
-		} elseif ( ! is_null( $data ) ) {
-			$this->filename = $data;
-			$this->import();
+		$this->filename = $file;
+
+		$this->identify();
+	}
+
+	/**
+	 * Utility for Project::identify() if it's a theme or plugin.
+	 *
+	 * Uses the already set package type to handle it.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $type The type of package expected.
+	 * @param string $slug The slug of the package.
+	 */
+	public function handle_package( $type, $slug ) {
+		$this->package['slug'] = $slug;
+		$this->package['type'] = $type;
+
+		// Get/cache all themes/plugins available
+		if ( ! $themes = wp_cache_get( 'pomoedit', 'all themes' ) ) {
+			$themes = wp_get_themes();
+			wp_cache_set( 'pomoedit', $themes, 'all themes' );
+		}
+		if ( ! $plugins = wp_cache_get( 'pomoedit', 'all plugins' ) ) {
+			$plugins = get_plugins();
+			wp_cache_set( 'pomoedit', $plugins, 'all plugins' );
+		}
+
+		switch ( $type ) {
+			case 'theme':
+				if ( isset ( $themes[ $slug ] ) ) {
+					$this->package['name'] = $themes[ $slug ]->name;
+					$this->package['data'] = $themes[ $slug ];
+				}
+				break;
+			case 'plugin':
+				foreach ( $plugins as $basename => $plugin ) {
+					if ( dirname( $basename ) == $slug ) {
+						$this->package['name'] = $plugin['Name'];
+						$this->package['data'] = $plugin;
+					}
+				}
+				break;
+		}
+	}
+
+	/**
+	 * Attempts to identify the package the project belongs to.
+	 *
+	 * Will examine it's location on the server and determine if
+	 * it is a theme, plugin, or core package.
+	 *
+	 * @since 1.0.0
+	 */
+	public function identify() {
+		$slug = $language = null;
+
+		// Extract the package name and language tag from the filename
+		if ( preg_match( '/(.*?)-?(\w+)\.po$/', basename( $this->filename ), $matches ) ) {
+			list(, $slug, $language ) = $matches;
+		}
+
+		$this->package['slug'] = $slug;
+		$this->language = $language;
+
+		// Stop if not under the wp-content directory
+		if ( strpos( $this->filename, WP_CONTENT_DIR ) === false ) {
+			$this->package['name'] = $slug;
+			$this->package['type'] = 'unknown';
+			return;
+		}
+
+		// Remove the preceeding path of the content directory, split into path parts
+		$path = $this->file();
+		$path_parts = explode( '/', $path );
+
+		// Handle based on parent directory
+		switch ( $path_parts[0] ) {
+			case 'languages':
+				// Go by filename or subdir
+				switch ( $path_parts[1] ) {
+					case 'themes':
+						$this->handle_package( 'theme', $slug );
+						break;
+					case 'plugins':
+						$this->handle_package( 'plugin', $slug );
+						break;
+					default:
+						$this->package['type'] = 'system';
+						switch ( $slug ) {
+							case 'admin':
+								$this->package['name'] = 'WordPress Admin';
+								break;
+							case 'admin-network':
+								$this->package['name'] = 'WordPress Network Admin';
+								break;
+							case '':
+								$this->package['name'] = 'WordPress Core';
+								break;
+						}
+				}
+				break;
+			case 'themes':
+				$this->handle_package( 'theme', $path_parts[1] );
+				break;
+			case 'plugins':
+				$this->handle_package( 'plugin', $path_parts[1] );
+				break;
+		}
+
+		// Fallback value for name
+		if ( ! $this->package['name'] ) {
+			$this->package['name'] = $slug;
 		}
 	}
 

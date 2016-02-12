@@ -61,7 +61,7 @@ class Manager extends Handler {
 	 * @return array The list of files found.
 	 */
 	protected static function find_projects( $dir ) {
-		$files = array();
+		$projects = array();
 
 		foreach ( scandir( $dir ) as $file ) {
 			if ( substr( $file, 0, 1 ) == '.' ) {
@@ -71,102 +71,16 @@ class Manager extends Handler {
 			$path = "$dir/$file";
 			// If it's a directory (but not a link) scan it
 			if ( is_dir( $path ) && ! is_link( $path ) ) {
-				$files = array_merge( $files, static::find_projects( $path ) );
+				$projects = array_merge( $projects, static::find_projects( $path ) );
 			} else
 			// If it's a file with the .po extension, add it
 			if ( is_file( $path ) && substr( $file, -3 ) === '.po' ) {
-				$files[] = $path;
+				$project = new Project( $path );
+				$projects[] = $project;
 			}
 		}
 
-		return $files;
-	}
-
-	/**
-	 * Attempt to identify a .po file.
-	 *
-	 * Will identify language and project context if possible.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $file    The path to the file to identify.
-	 * @param string $context A context to use for identifying the project.
-	 *
-	 * @return string An identifying name for the file.
-	 */
-	protected static function identify_project( $file, $context ) {
-		// First, identify the language.
-		$language = 'Unknown Language';
-		if ( preg_match( '/(.*?)-?(\w+)\.po$/', $file, $matches ) ) {
-			list(, $project, $language ) = $matches;
-		} else {
-			return basename( $file );
-		}
-
-		// Get and cache all themes/plugins available
-		if ( ! $themes = wp_cache_get( 'pomoedit', 'all themes' ) ) {
-			$themes = wp_get_themes();
-			wp_cache_set( 'pomoedit', $themes, 'all themes' );
-		}
-		if ( ! $plugins = wp_cache_get( 'pomoedit', 'all plugins' ) ) {
-			$plugins = get_plugins();
-			wp_cache_set( 'pomoedit', $plugins, 'all plugins' );
-		}
-
-		switch ( $context ) {
-			case 'theme':
-				$path = substr( $file, strlen( WP_CONTENT_DIR . '/themes/' ) );
-				$path = explode( '/', $path );
-				$project = array_shift( $path );
-
-				if ( isset( $themes[ $project ] ) ) {
-					$project = $themes[ $project ]->name;
-				}
-				break;
-
-			case 'plugin':
-				$path = substr( $file, strlen( WP_PLUGIN_DIR . '/' ) );
-				$path = explode( '/', $path );
-				$project = array_shift( $path );
-
-				foreach ( $plugins as $basename => $data ) {
-					if ( dirname( $basename ) == $project ) {
-						$project = $data['Name'];
-						break;
-					}
-				}
-				break;
-
-			default:
-				$path = substr( $project, strlen( WP_CONTENT_DIR . '/languages/' ) );
-				$path = explode( '/', $path );
-				$project = array_shift( $path );
-
-				switch ( $project ) {
-					case 'themes':
-						// It's for a theme, fake the path and run it again as such
-						$path = WP_CONTENT_DIR . '/themes/' . implode( '/', $path ) . '/' . $language . '.po';
-						return static::identify_project( $path, 'theme' );
-
-					case 'plugins':
-						// It's for a plugin, fake the path and run it again as such
-						$path = WP_PLUGIN_DIR . '/' . implode( '/', $path ) . '/' . $language . '.po';
-						return static::identify_project( $path, 'plugin' );
-
-					case 'admin':
-						$project = 'WordPress Admin';
-						break;
-					case 'admin-network':
-						$project = 'WordPress Network Admin';
-						break;
-					case '':
-						$project = 'WordPress Core';
-						break;
-				}
-				break;
-		}
-
-		return sprintf( '%s [%s]', $project, Dictionary::identify_language( $language ) );
+		return $projects;
 	}
 
 	// =========================
@@ -218,6 +132,7 @@ class Manager extends Handler {
 		} else {
 			// Load the file
 			$project = new Project( $path );
+			$project->load();
 
 			// Check if update info was passed
 			if ( isset( $_POST['pomoedit_data'] ) ) {
@@ -249,102 +164,118 @@ class Manager extends Handler {
 		<div class="wrap">
 			<h2><?php echo get_admin_page_title(); ?></h2>
 
-			<?php if ( ! isset( $_GET['pomoedit_file'] ) ) : ?>
-			<form method="get" action="tools.php" id="<?php echo $plugin_page; ?>-open">
-				<input type="hidden" name="page" value="<?php echo $plugin_page; ?>" />
-
-				<p>
-					<label for="pomoedit_file"><?php _e( 'Select PO File to Edit' ); ?></label>
-					<select name="pomoedit_file" id="pomoedit_file">
-						<option value=""><?php _e( 'Select File' ); ?></option>
-						<?php if ( $files = static::find_projects( WP_CONTENT_DIR . '/languages' ) ) :?>
-						<optgroup label="Installed Languages">
-							<?php foreach ( $files as $file ) : ?>
-							<option value="<?php echo $file; ?>"><?php echo static::identify_project( $file ); ?></option>
-							<?php endforeach; ?>
-						</optgroup>
-						<?php endif;?>
-						<?php if ( $files = static::find_projects( WP_CONTENT_DIR . '/themes' ) ) :?>
-						<optgroup label="Installed Themes">
-							<?php foreach ( $files as $file ) : ?>
-							<option value="<?php echo $file; ?>"><?php echo static::identify_project( $file, 'theme' ); ?></option>
-							<?php endforeach; ?>
-						</optgroup>
-						<?php endif;?>
-						<?php if ( $files = static::find_projects( WP_PLUGIN_DIR ) ) :?>
-						<optgroup label="Installed Plugins">
-							<?php foreach ( $files as $file ) : ?>
-							<option value="<?php echo $file; ?>"><?php echo static::identify_project( $file, 'plugin' ); ?></option>
-							<?php endforeach; ?>
-						</optgroup>
-						<?php endif;?>
-					</select>
-				</p>
-
-				<p class="submit">
-					<button type="submit" class="button button-primary"><?php _e( 'Open Translation' ); ?></button>
-				</p>
-			</form>
-			<?php else:
-			$file = $_GET['pomoedit_file'];
-			// Load the file from the cache
-			$project = wp_cache_get( 'pomoedit', $file );
+			<?php
+			if ( isset( $_GET['pomoedit_file'] ) ) {
+				static::project_editor();
+			} else {
+				static::project_index();
+			}
 			?>
-			<form method="post" action="tools.php?page=<?php echo $plugin_page; ?>" id="<?php echo $plugin_page; ?>-manage">
-				<input type="hidden" name="pomoedit_file" value="<?php echo $file; ?>" />
-				<?php wp_nonce_field( 'pomoedit-manage-' . md5( $file ), '_pomoedit_nonce' ); ?>
-
-				<h2><?php printf( __( 'Editing: <code>%s</code>' ), $file ); ?></h2>
-
-				<table id="pomoedit-listing" class="fixed striped widefat">
-					<thead>
-						<tr>
-							<th class="pme-source"><?php _e( 'Source Text' ); ?></th>
-							<th class="pme-translation"><?php _e( 'Translated Text' ); ?></th>
-						</tr>
-					</thead>
-					<tbody></tbody>
-				</table>
-
-				<?php submit_button( __( 'Update Project' ) ); ?>
-
-				<script type="text/template" id="pomoedit-entry-template">
-					<td class="pme-entry pme-source" data-context="<%- context %>">
-						<span class="pme-value pme-singular"><%- singular %></span>
-						<span class="pme-value pme-plural"><%- plural %></span>
-
-						<div class="pme-fields">
-							<textarea class="pme-input pme-singular"><%- singular %></textarea>
-							<textarea class="pme-input pme-plural"><%- plural %></textarea>
-
-							<button type="button" class="pme-save button button-secondary"><?php _e( 'Save' ); ?></button>
-						</div>
-					</td>
-					<td class="pme-entry pme-translation">
-						<span class="pme-value pme-singular"><%- translations[0] %></span>
-						<span class="pme-value pme-plural"><%- translations[1] %></span>
-
-						<div class="pme-fields">
-							<textarea class="pme-input pme-singular"><%- translations[0] %></textarea>
-							<textarea class="pme-input pme-plural"><%- translations[1] %></textarea>
-						</div>
-					</td>
-				</script>
-
-				<script>
-				POMOEdit.Project = new POMOEdit.Framework.Project(<?php echo json_encode( $project->dump() ); ?>);
-
-				POMOEdit.Editor = new POMOEdit.Framework.ProjectTable( {
-					el: document.getElementById( 'pomoedit-listing' ),
-
-					model: POMOEdit.Project,
-
-					rowTemplate: document.getElementById( 'pomoedit-entry-template' ),
-				} );
-				</script>
-			</form>
-			<?php endif;?>
 		</div>
+		<?php
+	}
+
+	/**
+	 * Output the Project Index interface.
+	 *
+	 * @since 1.0.0
+	 */
+	protected static function project_index() {
+		$projects = array_merge(
+			// Installed languages
+			static::find_projects( WP_CONTENT_DIR . '/languages' ),
+			// Theme translations
+			static::find_projects( WP_CONTENT_DIR . '/themes' ),
+			// Plugin translations
+			static::find_projects( WP_CONTENT_DIR . '/plugins' )
+		);
+		?>
+		<table id="pomoedit-projects" class="wp-list-table widefat fixed striped">
+			<thead>
+				<tr>
+					<td id="pmeproject-type" class="manage-column column-pmeproject-type">Type</td>
+					<td id="pmeproject-title" class="manage-column column-pmeproject-title column-primary">Project</td>
+					<td id="pmeproject-file" class="manage-column column-pmeproject-file">File</td>
+					<td id="pmeproject-language" class="manage-column column-pmeproject-language">Language</td>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ( $projects as $project ) : ?>
+				<tr class="pme-type-<?php echo $project->package( 'type' ); ?> pme-language-<?php echo $project->language( 'slug' ); ?>">
+					<td class="column-pmeproject-type"><?php echo ucwords( $project->package( 'type' ) ); ?></td>
+					<td class="column-pmeproject-title"><?php echo $project->package( 'name' ); ?></td>
+					<td class="column-pmeproject-file"><code><?php echo $project->file(); ?></code></td>
+					<td class="column-pmeproject-language"><?php echo $project->language(); ?></td>
+				</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+		<?php
+	}
+
+	/**
+	 * Output the Project Editor interface.
+	 *
+	 * @since 1.0.0
+	 */
+	protected static function project_editor() {
+		$file = $_GET['pomoedit_file'];
+		// Load the file from the cache
+		$project = wp_cache_get( 'pomoedit', $file );
+		?>
+		<form method="post" action="tools.php?page=<?php echo $plugin_page; ?>" id="<?php echo $plugin_page; ?>-manage">
+			<input type="hidden" name="pomoedit_file" value="<?php echo $file; ?>" />
+			<?php wp_nonce_field( 'pomoedit-manage-' . md5( $file ), '_pomoedit_nonce' ); ?>
+
+			<h2><?php printf( __( 'Editing: <code>%s</code>' ), $file ); ?></h2>
+
+			<table id="pomoedit-editor" class="fixed striped widefat">
+				<thead>
+					<tr>
+						<th class="pme-source"><?php _e( 'Source Text' ); ?></th>
+						<th class="pme-translation"><?php _e( 'Translated Text' ); ?></th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+
+			<?php submit_button( __( 'Update Project' ) ); ?>
+
+			<script type="text/template" id="pomoedit-entry-template">
+				<td class="pme-entry pme-source" data-context="<%- context %>">
+					<span class="pme-value pme-singular"><%- singular %></span>
+					<span class="pme-value pme-plural"><%- plural %></span>
+
+					<div class="pme-fields">
+						<textarea class="pme-input pme-singular"><%- singular %></textarea>
+						<textarea class="pme-input pme-plural"><%- plural %></textarea>
+
+						<button type="button" class="pme-save button button-secondary"><?php _e( 'Save' ); ?></button>
+					</div>
+				</td>
+				<td class="pme-entry pme-translation">
+					<span class="pme-value pme-singular"><%- translations[0] %></span>
+					<span class="pme-value pme-plural"><%- translations[1] %></span>
+
+					<div class="pme-fields">
+						<textarea class="pme-input pme-singular"><%- translations[0] %></textarea>
+						<textarea class="pme-input pme-plural"><%- translations[1] %></textarea>
+					</div>
+				</td>
+			</script>
+
+			<script>
+			POMOEdit.Project = new POMOEdit.Framework.Project(<?php echo json_encode( $project->dump() ); ?>);
+
+			POMOEdit.Editor = new POMOEdit.Framework.ProjectTable( {
+				el: document.getElementById( 'pomoedit-listing' ),
+
+				model: POMOEdit.Project,
+
+				rowTemplate: document.getElementById( 'pomoedit-entry-template' ),
+			} );
+			</script>
+		</form>
 		<?php
 	}
 }
