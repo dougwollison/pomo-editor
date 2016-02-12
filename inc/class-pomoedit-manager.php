@@ -48,42 +48,6 @@ class Manager extends Handler {
 	}
 
 	// =========================
-	// ! Utilities
-	// =========================
-
-	/**
-	 * Scan a directory for .po files.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $dir The directory to search.
-	 *
-	 * @return array The list of files found.
-	 */
-	protected static function find_projects( $dir ) {
-		$projects = array();
-
-		foreach ( scandir( $dir ) as $file ) {
-			if ( substr( $file, 0, 1 ) == '.' ) {
-				continue;
-			}
-
-			$path = "$dir/$file";
-			// If it's a directory (but not a link) scan it
-			if ( is_dir( $path ) && ! is_link( $path ) ) {
-				$projects = array_merge( $projects, static::find_projects( $path ) );
-			} else
-			// If it's a file with the .po extension, add it
-			if ( is_file( $path ) && substr( $file, -3 ) === '.po' ) {
-				$project = new Project( $path );
-				$projects[] = $project;
-			}
-		}
-
-		return $projects;
-	}
-
-	// =========================
 	// ! Admin Page Setup
 	// =========================
 
@@ -181,14 +145,8 @@ class Manager extends Handler {
 	 * @since 1.0.0
 	 */
 	protected static function project_index() {
-		$projects = array_merge(
-			// Installed languages
-			static::find_projects( WP_CONTENT_DIR . '/languages' ),
-			// Theme translations
-			static::find_projects( WP_CONTENT_DIR . '/themes' ),
-			// Plugin translations
-			static::find_projects( WP_CONTENT_DIR . '/plugins' )
-		);
+		$projects = new Projects();
+		$projects->scan();
 		?>
 		<table id="pomoedit-projects" class="wp-list-table widefat fixed striped">
 			<thead>

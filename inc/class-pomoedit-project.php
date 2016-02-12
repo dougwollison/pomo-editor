@@ -3,7 +3,7 @@
  * POMOEdit Project Model
  *
  * @package POMOEdit
- * @subpackage Tools
+ * @subpackage Structures
  *
  * @since 1.0.0
  */
@@ -13,10 +13,11 @@ namespace POMOEdit;
 /**
  * The Project Model
  *
- * A proxy for opening, editing, and saving PO/MO objects.
+ * A model representing a project file, it's
+ * PO data, and it's package information.
  *
  * @package POMOEdit
- * @subpackage Tools
+ * @subpackage Structures
  *
  * @api
  *
