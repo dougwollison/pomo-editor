@@ -1,4 +1,10 @@
-#pomoedit-listing {
+#pomoedit-projects {
+	.column-pmeproject-type {
+		width: 70px;
+	}
+}
+
+#pomoedit-editor {
 	> tbody > tr {
 		cursor: pointer;
 	}
