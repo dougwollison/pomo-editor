@@ -201,7 +201,11 @@ class Manager extends Handler {
 			</thead>
 			<tbody>
 				<?php foreach ( $projects as $project ) : ?>
-				<tr class="pme-type-<?php echo $project->package( 'type' ); ?> pme-language-<?php echo $project->language( 'slug' ); ?>">
+				<tr class="pme-type-<?php echo $project->package( 'type' ); ?> pme-language-<?php echo $project->language( 'slug' ); ?>"
+					data-type="<?php echo $project->package( 'type' ); ?>"
+					data-title="<?php echo $project->package( 'name' ); ?>"
+					data-language="<?php echo $project->language(); ?>"
+					>
 					<td class="column-pmeproject-type"><?php echo ucwords( $project->package( 'type' ) ); ?></td>
 					<td class="column-pmeproject-title"><?php echo $project->package( 'name' ); ?></td>
 					<td class="column-pmeproject-file"><code><?php echo $project->file(); ?></code></td>
