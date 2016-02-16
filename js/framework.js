@@ -148,11 +148,41 @@
 	} );
 
 	var Project = Framework.Project = Backbone.Model.extend( {
+		defaults: {
+			file: {},
+			language: {},
+			pkginfo: {},
+			po_headers: {},
+			po_metadata: {},
+		},
+
 		constructor: function() {
-			this.Translations = new Translations( arguments[0].entries );
-			delete arguments[0].entries;
+			if ( arguments[0].entries ) {
+				this.Translations = new Translations( arguments[0].entries );
+				delete arguments[0].po_entries;
+			}
 
 			Backbone.Model.apply( this, arguments );
+		}
+	} );
+
+	var ProjectItem = Framework.ProjectItem = Backbone.View.extend( {
+		tagName: 'tr',
+
+		initialize: function( options ) {
+			if ( options.template ) {
+				if ( options.template instanceof HTMLElement ) {
+					options.template = options.template.innerHTML;
+				}
+
+				this.template = _.template( options.template );
+			}
+		},
+
+		render: function( fresh ) {
+			var template = this.template( this.model.attributes );
+			this.$el.html( template );
+			return this;
 		}
 	} );
 
@@ -165,6 +195,34 @@
 				} );
 
 				row.$el.appendTo( this.$el.find( 'tbody' ) );
+			}.bind( this ) );
+		}
+	} );
+
+	var Projects = Framework.Projects = Backbone.Collection.extend( {
+		model: Project
+	} );
+
+	var ProjectsList = Framework.ProjectsList = Backbone.View.extend( {
+		initialize : function( options ) {
+			this.collection = options.collection || new Projects();
+			this._views = [];
+
+			options.collection.each( function( project ) {
+				this._views.push( new ProjectItem( {
+					model: project,
+					template: options.itemTemplate
+				} ) );
+			}.bind( this ) );
+
+			this.render();
+		},
+
+		render: function() {
+			this.$el.find( 'tbody' ).empty();
+
+			_( this._views ).each( function( view ) {
+				this.$el.find( 'tbody' ).append( view.render().el );
 			}.bind( this ) );
 		}
 	} );

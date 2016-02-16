@@ -151,27 +151,34 @@ class Manager extends Handler {
 		<table id="pomoedit-projects" class="wp-list-table widefat fixed striped">
 			<thead>
 				<tr>
-					<td id="pmeproject-type" class="manage-column column-pmeproject-type">Type</td>
-					<td id="pmeproject-title" class="manage-column column-pmeproject-title column-primary">Project</td>
-					<td id="pmeproject-file" class="manage-column column-pmeproject-file">File</td>
-					<td id="pmeproject-language" class="manage-column column-pmeproject-language">Language</td>
+					<th id="pmeproject-file" class="manage-column column-pmeproject-file"><?php _e( 'File' ); ?></th>
+					<th id="pmeproject-title" class="manage-column column-pmeproject-title column-primary"><?php _e( 'Project' ); ?></th>
+					<th id="pmeproject-type" class="manage-column column-pmeproject-type"><?php _e( 'Type' ); ?></th>
+					<th id="pmeproject-language" class="manage-column column-pmeproject-language"><?php _e( 'Language' ); ?></th>
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ( $projects as $project ) : ?>
-				<tr class="pme-type-<?php echo $project->package( 'type' ); ?> pme-language-<?php echo $project->language( 'slug' ); ?>"
-					data-type="<?php echo $project->package( 'type' ); ?>"
-					data-title="<?php echo $project->package( 'name' ); ?>"
-					data-language="<?php echo $project->language(); ?>"
-					>
-					<td class="column-pmeproject-type"><?php echo ucwords( $project->package( 'type' ) ); ?></td>
-					<td class="column-pmeproject-title"><?php echo $project->package( 'name' ); ?></td>
-					<td class="column-pmeproject-file"><code><?php echo $project->file(); ?></code></td>
-					<td class="column-pmeproject-language"><?php echo $project->language(); ?></td>
-				</tr>
-				<?php endforeach; ?>
 			</tbody>
 		</table>
+
+		<script type="text/template" id="pomoedit-item-template">
+			<td class="column-pmeproject-file"><%= file.dirname %>/<strong><%= file.basename %></strong></td>
+			<td class="column-pmeproject-title"><%= pkginfo.name %></td>
+			<td class="column-pmeproject-type"><%= pkginfo.type %></td>
+			<td class="column-pmeproject-language"><%= language.name %></td>
+		</script>
+
+		<script>
+		POMOEdit.Projects = new POMOEdit.Framework.Projects(<?php echo json_encode( $projects->dump() ); ?>);
+
+		POMOEdit.List = new POMOEdit.Framework.ProjectsList( {
+			el: document.getElementById( 'pomoedit-projects' ),
+
+			collection: POMOEdit.Projects,
+
+			itemTemplate: document.getElementById( 'pomoedit-item-template' ),
+		} );
+		</script>
 		<?php
 	}
 
@@ -230,7 +237,7 @@ class Manager extends Handler {
 			POMOEdit.Project = new POMOEdit.Framework.Project(<?php echo json_encode( $project->dump() ); ?>);
 
 			POMOEdit.Editor = new POMOEdit.Framework.ProjectTable( {
-				el: document.getElementById( 'pomoedit-listing' ),
+				el: document.getElementById( 'pomoedit-editor' ),
 
 				model: POMOEdit.Project,
 
