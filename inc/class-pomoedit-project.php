@@ -85,6 +85,19 @@ class Project {
 	 */
 	protected $po;
 
+	/**
+	 * The loaded status.
+	 *
+	 * @internal
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access protected
+	 *
+	 * @var bool
+	 */
+	protected $loaded = false;
+
 	// =========================
 	// ! Property Access
 	// =========================
@@ -244,13 +257,16 @@ class Project {
 						$this->package['type'] = 'system';
 						switch ( $slug ) {
 							case 'admin':
-								$this->package['name'] = 'WordPress Admin';
+								$this->package['name'] = __( 'WordPress Admin' );
 								break;
 							case 'admin-network':
-								$this->package['name'] = 'WordPress Network Admin';
+								$this->package['name'] = __( 'WordPress Network Admin' );
+								break;
+							case 'continents-cities':
+								$this->package['name'] = __( 'Continent & City Names' );
 								break;
 							case '':
-								$this->package['name'] = 'WordPress Core';
+								$this->package['name'] = __( 'WordPress Core' );
 								break;
 						}
 				}
@@ -275,13 +291,23 @@ class Project {
 	 * @since 1.0.0
 	 *
 	 * @uses Project::$filename
+	 * @uses Project::$loaded
+	 *
+	 * @param bool $reload Force reload of the file?
 	 */
-	public function import() {
+	public function load( $reload = false ) {
+		if ( ! $reload && $this->loaded ) {
+			// Already loaded, no reload requested, abort
+			return;
+		}
+
 		if ( ! file_exists( $this->filename ) ) {
 			throw new Exception( "File not found ({$this->filename})" );
 		}
 
 		$this->po->import_from_file( $this->filename );
+
+		$this->loaded = true;
 	}
 
 	/**
@@ -388,15 +414,25 @@ class Project {
 	 */
 	public function dump() {
 		$data = array(
-			'headers' => $this->po->headers,
-			'entries' => array_values( $this->po->entries ),
-			'metadata' => array(),
+			'file' => pathinfo( $this->file() ),
+			'language' => array(
+				'code' => $this->language,
+				'name' => $this->language(),
+			),
+			'pkginfo' => $this->package,
 		);
 
-		// All other properties go in 'metadata'
-		foreach ( get_object_vars( $this->po ) as $prop => $value ) {
-			if ( $prop !== 'headers' && $prop !== 'entries' ) {
-				$data['metadata'][ $prop ] = $value;
+		// Add PO info if loaded
+		if ( $this->loaded ) {
+			$data['po_headers'] = $this->po->headers;
+			$data['po_entries'] = array_values( $this->po->entries );
+			$data['po_metadata'] = array();
+
+			// All other properties go in 'metadata'
+			foreach ( get_object_vars( $this->po ) as $prop => $value ) {
+				if ( $prop !== 'headers' && $prop !== 'entries' ) {
+					$data['po']['metadata'][ $prop ] = $value;
+				}
 			}
 		}
 
