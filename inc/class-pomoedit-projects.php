@@ -361,4 +361,21 @@ class Projects implements \Iterator {
 
 		return $this;
 	}
+
+	/**
+	 * Dump an array of the contained projects.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array The dumped array of projects.
+	 */
+	public function dump() {
+		$array = array();
+
+		foreach ( $this as $item ) {
+			$array[] = $item->dump();
+		}
+
+		return $array;
+	}
 }
