@@ -1,5 +1,12 @@
+#pomoedit-projects td.column-pmeproject-file {
+  font-family: Consolas, Monaco, monospace;
+  color: #777; }
+  #pomoedit-projects td.column-pmeproject-file strong {
+    color: #444; }
 #pomoedit-projects .column-pmeproject-type {
   width: 70px; }
+#pomoedit-projects .column-pmeproject-language {
+  width: 200px; }
 
 #pomoedit-editor > tbody > tr {
   cursor: pointer; }
