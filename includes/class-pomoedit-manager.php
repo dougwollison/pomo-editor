@@ -243,7 +243,7 @@ final class Manager extends Handler {
 						<textarea class="pme-input pme-singular"><%- singular %></textarea>
 						<textarea class="pme-input pme-plural"><%- plural %></textarea>
 
-						<button type="button" class="pme-save button button-secondary"><?php _e( 'Save' ); ?></button>
+						<button type="button" class="pme-save button button-primary button-small"><?php _e( 'Save' ); ?></button>
 					</div>
 				</td>
 				<td class="pme-entry pme-translation">
@@ -253,6 +253,8 @@ final class Manager extends Handler {
 					<div class="pme-fields">
 						<textarea class="pme-input pme-singular"><%- translations[0] %></textarea>
 						<textarea class="pme-input pme-plural"><%- translations[1] %></textarea>
+
+						<button type="button" class="pme-cancel button button-secondary button-small"><?php _e( 'Cancel' ); ?></button>
 					</div>
 				</td>
 			</script>

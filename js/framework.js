@@ -75,6 +75,7 @@
 		events: {
 			'click': 'toggle',
 			'click .pme-save': 'save',
+			'click .pme-cancel': 'close',
 		},
 
 		initialize: function( options ) {
@@ -134,6 +135,10 @@
 			return this;
 		},
 
+		close: function() {
+			this.$el.removeClass( 'open' );
+		},
+
 		save: function() {
 			this.model.set( 'singular', this.$el.find( '.pme-source .pme-input.pme-singular' ).val() );
 			this.model.set( 'plural', this.$el.find( '.pme-source .pme-input.pme-plural' ).val() );
@@ -143,7 +148,7 @@
 				this.$el.find( '.pme-translation .pme-input.pme-plural' ).val()
 			] );
 
-			this.$el.removeClass( 'open' );
+			this.close();
 		}
 	} );
 

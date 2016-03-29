@@ -14,6 +14,8 @@
   content: "[" attr(data-context) "]";
   display: block;
   font-style: italic; }
+.pme-entry .button {
+  margin-top: 5px; }
 
 .pme-value {
   display: block;
@@ -24,7 +26,12 @@
     display: none; }
 
 .pme-fields {
+  *zoom: 1;
   display: none; }
+  .pme-fields:after {
+    content: "";
+    display: table;
+    clear: both; }
   .pme-entry.open .pme-fields {
     display: block; }
 
@@ -38,3 +45,9 @@
   display: none; }
   .pme-entry.has-plural .pme-plural {
     display: block; }
+
+.pme-save {
+  float: left; }
+
+.pme-cancel {
+  float: right; }
