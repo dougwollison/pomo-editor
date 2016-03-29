@@ -113,7 +113,7 @@ final class Registry {
 			$option = static::$options_deprecated[ $option ];
 		}
 
-		return in_array( $option, static::$options_whitelist );
+		return isset( static::$options_whitelist[ $option ] );
 	}
 
 	/**
