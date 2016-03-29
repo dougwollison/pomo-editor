@@ -20,12 +20,18 @@
 	.pme-entry {
 		td {
 			position: relative;
+			padding: 8px 10px;
 		}
 
-		&.has-context .pme-source:after {
-			content: '[' attr(data-context) ']';
-			display: block;
-			font-style: italic;
+		&.has-context {
+			td {
+				position: relative;
+			}
+
+			.pme-source:before {
+				content: '[' attr(data-context) ']';
+				float: right;
+			}
 		}
 
 		.button {

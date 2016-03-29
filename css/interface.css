@@ -9,11 +9,13 @@
   cursor: pointer; }
 
 .pme-entry td {
+  position: relative;
+  padding: 8px 10px; }
+.pme-entry.has-context td {
   position: relative; }
-.pme-entry.has-context .pme-source:after {
+.pme-entry.has-context .pme-source:before {
   content: "[" attr(data-context) "]";
-  display: block;
-  font-style: italic; }
+  float: right; }
 .pme-entry .button {
   margin-top: 5px; }
 
