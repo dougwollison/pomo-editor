@@ -38,6 +38,7 @@ final class Manager extends Handler {
 
 		// Settings & Pages
 		static::add_action( 'admin_menu', 'add_menu_pages' );
+		static::add_action( 'admin_init', 'process_request' );
 	}
 
 	// =========================
@@ -127,11 +128,8 @@ final class Manager extends Handler {
 	 * Output for generic settings page.
 	 *
 	 * @since 1.0.0
-	 *
-	 * @global string $plugin_page The slug of the current admin page.
 	 */
 	public static function admin_page() {
-		global $plugin_page;
 ?>
 		<div class="wrap">
 			<h2><?php echo get_admin_page_title(); ?></h2>
@@ -151,8 +149,12 @@ final class Manager extends Handler {
 	 * Output the Project Index interface.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @global string $plugin_page The slug of the current admin page.
 	 */
 	protected static function project_index() {
+		global $plugin_page;
+
 		$projects = new Projects();
 		$projects->scan();
 		?>
@@ -170,7 +172,9 @@ final class Manager extends Handler {
 		</table>
 
 		<script type="text/template" id="pomoedit-item-template">
-			<td class="column-pmeproject-file"><%= file.dirname %>/<strong><%= file.basename %></strong></td>
+			<td class="column-pmeproject-file"><a href="<?php echo admin_url( "tools.php?page={$plugin_page}&pomoedit_file=" ); ?><%= file.dirname %>/<%= file.basename %>">
+				<%= file.dirname %>/<strong><%= file.basename %></strong>
+			</a></td>
 			<td class="column-pmeproject-title"><%= pkginfo.name %></td>
 			<td class="column-pmeproject-type"><%= pkginfo.type %></td>
 			<td class="column-pmeproject-language"><%= language.name %></td>
@@ -194,8 +198,12 @@ final class Manager extends Handler {
 	 * Output the Project Editor interface.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @global string $plugin_page The slug of the current admin page.
 	 */
 	protected static function project_editor() {
+		global $plugin_page;
+
 		$file = $_GET['pomoedit_file'];
 		// Load the file from the cache
 		$project = wp_cache_get( 'pomoedit', $file );
