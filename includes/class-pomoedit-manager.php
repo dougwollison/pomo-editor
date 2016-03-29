@@ -235,7 +235,7 @@ final class Manager extends Handler {
 			<?php submit_button( __( 'Update Project' ) ); ?>
 
 			<script type="text/template" id="pomoedit-entry-template">
-				<td class="pme-entry pme-source" data-context="<%- context %>">
+				<td class="pme-source" data-context="<%- context %>">
 					<span class="pme-value pme-singular"><%- singular %></span>
 					<span class="pme-value pme-plural"><%- plural %></span>
 
@@ -246,7 +246,7 @@ final class Manager extends Handler {
 						<button type="button" class="pme-save button button-primary button-small"><?php _e( 'Save' ); ?></button>
 					</div>
 				</td>
-				<td class="pme-entry pme-translation">
+				<td class="pme-translation">
 					<span class="pme-value pme-singular"><%- translations[0] %></span>
 					<span class="pme-value pme-plural"><%- translations[1] %></span>
 
