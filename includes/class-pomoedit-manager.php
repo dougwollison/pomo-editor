@@ -38,7 +38,6 @@ final class Manager extends Handler {
 
 		// Settings & Pages
 		static::add_action( 'admin_menu', 'add_menu_pages' );
-		static::add_action( 'admin_init', 'register_settings' );
 	}
 
 	// =========================
