@@ -157,8 +157,8 @@
 		},
 
 		constructor: function() {
-			if ( arguments[0].entries ) {
-				this.Translations = new Translations( arguments[0].entries );
+			if ( arguments[0].po_entries ) {
+				this.Translations = new Translations( arguments[0].po_entries );
 				delete arguments[0].po_entries;
 			}
 
