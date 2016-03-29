@@ -157,6 +157,7 @@ final class Projects implements \Iterator {
 			$this->scan( WP_CONTENT_DIR . '/languages' );
 			$this->scan( WP_CONTENT_DIR . '/themes' );
 			$this->scan( WP_CONTENT_DIR . '/plugins' );
+			return;
 		}
 
 		foreach ( scandir( $dir ) as $file ) {
