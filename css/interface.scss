@@ -19,6 +19,12 @@
 		td {
 			position: relative;
 		}
+
+		&.has-context .pme-source:after {
+			content: '[' attr(data-context) ']';
+			display: block;
+			font-style: italic;
+		}
 	}
 		.pme-value {
 			display: block;
