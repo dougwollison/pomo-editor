@@ -1,8 +1,5 @@
 #pomoedit-projects td.column-pmeproject-file {
-  font-family: Consolas, Monaco, monospace;
-  color: #777; }
-  #pomoedit-projects td.column-pmeproject-file strong {
-    color: #444; }
+  font-family: Consolas, Monaco, monospace; }
 #pomoedit-projects .column-pmeproject-type {
   width: 70px; }
 #pomoedit-projects .column-pmeproject-language {
