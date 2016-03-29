@@ -102,21 +102,22 @@ final class Manager extends Handler {
 		$path = realpath( WP_CONTENT_DIR . '/' . $file );
 		if ( ! file_exists( $path ) ) {
 			wp_die( sprintf( __( 'That file cannot be found: %s' ), $path ) );
-		} else {
-			// Load the file
+		}
+		// Check if the file is being updated
+		elseif ( isset( $_POST['pomoedit_data'] ) ) {
+			// Load
 			$project = new Project( $path );
 			$project->load();
 
-			// Check if update info was passed
-			if ( isset( $_POST['pomoedit_data'] ) ) {
-				// Update
-				$project->update( json_decode( stripslashes( $_POST['pomoedit_data'] ), true ) );
-				// Save
-				$project->export();
-			}
+			// Update
+			$project->update( json_decode( stripslashes( $_POST['pomoedit_data'] ), true ), true );
 
-			// Stash it in the cache for global access
-			wp_cache_set( 'pomoedit', $project, $file );
+			// Save
+			$project->export();
+
+			// Redirect
+			wp_redirect( admin_url( 'tools.php?page=pomoedit&pomoedit_file=' . $file ) );
+			exit;
 		}
 	}
 
@@ -205,8 +206,10 @@ final class Manager extends Handler {
 		global $plugin_page;
 
 		$file = $_REQUEST['pomoedit_file'];
-		// Load the file from the cache
-		$project = wp_cache_get( 'pomoedit', $file );
+		// Load
+		$path = realpath( WP_CONTENT_DIR . '/' . $file );
+		$project = new Project( $path );
+		$project->load();
 		?>
 		<form method="post" action="tools.php?page=<?php echo $plugin_page; ?>" id="<?php echo $plugin_page; ?>-manage">
 			<input type="hidden" name="pomoedit_file" value="<?php echo $file; ?>" />
