@@ -135,7 +135,7 @@ final class Manager extends Handler {
 			<h2><?php echo get_admin_page_title(); ?></h2>
 
 			<?php
-			if ( isset( $_GET['pomoedit_file'] ) ) {
+			if ( isset( $_REQUEST['pomoedit_file'] ) ) {
 				static::project_editor();
 			} else {
 				static::project_index();
@@ -204,7 +204,7 @@ final class Manager extends Handler {
 	protected static function project_editor() {
 		global $plugin_page;
 
-		$file = $_GET['pomoedit_file'];
+		$file = $_REQUEST['pomoedit_file'];
 		// Load the file from the cache
 		$project = wp_cache_get( 'pomoedit', $file );
 		?>
@@ -213,6 +213,11 @@ final class Manager extends Handler {
 			<?php wp_nonce_field( 'pomoedit-manage-' . md5( $file ), '_pomoedit_nonce' ); ?>
 
 			<h2><?php printf( __( 'Editing: <code>%s</code>' ), $file ); ?></h2>
+
+			<p>
+				<strong>Project:</strong> <?php echo $project->package( 'name' ); ?> (<?php echo $project->package( 'type' ); ?>)<br />
+				<strong>Language:</strong> <?php echo $project->language(); ?>
+			</p>
 
 			<table id="pomoedit-editor" class="fixed striped widefat">
 				<thead>
