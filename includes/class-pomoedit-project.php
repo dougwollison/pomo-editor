@@ -108,7 +108,7 @@ final class Project {
 	 *
 	 * @return string The file path.
 	 */
-	final public function file() {
+	public function file() {
 		if ( strpos( $this->filename, WP_CONTENT_DIR ) === false ) {
 			return $this->filename;
 		} else {
@@ -125,7 +125,7 @@ final class Project {
 	 *
 	 * @return mixed The value of specified field.
 	 */
-	final public function package( $field ) {
+	public function package( $field ) {
 		return $this->package[ $field ];
 	}
 
@@ -138,7 +138,7 @@ final class Project {
 	 *
 	 * @return string The language name or slug.
 	 */
-	final public function language( $slug = false ) {
+	public function language( $slug = false ) {
 		if ( $slug ) {
 			return $this->language;
 		} else {
@@ -157,7 +157,7 @@ final class Project {
 	 *
 	 * @param string $file The path to the file this will import from and export to.
 	 */
-	final public function __construct( $file = null ) {
+	public function __construct( $file = null ) {
 		// Load necessary libraries
 		require_once( ABSPATH . WPINC . '/pomo/po.php' );
 
@@ -179,7 +179,7 @@ final class Project {
 	 * @param string $type The type of package expected.
 	 * @param string $slug The slug of the package.
 	 */
-	final public function handle_package( $type, $slug ) {
+	public function handle_package( $type, $slug ) {
 		$this->package['slug'] = $slug;
 		$this->package['type'] = $type;
 
@@ -219,7 +219,7 @@ final class Project {
 	 *
 	 * @since 1.0.0
 	 */
-	final public function identify() {
+	public function identify() {
 		$slug = $language = null;
 
 		// Extract the package name and language tag from the filename
@@ -294,7 +294,7 @@ final class Project {
 	 *
 	 * @param bool $reload Force reload of the file?
 	 */
-	final public function load( $reload = false ) {
+	public function load( $reload = false ) {
 		if ( ! $reload && $this->loaded ) {
 			// Already loaded, no reload requested, abort
 			return;
@@ -317,7 +317,7 @@ final class Project {
 	 * @param array $data    The data to update with.
 	 * @param bool  $replace Optional Replace all headers/entries/metadata with those provided?
 	 */
-	final public function update( $data, $replace = false ) {
+	public function update( $data, $replace = false ) {
 		// Update headers if present
 		if ( isset( $data['headers'] ) ) {
 			if ( $replace ) {
@@ -365,7 +365,7 @@ final class Project {
 	 *
 	 * @param string $file Optional The file path/name to use.
 	 */
-	final public function export( $file = null ) {
+	public function export( $file = null ) {
 		// Override file property with provided filename
 		if ( $file ) {
 			$this->filename = $file;
@@ -411,7 +411,7 @@ final class Project {
 	 *
 	 * @since 1.0.0
 	 */
-	final public function dump() {
+	public function dump() {
 		$data = array(
 			'file' => pathinfo( $this->file() ),
 			'language' => array(

@@ -30,9 +30,9 @@ final class Exception extends \Exception {
 	 * @param int        $code     Optional The error code.
 	 * @param \Exception $previous Optional The previous exception in the chain.
 	 */
-    final public function __construct( $message, $code = 0, Exception $previous = null ) {
-        parent::__construct( $message, $code, $previous );
-    }
+	public function __construct( $message, $code = 0, Exception $previous = null ) {
+	    parent::__construct( $message, $code, $previous );
+	}
 
 	/**
 	 * Ouput a string representation of the exception.
@@ -41,7 +41,7 @@ final class Exception extends \Exception {
 	 *
 	 * @return string The string representation.
 	 */
-    final public function __toString() {
+	public function __toString() {
 	    // Begin the initial message
 	    $message = __CLASS__ . ': ' . $this->message;
 
@@ -49,5 +49,5 @@ final class Exception extends \Exception {
 	    $message .= "\nStack trace:\n" . $this->getTraceAsString();
 
 	    return $message;
-    }
+	}
 }

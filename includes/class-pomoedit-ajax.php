@@ -30,7 +30,7 @@ final class AJAX extends Handler {
 	 *
 	 * @since 1.0.0
 	 */
-	final public static function register_hooks() {
+	public static function register_hooks() {
 		// Don't do anything if not doing an AJAX request
 		if ( ! defined( 'DOING_AJAX' ) || DOING_AJAX !== true ) {
 			return;

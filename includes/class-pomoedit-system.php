@@ -38,7 +38,7 @@ final class System extends Handler {
 	 * @uses Manager::register_hooks() to setup admin screens.
 	 * @uses Documenter::register_hooks() to setup admin documentation.
 	 */
-	final public static function setup() {
+	public static function setup() {
 		// Setup the registry
 		Registry::load();
 
@@ -64,7 +64,7 @@ final class System extends Handler {
 	 *
 	 * @since 1.0.0
 	 */
-	final public static function register_hooks() {
+	public static function register_hooks() {
 		// to be written
 	}
 }

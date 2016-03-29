@@ -30,7 +30,7 @@ final class Manager extends Handler {
 	 *
 	 * @since 1.0.0
 	 */
-	final public static function register_hooks() {
+	public static function register_hooks() {
 		// Don't do anything if not in the backend
 		if ( ! is_backend() ) {
 			return;
@@ -58,7 +58,7 @@ final class Manager extends Handler {
 	 * @uses Manager::settings_page() for general options page output.
 	 * @uses Documenter::register_help_tabs() to register help tabs for all screens.
 	 */
-	final public static function add_menu_pages() {
+	public static function add_menu_pages() {
 		// Main Interface page
 		$interface_page_hook = add_management_page(
 			__( 'PO/MO Editor' ), // page title
@@ -85,7 +85,7 @@ final class Manager extends Handler {
 	 *
 	 * @since 1.0.0
 	 */
-	final public static function process_request() {
+	public static function process_request() {
 		// Skip if no file is specified
 		if ( ! isset( $_REQUEST['pomoedit_file'] ) ) {
 			return;
@@ -130,7 +130,7 @@ final class Manager extends Handler {
 	 *
 	 * @global string $plugin_page The slug of the current admin page.
 	 */
-	final public static function admin_page() {
+	public static function admin_page() {
 		global $plugin_page;
 ?>
 		<div class="wrap">
@@ -152,7 +152,7 @@ final class Manager extends Handler {
 	 *
 	 * @since 1.0.0
 	 */
-	final protected static function project_index() {
+	protected static function project_index() {
 		$projects = new Projects();
 		$projects->scan();
 		?>
@@ -195,7 +195,7 @@ final class Manager extends Handler {
 	 *
 	 * @since 1.0.0
 	 */
-	final protected static function project_editor() {
+	protected static function project_editor() {
 		$file = $_GET['pomoedit_file'];
 		// Load the file from the cache
 		$project = wp_cache_get( 'pomoedit', $file );

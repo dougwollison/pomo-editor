@@ -449,7 +449,7 @@ final class Dictionary {
 	 *
 	 * @return string The language (and possibly country) identified.
 	 */
-	final public static function identify_language( $tag ) {
+	public static function identify_language( $tag ) {
 		// Get the language and country code
 		list( $language_code, $country_code ) = array_pad( explode( '_', $tag ), 2, null );
 

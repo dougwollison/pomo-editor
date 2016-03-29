@@ -48,7 +48,7 @@ final class Documenter extends Handler {
 	 *
 	 * @since 1.0.0
 	 */
-	final public static function register_hooks() {
+	public static function register_hooks() {
 		// Don't do anything if not in the backend
 		if ( ! is_backend() ) {
 			return;
@@ -71,7 +71,7 @@ final class Documenter extends Handler {
 	 * @param string $screen The screen ID to add the tab to.
 	 * @param string $tab    The tab ID to add to the screen.
 	 */
-	final public static function register_help_tab( $screen, $tab ) {
+	public static function register_help_tab( $screen, $tab ) {
 		static::$registered_screens[ $screen ] = $tab;
 	}
 
@@ -84,7 +84,7 @@ final class Documenter extends Handler {
 	 *
 	 * @param string $screens An array of screen=>tab IDs to register.
 	 */
-	final public static function register_help_tabs( $screens ) {
+	public static function register_help_tabs( $screens ) {
 		foreach ( $screens as $screen => $tab ) {
 			static::register_help_tab( $screen, $tab );
 		}
@@ -104,7 +104,7 @@ final class Documenter extends Handler {
 	 *
 	 * @return array The ID, title, and content of the help tab.
 	 */
-	final public static function get_tab_data( $tab, $section = null ) {
+	public static function get_tab_data( $tab, $section = null ) {
 		// Sanitize JUST in case...
 		$tab = sanitize_file_name( $tab );
 		$section = sanitize_file_name( $section );
@@ -159,7 +159,7 @@ final class Documenter extends Handler {
 	 *
 	 * @param string $help_id Optional. The ID of the tabset to setup.
 	 */
-	final public static function setup_help_tabs( $help_id = null ) {
+	public static function setup_help_tabs( $help_id = null ) {
 		// Get the screen object
 		$screen = get_current_screen();
 

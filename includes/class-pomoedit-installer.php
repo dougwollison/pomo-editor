@@ -35,7 +35,7 @@ final class Installer extends Handler {
 	 * @uses Loader::plugin_deactivate() as the deactivation hook.
 	 * @uses Loader::plugin_uninstall() as the uninstall hook.
 	 */
-	final public static function register_hooks() {
+	public static function register_hooks() {
 		register_activation_hook( PME_PLUGIN_FILE, array( get_called_class(), 'plugin_activate' ) );
 		register_deactivation_hook( PME_PLUGIN_FILE, array( get_called_class(), 'plugin_deactivate' ) );
 		register_uninstall_hook( PME_PLUGIN_FILE, array( get_called_class(), 'plugin_uninstall' ) );
@@ -53,7 +53,7 @@ final class Installer extends Handler {
 	 *
 	 * @since 1.0.0
 	 */
-	final protected static function plugin_security_check( $check_referer = null ) {
+	protected static function plugin_security_check( $check_referer = null ) {
 		// Make sure they have permisson
 		if ( ! current_user_can( 'activate_plugins' ) ) {
 			return false;
@@ -86,7 +86,7 @@ final class Installer extends Handler {
 	 *
 	 * @global wpdb $wpdb The database abstraction class instance.
 	 */
-	final public static function plugin_activate() {
+	public static function plugin_activate() {
 		global $wpdb;
 
 		if ( ! static::plugin_security_check( 'activate' ) ) {
@@ -109,7 +109,7 @@ final class Installer extends Handler {
 	 *
 	 * @global wpdb $wpdb The database abstraction class instance.
 	 */
-	final public static function plugin_deactivate() {
+	public static function plugin_deactivate() {
 		global $wpdb;
 
 		if ( ! static::plugin_security_check( 'deactivate' ) ) {
@@ -128,7 +128,7 @@ final class Installer extends Handler {
 	 *
 	 * @global wpdb $wpdb The database abstraction class instance.
 	 */
-	final public static function plugin_uninstall() {
+	public static function plugin_uninstall() {
 		if ( ! static::plugin_security_check() ) {
 			return;
 		}
@@ -147,7 +147,7 @@ final class Installer extends Handler {
 	 *
 	 * @uses Registry::get_defaults() to get the default option values.
 	 */
-	final protected static function install() {
+	protected static function install() {
 		// Default options
 		$default_options = Registry::get_defaults();
 		add_option( 'pomoedit_options', $default_options );
@@ -164,7 +164,7 @@ final class Installer extends Handler {
 	 *
 	 * @return bool Wether or not an upgrade was performed.
 	 */
-	final public static function upgrade() {
+	public static function upgrade() {
 		// to be written
 	}
 }

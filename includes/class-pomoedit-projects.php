@@ -60,7 +60,7 @@ final class Projects implements \Iterator {
 	 *
 	 * @since 1.0.0
 	 */
-	final public function rewind() {
+	public function rewind() {
 		$this->position = 0;
 	}
 
@@ -71,7 +71,7 @@ final class Projects implements \Iterator {
 	 *
 	 * @return mixed The current element.
 	 */
-	final public function current() {
+	public function current() {
 		return $this->items[ $this->position ];
 	}
 
@@ -82,7 +82,7 @@ final class Projects implements \Iterator {
 	 *
 	 * @return int|string The current key.
 	 */
-	final public function key() {
+	public function key() {
 		return $this->position;
 	}
 
@@ -93,7 +93,7 @@ final class Projects implements \Iterator {
 	 *
 	 * @return mixed The next element.
 	 */
-	final public function next() {
+	public function next() {
 		++$this->position;
 	}
 
@@ -104,7 +104,7 @@ final class Projects implements \Iterator {
 	 *
 	 * @return bool Wether or not the position is valid.
 	 */
-	final public function valid() {
+	public function valid() {
 		return isset( $this->items[ $this->position ] );
 	}
 
@@ -115,7 +115,7 @@ final class Projects implements \Iterator {
 	 *
 	 * @return int The length of the array.
 	 */
-	final public function count() {
+	public function count() {
 		return count( $this->items );
 	}
 
@@ -130,7 +130,7 @@ final class Projects implements \Iterator {
 	 *
 	 * @param array $projects Optional. A list of projects to add.
 	 */
-	final public function __construct( $projects = array() ) {
+	public function __construct( $projects = array() ) {
 		if ( is_array( $projects ) && ! empty ( $projects ) ) {
 			foreach ( $projects as $project ) {
 				$this->add( $project, false );
@@ -151,7 +151,7 @@ final class Projects implements \Iterator {
 	 *
 	 * @param string $dir The directory. Defaults to languages, themes, and plugins.
 	 */
-	final public function scan( $dir = null ) {
+	public function scan( $dir = null ) {
 		if ( is_null( $dir ) ) {
 			// Scan the languages, themes, and plugins directories
 			$this->scan( WP_CONTENT_DIR . '/languages' );
@@ -186,7 +186,7 @@ final class Projects implements \Iterator {
 	 *
 	 * @return self.
 	 */
-	final public function sort( $field = 'name', $order = 'asc' ) {
+	public function sort( $field = 'name', $order = 'asc' ) {
 		return $this;
 
 		usort( $this->items, function( $a, $b ) use ( $field ) {
@@ -215,7 +215,7 @@ final class Projects implements \Iterator {
 	 *
 	 * @return POMOEdit\Projects A new collection of projects
 	 */
-	final public function filter( $filter = null, $value = null ) {
+	public function filter( $filter = null, $value = null ) {
 		return $this;
 
 		// No filter? Return original
@@ -248,7 +248,7 @@ final class Projects implements \Iterator {
 	 *
 	 * @return bool|Project The project if found (false if not).
 	 */
-	final public function get( $value, $field = null ) {
+	public function get( $value, $field = null ) {
 		// Guess $field based on nature of $project if not provided
 		if ( is_null( $field ) ) {
 			// File by default
@@ -281,7 +281,7 @@ final class Projects implements \Iterator {
 	 *
 	 * @return bool|Project The project if found (false if not).
 	 */
-	final public function nth( $index ) {
+	public function nth( $index ) {
 		return $this->get( $index, '@' );
 	}
 
@@ -294,7 +294,7 @@ final class Projects implements \Iterator {
 	 *
 	 * @return int|bool The index if found, false otherwise.
 	 */
-	final public function find( $project ) {
+	public function find( $project ) {
 		// Get the project object
 		if ( ! is_a( $project, __NAMESPACE__ . '\Project' ) ) {
 			$project = $this->get( $project );
@@ -323,7 +323,7 @@ final class Projects implements \Iterator {
 	 *
 	 * @return self.
 	 */
-	final public function add( $project, $sort = true ) {
+	public function add( $project, $sort = true ) {
 		// Create new Project object if the data isn't an object
 		if ( ! is_object( $project ) ) {
 			$project = new Project( $project );
@@ -351,7 +351,7 @@ final class Projects implements \Iterator {
 	 *
 	 * @return self.
 	 */
-	final public function remove( $project ) {
+	public function remove( $project ) {
 		// Get the object's index
 		if ( $index = $this->find( $project ) ) {
 			// Remove it
@@ -368,7 +368,7 @@ final class Projects implements \Iterator {
 	 *
 	 * @return array The dumped array of projects.
 	 */
-	final public function dump() {
+	public function dump() {
 		$array = array();
 
 		foreach ( $this as $item ) {

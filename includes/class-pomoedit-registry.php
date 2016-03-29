@@ -92,7 +92,7 @@ final class Registry {
 	 *
 	 * @return array The options whitelist.
 	 */
-	final public static function get_defaults() {
+	public static function get_defaults() {
 		return static::$options_whitelist;
 	}
 
@@ -108,7 +108,7 @@ final class Registry {
 	 *
 	 * @return bool Wether or not the option is supported.
 	 */
-	final public static function has( &$option ) {
+	public static function has( &$option ) {
 		if ( isset( static::$options_deprecated[ $option ] ) ) {
 			$option = static::$options_deprecated[ $option ];
 		}
@@ -128,7 +128,7 @@ final class Registry {
 	 *
 	 * @return mixed The property value.
 	 */
-	final public static function get( $option, $default = null, $true_value = false, &$has_override = null ) {
+	public static function get( $option, $default = null, $true_value = false, &$has_override = null ) {
 		// Trigger notice error if trying to set an unsupported option
 		if ( ! static::has( $option ) ) {
 			trigger_error( "[POMOEdit] The option '{$option}' is not supported.", E_USER_NOTICE );
@@ -160,7 +160,7 @@ final class Registry {
 	 * @param string $option The option name.
 	 * @param mixed  $value  The value to assign.
 	 */
-	final public static function set( $option, $value = null ) {
+	public static function set( $option, $value = null ) {
 		// Trigger notice error if trying to set an unsupported option
 		if ( ! static::has( $option ) ) {
 			trigger_error( "[POMOEdit] The option '{$option}' is not supported", E_USER_NOTICE );
@@ -179,7 +179,7 @@ final class Registry {
 	 * @param string $option The option name.
 	 * @param mixed  $value  The value to override with.
 	 */
-	final public static function override( $option, $value ) {
+	public static function override( $option, $value ) {
 		// Trigger notice error if trying to set an unsupported option
 		if ( ! static::has( $option ) ) {
 			trigger_error( "[POMOEdit] The option '{$option}' is not supported.", E_USER_NOTICE );
@@ -203,7 +203,7 @@ final class Registry {
 	 *
 	 * @param bool $reload Should we reload the options?
 	 */
-	final public static function load( $reload = false ) {
+	public static function load( $reload = false ) {
 		if ( static::$__loaded && ! $reload ) {
 			// Already did this
 			return;
@@ -234,7 +234,7 @@ final class Registry {
 	 *
 	 * @param string $what Optional. Save just options/languages or both (true)?
 	 */
-	final public static function save( $what = true ) {
+	public static function save( $what = true ) {
 		update_option( 'pomoedit_options', static::$options );
 	}
 }
