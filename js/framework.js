@@ -106,20 +106,20 @@
 			var plural = this.model.get( 'plural' );
 
 			this.$el.find( '.pme-source .pme-value.pme-singular' ).text( singular );
-			this.$el.find( '.pme-source .pme-input.pme-singular' ).text( singular );
+			this.$el.find( '.pme-source .pme-input.pme-singular' ).val( singular );
 
 			this.$el.find( '.pme-source .pme-value.pme-plural' ).text( plural );
-			this.$el.find( '.pme-source .pme-input.pme-plural' ).text( plural );
+			this.$el.find( '.pme-source .pme-input.pme-plural' ).val( plural );
 		},
 
 		renderTranslation: function() {
 			var translations = this.model.get( 'translations' );
 
 			this.$el.find( '.pme-translation .pme-value.pme-singular' ).text( translations[0] );
-			this.$el.find( '.pme-translation .pme-input.pme-singular' ).text( translations[0] );
+			this.$el.find( '.pme-translation .pme-input.pme-singular' ).val( translations[0] );
 
 			this.$el.find( '.pme-translation .pme-value.pme-plural' ).text( translations[1] );
-			this.$el.find( '.pme-translation .pme-input.pme-plural' ).text( translations[1] );
+			this.$el.find( '.pme-translation .pme-input.pme-plural' ).val( translations[1] );
 		},
 
 		toggle: function( e ) {
