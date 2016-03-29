@@ -23,8 +23,7 @@ namespace POMOEdit;
  *
  * @since 1.0.0
  */
-
-class Dictionary {
+final class Dictionary {
 	// =========================
 	// ! Properties
 	// =========================
@@ -450,7 +449,7 @@ class Dictionary {
 	 *
 	 * @return string The language (and possibly country) identified.
 	 */
-	public static function identify_language( $tag ) {
+	final public static function identify_language( $tag ) {
 		// Get the language and country code
 		list( $language_code, $country_code ) = array_pad( explode( '_', $tag ), 2, null );
 

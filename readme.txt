@@ -15,14 +15,14 @@ Coming soon.
 
 == Installation ==
 
-1. Upload the contents of `pomo-edit.tar.gz` to your `/wp-content/plugins/` directory
+1. Upload the contents of `pomoedit.tar.gz` to your `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Go into the plugin interface page under Tools > PO/MO Editor.
 4. Start editing your gettext files.
 
 == Changelog ==
 
-**Details on each release can be found [on the GitHub releases page](https://github.com/dougwollison/pomo-edit/releases) for this project.**
+**Details on each release can be found [on the GitHub releases page](https://github.com/dougwollison/pomoedit/releases) for this project.**
 
 = 1.0 =
 Initial public release.

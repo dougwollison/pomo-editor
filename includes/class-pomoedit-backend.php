@@ -16,15 +16,11 @@ namespace POMOEdit;
  * Hooks into various backend systems to load
  * custom assets and add the editor interface.
  *
- * @package POMOEdit
- * @subpackage Handlers
- *
  * @internal Used by the System.
  *
  * @since 1.0.0
  */
-
-class Backend extends Handler {
+final class Backend extends Handler {
 	// =========================
 	// ! Hook Registration
 	// =========================
@@ -36,14 +32,14 @@ class Backend extends Handler {
 	 *
 	 * @uses Registry::get() to retrieve enabled post types.
 	 */
-	public static function register_hooks() {
+	final public static function register_hooks() {
 		// Don't do anything if not in the backend
 		if ( ! is_backend() ) {
 			return;
 		}
 
-		// Post-setup stuff
-		static::add_action( 'plugins_loaded', 'ready' );
+		// Setup stuff
+		static::add_action( 'plugins_loaded', 'load_textdomain', 10, 0 );
 
 		// Plugin information
 		static::add_action( 'in_plugin_update_message-' . plugin_basename( PME_PLUGIN_FILE ), 'update_notice' );
@@ -53,7 +49,7 @@ class Backend extends Handler {
 	}
 
 	// =========================
-	// ! Post-Setup Stuff
+	// ! Setup Stuff
 	// =========================
 
 	/**
@@ -61,9 +57,9 @@ class Backend extends Handler {
 	 *
 	 * @since 1.0.0
 	 */
-	public static function ready() {
+	final public static function load_textdomain() {
 		// Load the textdomain
-		load_plugin_textdomain( 'pomoedit', false, PME_PLUGIN_DIR . '/lang' );
+		load_plugin_textdomain( 'pomoedit', false, dirname( PME_PLUGIN_FILE ) . '/languages' );
 	}
 
 	// =========================
@@ -77,7 +73,7 @@ class Backend extends Handler {
 	 *
 	 * @param array $plugin The information about the plugin and the update.
 	 */
-	public static function update_notice( $plugin ) {
+	final public static function update_notice( $plugin ) {
 		// Get the version number that the update is for
 		$version = $plugin['new_version'];
 
@@ -107,7 +103,7 @@ class Backend extends Handler {
 	 *
 	 * @since 1.0.0
 	 */
-	public static function enqueue_assets(){
+	final public static function enqueue_assets(){
 		// Only bother if we're viewing the editor screen
 		if ( get_current_screen()->id != 'tools_page_pomoedit' ) {
 			return;
@@ -126,4 +122,3 @@ class Backend extends Handler {
 		) );
 	}
 }
-

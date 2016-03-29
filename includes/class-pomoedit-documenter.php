@@ -1,6 +1,6 @@
 <?php
 /**
- * POMOEdit Documenter
+ * POMOEdit Documentation Utility
  *
  * @package POMOEdit
  * @subpackage Helpers
@@ -11,20 +11,16 @@
 namespace POMOEdit;
 
 /**
- * The Documentation System
+ * The Documenter System
  *
  * Handles printing out the help screen tabs/sidebar for
- * documenting custom parts of the admin interface.
+ * documenting different parts of the admin interface.
  *
- * @package POMOEdit
- * @subpackage Helpers
- *
- * @internal Used by the Manager and Localizer.
+ * @internal
  *
  * @since 1.0.0
  */
-
-class Documenter extends Handler {
+final class Documenter extends Handler {
 	/**
 	 * A directory of all help tabs available.
 	 *
@@ -32,9 +28,7 @@ class Documenter extends Handler {
 	 *
 	 * @var array
 	 */
-	protected static $directory = array(
-		// to be written
-	);
+	private static $directory = array();
 
 	/**
 	 * An index of screens registered for help tabs.
@@ -43,7 +37,7 @@ class Documenter extends Handler {
 	 *
 	 * @var array
 	 */
-	protected static $registered_screens = array();
+	private static $registered_screens = array();
 
 	// =========================
 	// ! Hook Registration
@@ -54,7 +48,7 @@ class Documenter extends Handler {
 	 *
 	 * @since 1.0.0
 	 */
-	public static function register_hooks() {
+	final public static function register_hooks() {
 		// Don't do anything if not in the backend
 		if ( ! is_backend() ) {
 			return;
@@ -77,7 +71,7 @@ class Documenter extends Handler {
 	 * @param string $screen The screen ID to add the tab to.
 	 * @param string $tab    The tab ID to add to the screen.
 	 */
-	public static function register_help_tab( $screen, $tab ) {
+	final public static function register_help_tab( $screen, $tab ) {
 		static::$registered_screens[ $screen ] = $tab;
 	}
 
@@ -90,7 +84,7 @@ class Documenter extends Handler {
 	 *
 	 * @param string $screens An array of screen=>tab IDs to register.
 	 */
-	public static function register_help_tabs( $screens ) {
+	final public static function register_help_tabs( $screens ) {
 		foreach ( $screens as $screen => $tab ) {
 			static::register_help_tab( $screen, $tab );
 		}
@@ -101,22 +95,22 @@ class Documenter extends Handler {
 	// =========================
 
 	/**
-	 * Load the HTML for the specified help tab.
+	 * Load the sepecified tab's file and return it's ID/title/content.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param string $tab     The ID of the tab to get.
 	 * @param string $section Optional. The section the tab belongs to.
 	 *
-	 * @return string The HTML of the help tab.
+	 * @return array The ID, title, and content of the help tab.
 	 */
-	public static function get_tab_content( $tab, $section = null ) {
+	final public static function get_tab_data( $tab, $section = null ) {
 		// Sanitize JUST in case...
 		$tab = sanitize_file_name( $tab );
 		$section = sanitize_file_name( $section );
 
 		// Build the path to the doc file
-		$path = NL_DIR . '/doc';
+		$path = PME_PLUGIN_DIR . '/documentation';
 
 		// If a section is specified, add to the path
 		if ( ! is_null( $section ) ) {
@@ -134,10 +128,17 @@ class Documenter extends Handler {
 		// Get the contents of the file
 		ob_start();
 		include( $path );
-		$content = ob_get_clean();
+		$html = ob_get_clean();
 
-		// Run it through wpautop and return it
-		return wpautop( $content );
+		// Parse the HTML to get the title and content
+		preg_match( '#^(?:<title>(.+?)</title>)?\s*([\s\S]+)$#', $html, $matches );
+
+		// Return the parsed data
+		return array(
+			'id' => "pomoedit-{$section}-{$tab}",
+			'title' => $matches[1],
+			'content' => wpautop( $matches[2] ),
+		);
 	}
 
 	// =========================
@@ -154,11 +155,11 @@ class Documenter extends Handler {
 	 *
 	 * @uses Documenter::$registered_screens to get the tab set ID.
 	 * @uses Documenter::$directory to retrieve the help tab settings.
-	 * @uses Documenter::get_tab_content() to get the HTML for the tab.
+	 * @uses Documenter::get_tab_data() to get the ID/title/content for the tab.
 	 *
 	 * @param string $help_id Optional. The ID of the tabset to setup.
 	 */
-	public static function setup_help_tabs( $help_id = null ) {
+	final public static function setup_help_tabs( $help_id = null ) {
 		// Get the screen object
 		$screen = get_current_screen();
 
@@ -182,28 +183,23 @@ class Documenter extends Handler {
 		$help = static::$directory[ $help_id ];
 
 		// Add each tab defined
-		foreach ( $help['tabs'] as $tab => $title ) {
-			$content = static::get_tab_content( $tab, $help_id );
+		foreach ( $help['tabs'] as $tab ) {
+			$data = static::get_tab_data( $tab, $help_id );
 
-			// Only add if there's content
-			if ( $content ) {
-				$screen->add_help_tab( array(
-					'id' => "POMOEdit-{$help_id}-{$tab}",
-					'title' => __( $title ),
-					'content' => $content,
-				) );
+			// Only add if there's data
+			if ( $data ) {
+				$screen->add_help_tab( $data );
 			}
 		}
 
 		// Add sidebar if enabled
-		if ( $help['sidebar'] ) {
-			$content = static::get_tab_content( 'sidebar', $help_id );
+		if ( isset( $help['sidebar'] ) ) {
+			$data = static::get_tab_data( 'sidebar', $help_id );
 
-			// Only add if there's content
-			if ( $content ) {
-				$screen->set_help_sidebar( $content );
+			// Only add if there's data
+			if ( $data ) {
+				$screen->set_help_sidebar( $data['content'] );
 			}
 		}
 	}
 }
-

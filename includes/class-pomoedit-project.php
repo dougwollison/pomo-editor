@@ -23,8 +23,7 @@ namespace POMOEdit;
  *
  * @since 1.0.0
  */
-
-class Project {
+final class Project {
 	// =========================
 	// ! Properties
 	// =========================
@@ -109,7 +108,7 @@ class Project {
 	 *
 	 * @return string The file path.
 	 */
-	public function file() {
+	final public function file() {
 		if ( strpos( $this->filename, WP_CONTENT_DIR ) === false ) {
 			return $this->filename;
 		} else {
@@ -126,7 +125,7 @@ class Project {
 	 *
 	 * @return mixed The value of specified field.
 	 */
-	public function package( $field ) {
+	final public function package( $field ) {
 		return $this->package[ $field ];
 	}
 
@@ -139,7 +138,7 @@ class Project {
 	 *
 	 * @return string The language name or slug.
 	 */
-	public function language( $slug = false ) {
+	final public function language( $slug = false ) {
 		if ( $slug ) {
 			return $this->language;
 		} else {
@@ -158,7 +157,7 @@ class Project {
 	 *
 	 * @param string $file The path to the file this will import from and export to.
 	 */
-	public function __construct( $file = null ) {
+	final public function __construct( $file = null ) {
 		// Load necessary libraries
 		require_once( ABSPATH . WPINC . '/pomo/po.php' );
 
@@ -180,7 +179,7 @@ class Project {
 	 * @param string $type The type of package expected.
 	 * @param string $slug The slug of the package.
 	 */
-	public function handle_package( $type, $slug ) {
+	final public function handle_package( $type, $slug ) {
 		$this->package['slug'] = $slug;
 		$this->package['type'] = $type;
 
@@ -220,7 +219,7 @@ class Project {
 	 *
 	 * @since 1.0.0
 	 */
-	public function identify() {
+	final public function identify() {
 		$slug = $language = null;
 
 		// Extract the package name and language tag from the filename
@@ -295,7 +294,7 @@ class Project {
 	 *
 	 * @param bool $reload Force reload of the file?
 	 */
-	public function load( $reload = false ) {
+	final public function load( $reload = false ) {
 		if ( ! $reload && $this->loaded ) {
 			// Already loaded, no reload requested, abort
 			return;
@@ -318,7 +317,7 @@ class Project {
 	 * @param array $data    The data to update with.
 	 * @param bool  $replace Optional Replace all headers/entries/metadata with those provided?
 	 */
-	public function update( $data, $replace = false ) {
+	final public function update( $data, $replace = false ) {
 		// Update headers if present
 		if ( isset( $data['headers'] ) ) {
 			if ( $replace ) {
@@ -366,7 +365,7 @@ class Project {
 	 *
 	 * @param string $file Optional The file path/name to use.
 	 */
-	public function export( $file = null ) {
+	final public function export( $file = null ) {
 		// Override file property with provided filename
 		if ( $file ) {
 			$this->filename = $file;
@@ -412,7 +411,7 @@ class Project {
 	 *
 	 * @since 1.0.0
 	 */
-	public function dump() {
+	final public function dump() {
 		$data = array(
 			'file' => pathinfo( $this->file() ),
 			'language' => array(
