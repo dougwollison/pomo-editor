@@ -16,8 +16,6 @@
 	font-family: 'Helvetica Neue', Tahoma, Arial, sans-serif;
 
 	> tbody > tr {
-		cursor: pointer;
-
 		&:hover,
 		&.open {
 			background-color: #eee;
@@ -25,7 +23,8 @@
 	}
 
 	.pme-edit-col {
-		width: 20px;
+		width: 40px;
+		padding: 5px;
 	}
 
 	.pme-context {
@@ -82,11 +81,11 @@
 			}
 		}
 
-		.pme-edit {
+		.pme-button {
 			display: block;
 			font: 0/0 a;
-			width: 20px;
-			height: 20px;
+			width: 30px;
+			height: 30px;
 			padding: 0;
 			background: transparent;
 			border: none;
@@ -94,24 +93,41 @@
 			cursor: pointer;
 
 			&:after {
-				font: 20px/20px dashicons;
-				content: '\f464';
-			}
-
-			.pme-entry.open &:after {
-				content: '\f158';
+				font: 20px/30px dashicons;
 			}
 
 			.pme-entry:hover & {
 				opacity: 1;
 			}
 		}
-		.pme-save {
-			float: left;
-		}
-		.pme-cancel {
-			float: right;
-		}
+			.pme-edit {
+				&:after {
+					content: '\f464';
+				}
+
+				.pme-entry.open & {
+					display: none;
+				}
+			}
+			.pme-cancel,
+			.pme-save {
+				display: none;
+
+				.pme-entry.open & {
+					display: block;
+				}
+			}
+			.pme-cancel {
+				&:after {
+					content: '\f158';
+				}
+			}
+			.pme-save {
+				&:after {
+					content: '\f147';
+					font-size: 28px;
+				}
+			}
 
 	.pme-direction-ltr .pme-translation {
 		direction: ltr;

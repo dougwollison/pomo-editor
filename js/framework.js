@@ -132,7 +132,6 @@
 			if ( this.$el.hasClass( 'open' ) ) {
 				this.renderSource();
 				this.renderTranslation();
-				this.$el.siblings().removeClass( 'open' );
 			}
 			return this;
 		},

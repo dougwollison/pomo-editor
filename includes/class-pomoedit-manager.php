@@ -285,7 +285,9 @@ final class Manager extends Handler {
 
 			<script type="text/template" id="pomoedit-entry-template">
 				<td class="pme-edit-col">
-					<button type="button" class="pme-edit">Edit</button>
+					<button type="button" title="Edit Entry" class="pme-button pme-edit">Edit</button>
+					<button type="button" title="Cancel (discard changes)" class="pme-button pme-cancel">Cancel</button>
+					<button type="button" title="Save Changes" class="pme-button pme-save">Save</button>
 				</td>
 				<td class="pme-source">
 					<span class="pme-value pme-singular"><%- singular %></span>
@@ -294,8 +296,6 @@ final class Manager extends Handler {
 					<div class="pme-fields">
 						<textarea class="pme-input pme-singular"><%- singular %></textarea>
 						<textarea class="pme-input pme-plural"><%- plural %></textarea>
-
-						<button type="button" class="pme-save button button-primary button-small"><?php _e( 'Save' ); ?></button>
 					</div>
 				</td>
 				<td class="pme-context">
@@ -308,8 +308,6 @@ final class Manager extends Handler {
 					<div class="pme-fields">
 						<textarea class="pme-input pme-singular"><%- translations[0] %></textarea>
 						<textarea class="pme-input pme-plural"><%- translations[1] %></textarea>
-
-						<button type="button" class="pme-cancel button button-secondary button-small"><?php _e( 'Cancel' ); ?></button>
 					</div>
 				</td>
 			</script>
