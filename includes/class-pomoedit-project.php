@@ -223,7 +223,7 @@ final class Project {
 		$slug = $language = null;
 
 		// Extract the package name and language tag from the filename
-		if ( preg_match( '/(.*?)-?(\w+)\.po$/', basename( $this->filename ), $matches ) ) {
+		if ( preg_match( '/(.*?)-?([a-zA-Z_]+)\.po$/', basename( $this->filename ), $matches ) ) {
 			list(, $slug, $language ) = $matches;
 		}
 
@@ -265,7 +265,9 @@ final class Project {
 								$this->package['name'] = __( 'Continent & City Names' );
 								break;
 							case '':
+							case 'core':
 								$this->package['name'] = __( 'WordPress Core' );
+								$this->package['slug'] = 'core';
 								break;
 						}
 				}
