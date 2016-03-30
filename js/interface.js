@@ -69,8 +69,8 @@ jQuery( function( $ ) {
 			}
 		}
 
-		_( POMOEdit.List.children ).each( function( row ) {
-			row.close( null, true );
+		POMOEdit.Project.Translations.each( function( translation ) {
+			translation.view.close( null, true );
 		} );
 
 		$( '#submit' ).text( pomoeditL10n.Saving );

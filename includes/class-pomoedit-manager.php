@@ -40,13 +40,8 @@ final class Manager extends Handler {
 		static::add_action( 'admin_menu', 'add_menu_pages' );
 		static::add_action( 'admin_init', 'process_request' );
 		static::add_action( 'admin_head', 'display_help_tabs' );
+		static::add_action( 'admin_notices', 'print_notices' );
 	}
-
-	// =========================
-	// ! Utilities
-	// =========================
-
-	// to be written
 
 	// =========================
 	// ! Settings Page Setup
@@ -135,7 +130,7 @@ final class Manager extends Handler {
 			$project->export();
 
 			// Redirect
-			wp_redirect( admin_url( 'tools.php?page=pomoedit&pomoedit_file=' . $file ) );
+			wp_redirect( admin_url( "tools.php?page=pomoedit&pomoedit_file={$file}&changes-saved=true" ) );
 			exit;
 		}
 	}
@@ -325,5 +320,25 @@ final class Manager extends Handler {
 			</script>
 		</form>
 		<?php
+	}
+
+	/**
+	 * Print any necessary notices.
+	 *
+	 * @since 1.0.0
+	 */
+	public static function print_notices() {
+		// Return if not on the editor page
+		if ( get_current_screen()->id != 'tools_page_pomoedit' || ! isset( $_GET['pomoedit_file'] ) ) {
+			return;
+		}
+
+		if ( isset( $_GET['changes-saved'] ) && $_GET['changes-saved'] ) {
+			?>
+			<div class="updated notice is-dismissible">
+				<p><strong><?php _e( 'Translations saved and recompiled.' ); ?></strong></p>
+			</div>
+			<?php
+		}
 	}
 }

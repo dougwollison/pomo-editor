@@ -80,6 +80,8 @@
 		},
 
 		initialize: function( options ) {
+			this.model.view = this;
+
 			if ( options.template ) {
 				if ( options.template instanceof HTMLElement ) {
 					options.template = options.template.innerHTML;
