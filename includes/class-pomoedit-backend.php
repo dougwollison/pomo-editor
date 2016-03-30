@@ -119,7 +119,8 @@ final class Backend extends Handler {
 		// Localize the javascript
 		wp_localize_script( 'pomoedit-interface-js', 'pomoeditL10n', array(
 			'SourceEditingNotice' => __( 'You should not edit the source text; errors may occur with displaying the translated text if you do.', 'pomoedit' ),
-			'ConfirmSourceEditing' => __( 'Are you sure you want to edit the source text? You will need to ensure the appropriate code/template use the same text.', 'pomoedit' ),
+			'ContextEditingNotice' => __( 'You should not edit the context; errors may occur with displaying the translated text if you do.', 'pomoedit' ),
+			'ConfirmAdvancedEditing' => __( 'Are you sure you want enable advanced editing? You must ensure the associated PHP code is updated with the new source text and context values.', 'pomoedit' ),
 			'ConfirmCancel' => __( 'Are you sure you want to discard your changes?', 'pomoedit' ),
 			'ConfirmSave' => __( 'You have uncommitted translation changes, do you want to discard them before saving?', 'pomoedit' ),
 			'Saving' => __( 'Saving Translations...', 'pomoedit' ),

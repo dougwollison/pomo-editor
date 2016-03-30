@@ -90,8 +90,7 @@
 			}
 		}
 
-		.pme-button,
-		#pomoedit-srcedit-toggle {
+		.pme-button {
 			display: block;
 			font: 0/0 a;
 			width: 35px;
@@ -107,11 +106,7 @@
 			}
 
 			&:hover,
-			&.active {
-				opacity: 1;
-			}
-		}
-		.pme-button {
+			&.active,
 			.pme-entry:hover & {
 				opacity: 1;
 			}
@@ -144,9 +139,16 @@
 					font-size: 28px;
 				}
 			}
-		#pomoedit-srcedit-toggle {
+		#pomoedit-advanced {
 			&:after {
-				content: '\f119';
+				content: '\f160';
+			}
+			&.active:after {
+				content: '\f528';
+			}
+			&.active {
+				cursor: none;
+				pointer-events: none;
 			}
 		}
 

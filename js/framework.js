@@ -127,6 +127,13 @@
 			this.$el.find( '.pme-translation .pme-input.pme-plural' ).val( translations[1] );
 		},
 
+		renderContext: function() {
+			var context = this.model.get( 'context' );
+
+			this.$el.find( '.pme-context .pme-value' ).html( context );
+			this.$el.find( '.pme-context .pme-input' ).val( context );
+		},
+
 		checkChanges: function() {
 			this.$el.addClass( 'changed' );
 		},
@@ -145,6 +152,8 @@
 				if ( confirm( pomoeditL10n.ConfirmCancel ) ) {
 					this.renderSource();
 					this.renderTranslation();
+					this.renderContext();
+					this.$el.removeClass( 'changed' );
 					this.$el.removeClass( 'open' );
 				}
 			} else {
@@ -153,6 +162,7 @@
 		},
 
 		save: function() {
+			this.model.set( 'context', this.$el.find( '.pme-context .pme-input' ).val() );
 			this.model.set( 'singular', this.$el.find( '.pme-source .pme-input.pme-singular' ).val() );
 			this.model.set( 'plural', this.$el.find( '.pme-source .pme-input.pme-plural' ).val() );
 
@@ -161,6 +171,7 @@
 				this.$el.find( '.pme-translation .pme-input.pme-plural' ).val()
 			] );
 
+			this.$el.removeClass( 'changed' );
 			this.close();
 		}
 	} );

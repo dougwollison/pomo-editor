@@ -6,16 +6,19 @@ jQuery( function( $ ) {
 		lang: $( '#filter-by-language' )
 	};
 
-	$( '.pme-input[readonly]' ).click( function() {
+	$( '#pomoedit-editor' ).on( 'click', '.pme-source .pme-input[readonly]', function() {
 		alert( pomoeditL10n.SourceEditingNotice );
 	} );
+	$( '#pomoedit-editor' ).on( 'click', '.pme-context .pme-input[readonly]', function() {
+		alert( pomoeditL10n.ContextEditingNotice );
+	} );
 
-	$( '#pomoedit-srcedit-toggle' ).click( function() {
+	$( '#pomoedit-advanced' ).click( function() {
 		if ( $( '#pomoedit-editor' ).hasClass( 'srcedit-enabled' ) ) {
 			return;
 		}
 
-		if ( ! confirm( pomoeditL10n.ConfirmSourceEditing ) ) {
+		if ( ! confirm( pomoeditL10n.ConfirmAdvancedEditing ) ) {
 			return;
 		}
 

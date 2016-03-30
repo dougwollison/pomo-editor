@@ -268,7 +268,7 @@ final class Manager extends Handler {
 				<thead>
 					<tr>
 						<th class="pme-edit-col">
-							<button type="button" id="pomoedit-srcedit-toggle" title="<?php _e( 'Toggle Source Text Editing', 'pomoedit' ); ?>"><?php _e( 'Toggle Source Text Editing', 'pomoedit' ); ?></button>
+							<button type="button" title="<?php _e( 'Enable Advanced Editing', 'pomoedit' ); ?>" id="pomoedit-advanced" class="pme-button"><?php _e( 'Enable Advanced Editing', 'pomoedit' ); ?></button>
 						</th>
 						<th class="pme-source"><?php _e( 'Source Text', 'pomoedit' ); ?></th>
 						<th class="pme-translation"><?php _e( 'Translated Text', 'pomoedit' ); ?></th>
@@ -305,7 +305,11 @@ final class Manager extends Handler {
 					</div>
 				</td>
 				<td class="pme-context">
-					<%= context %>
+					<div class="pme-value"><%= context %></div>
+
+					<div class="pme-fields">
+						<textarea class="pme-input" rows="4" readonly><%- context %></textarea>
+					</div>
 				</td>
 			</script>
 
