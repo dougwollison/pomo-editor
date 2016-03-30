@@ -73,6 +73,8 @@ jQuery( function( $ ) {
 			row.close( null, true );
 		} );
 
+		$( '#submit' ).text( pomoeditL10n.Saving );
+
 		var Project = POMOEdit.Project;
 		var $storage = $('<textarea name="pomoedit_data"></textarea>').hide().appendTo(this);
 
