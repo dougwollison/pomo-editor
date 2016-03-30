@@ -118,7 +118,7 @@ final class Backend extends Handler {
 
 		// Localize the javascript
 		wp_localize_script( 'pomoedit-interface-js', 'pomoeditL10n', array(
-			// to be written
+			'ConfirmCancel' => __( 'Are you sure you want to discard your changes?', 'pomoedit' ),
 		) );
 	}
 }

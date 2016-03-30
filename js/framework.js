@@ -1,4 +1,4 @@
-/* globals _, Backbone */
+/* globals _, Backbone, pomoeditL10n, confirm */
 ( function( $ ) {
 	var POMOEdit = window.POMOEdit = {};
 	var Framework = POMOEdit.Framework = {};
@@ -76,6 +76,7 @@
 			'click .pme-edit': 'toggle',
 			'click .pme-save': 'save',
 			'click .pme-cancel': 'close',
+			'change .pme-input': 'checkChanges',
 		},
 
 		initialize: function( options ) {
@@ -123,21 +124,29 @@
 			this.$el.find( '.pme-translation .pme-input.pme-plural' ).val( translations[1] );
 		},
 
+		checkChanges: function() {
+			this.$el.addClass( 'changed' );
+		},
+
 		toggle: function( e ) {
 			if ( e && $( e.target ).hasClass( 'pme-input' ) ) {
 				return this;
 			}
 
 			this.$el.toggleClass( 'open' );
-			if ( this.$el.hasClass( 'open' ) ) {
-				this.renderSource();
-				this.renderTranslation();
-			}
 			return this;
 		},
 
 		close: function() {
-			this.$el.removeClass( 'open' );
+			if ( this.$el.hasClass( 'changed' ) ) {
+				if ( confirm( pomoeditL10n.ConfirmCancel ) ) {
+					this.renderSource();
+					this.renderTranslation();
+					this.$el.removeClass( 'open' );
+				}
+			} else {
+				this.$el.removeClass( 'open' );
+			}
 		},
 
 		save: function() {
