@@ -254,6 +254,9 @@ final class Manager extends Handler {
 		$path = realpath( WP_CONTENT_DIR . '/' . $file );
 		$project = new Project( $path );
 		$project->load();
+
+		// Figure out the text direction for the translated text
+		$direction = in_array( substr( $project->language( true ), 0, 2 ), Dictionary::$rtl_languages ) ? 'rtl' : 'ltr';
 		?>
 		<form method="post" action="tools.php?page=<?php echo $plugin_page; ?>" id="<?php echo $plugin_page; ?>-manage">
 			<input type="hidden" name="pomoedit_file" value="<?php echo $file; ?>" />
@@ -266,9 +269,10 @@ final class Manager extends Handler {
 				<strong>Language:</strong> <?php echo $project->language(); ?>
 			</p>
 
-			<table id="pomoedit-editor" class="fixed striped widefat">
+			<table id="pomoedit-editor" class="fixed striped widefat pme-direction-<?php echo $direction; ?>">
 				<thead>
 					<tr>
+						<th class="pme-edit-col"></th>
 						<th class="pme-source"><?php _e( 'Source Text' ); ?></th>
 						<th class="pme-context"><?php _e( 'Context' ); ?></th>
 						<th class="pme-translation"><?php _e( 'Translated Text' ); ?></th>
@@ -280,6 +284,9 @@ final class Manager extends Handler {
 			<?php submit_button( __( 'Update Project' ) ); ?>
 
 			<script type="text/template" id="pomoedit-entry-template">
+				<td class="pme-edit-col">
+					<button type="button" class="pme-edit">Edit</button>
+				</td>
 				<td class="pme-source">
 					<span class="pme-value pme-singular"><%- singular %></span>
 					<span class="pme-value pme-plural"><%- plural %></span>

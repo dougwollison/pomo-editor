@@ -73,7 +73,7 @@
 		className: 'pme-entry',
 
 		events: {
-			'click': 'toggle',
+			'click .pme-edit': 'toggle',
 			'click .pme-save': 'save',
 			'click .pme-cancel': 'close',
 		},
@@ -124,7 +124,7 @@
 		},
 
 		toggle: function( e ) {
-			if ( e && ( ! $( e.target ).hasClass( 'pme-entry' ) && ! $( e.target ).hasClass( 'pme-value' ) ) ) {
+			if ( e && $( e.target ).hasClass( 'pme-input' ) ) {
 				return this;
 			}
 

@@ -17,6 +17,15 @@
 
 	> tbody > tr {
 		cursor: pointer;
+
+		&:hover,
+		&.open {
+			background-color: #eee;
+		}
+	}
+
+	.pme-edit-col {
+		width: 20px;
 	}
 
 	.pme-context {
@@ -73,9 +82,42 @@
 			}
 		}
 
+		.pme-edit {
+			display: block;
+			font: 0/0 a;
+			width: 20px;
+			height: 20px;
+			padding: 0;
+			background: transparent;
+			border: none;
+			opacity: .5;
+			cursor: pointer;
+
+			&:after {
+				font: 20px/20px dashicons;
+				content: '\f464';
+			}
+
+			.pme-entry.open &:after {
+				content: '\f158';
+			}
+
+			.pme-entry:hover & {
+				opacity: 1;
+			}
+		}
 		.pme-save {
 			float: left;
 		}
 		.pme-cancel {
 			float: right;
 		}
+
+	.pme-direction-ltr .pme-translation {
+		direction: ltr;
+		text-align: left;
+	}
+	.pme-direction-rtl .pme-translation {
+		direction: rtl;
+		text-align: right;
+	}

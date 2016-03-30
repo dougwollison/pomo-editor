@@ -9,6 +9,10 @@
   font-family: 'Helvetica Neue', Tahoma, Arial, sans-serif; }
   #pomoedit-editor > tbody > tr {
     cursor: pointer; }
+    #pomoedit-editor > tbody > tr:hover, #pomoedit-editor > tbody > tr.open {
+      background-color: #eee; }
+  #pomoedit-editor .pme-edit-col {
+    width: 20px; }
   #pomoedit-editor .pme-context {
     width: 150px;
     text-align: center;
@@ -51,8 +55,34 @@
   .pme-entry.has-plural .pme-plural {
     display: block; }
 
+.pme-edit {
+  display: block;
+  font: 0/0 a;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  opacity: .5;
+  cursor: pointer; }
+  .pme-edit:after {
+    font: 20px/20px dashicons;
+    content: '\f464'; }
+  .pme-entry.open .pme-edit:after {
+    content: '\f158'; }
+  .pme-entry:hover .pme-edit {
+    opacity: 1; }
+
 .pme-save {
   float: left; }
 
 .pme-cancel {
   float: right; }
+
+.pme-direction-ltr .pme-translation {
+  direction: ltr;
+  text-align: left; }
+
+.pme-direction-rtl .pme-translation {
+  direction: rtl;
+  text-align: right; }
