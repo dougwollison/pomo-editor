@@ -80,12 +80,18 @@
 			max-width: 100%;
 			margin: 0;
 
+			&[readonly] {
+				background: #fefefe;
+				box-shadow: none;
+			}
+
 			+ .pme-input {
 				margin-top: 5px;
 			}
 		}
 
-		.pme-button {
+		.pme-button,
+		#pomoedit-srcedit-toggle {
 			display: block;
 			font: 0/0 a;
 			width: 35px;
@@ -100,6 +106,12 @@
 				font: 20px/35px dashicons;
 			}
 
+			&:hover,
+			&.active {
+				opacity: 1;
+			}
+		}
+		.pme-button {
 			.pme-entry:hover & {
 				opacity: 1;
 			}
@@ -132,6 +144,11 @@
 					font-size: 28px;
 				}
 			}
+		#pomoedit-srcedit-toggle {
+			&:after {
+				content: '\f119';
+			}
+		}
 
 	.pme-direction-ltr .pme-translation {
 		direction: ltr;

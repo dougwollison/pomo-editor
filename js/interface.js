@@ -1,10 +1,28 @@
-/* globals _, POMOEdit, pomoeditL10n, confirm */
+/* globals _, POMOEdit, pomoeditL10n, alert, confirm */
 jQuery( function( $ ) {
 	var $filters = {
 		type: $( '#filter-by-type' ),
 		slug: $( '#filter-by-package' ),
 		lang: $( '#filter-by-language' )
 	};
+
+	$( '.pme-input[readonly]' ).click( function() {
+		alert( pomoeditL10n.SourceEditingNotice );
+	} );
+
+	$( '#pomoedit-srcedit-toggle' ).click( function() {
+		if ( $( '#pomoedit-editor' ).hasClass( 'srcedit-enabled' ) ) {
+			return;
+		}
+
+		if ( ! confirm( pomoeditL10n.ConfirmSourceEditing ) ) {
+			return;
+		}
+
+		$( this ).addClass( 'active' );
+		$( '#pomoedit-editor' ).addClass( 'srcedit-enabled' );
+		$( '.pme-input' ).attr( 'readonly', false );
+	} );
 
 	$( '.pomoedit-filter' ).change( function() {
 		var filter = {

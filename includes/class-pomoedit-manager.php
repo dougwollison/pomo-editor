@@ -267,7 +267,9 @@ final class Manager extends Handler {
 			<table id="pomoedit-editor" class="fixed striped widefat pme-direction-<?php echo $direction; ?>">
 				<thead>
 					<tr>
-						<th class="pme-edit-col"></th>
+						<th class="pme-edit-col">
+							<button type="button" id="pomoedit-srcedit-toggle" title="<?php _e( 'Toggle Source Text Editing', 'pomoedit' ); ?>"><?php _e( 'Toggle Source Text Editing', 'pomoedit' ); ?></button>
+						</th>
 						<th class="pme-source"><?php _e( 'Source Text', 'pomoedit' ); ?></th>
 						<th class="pme-translation"><?php _e( 'Translated Text', 'pomoedit' ); ?></th>
 						<th class="pme-context"><?php _e( 'Context', 'pomoedit' ); ?></th>
@@ -289,8 +291,8 @@ final class Manager extends Handler {
 					<span class="pme-value pme-plural" title="<?php _e( 'Plural', 'pomoedit' ); ?>"><%= plural %></span>
 
 					<div class="pme-fields">
-						<textarea class="pme-input pme-singular" title="<?php _e( 'Singular', 'pomoedit' ); ?>"><%- singular %></textarea>
-						<textarea class="pme-input pme-plural" title="<?php _e( 'Plural', 'pomoedit' ); ?>"><%- plural %></textarea>
+						<textarea class="pme-input pme-singular" title="<?php _e( 'Singular', 'pomoedit' ); ?>" rows="4" readonly><%- singular %></textarea>
+						<textarea class="pme-input pme-plural" title="<?php _e( 'Plural', 'pomoedit' ); ?>" rows="4" readonly><%- plural %></textarea>
 					</div>
 				</td>
 				<td class="pme-translation">
@@ -298,8 +300,8 @@ final class Manager extends Handler {
 					<span class="pme-value pme-plural" title="<?php _e( 'Plural', 'pomoedit' ); ?>"><%= translations[1] %></span>
 
 					<div class="pme-fields">
-						<textarea class="pme-input pme-singular" title="<?php _e( 'Singular', 'pomoedit' ); ?>"><%- translations[0] %></textarea>
-						<textarea class="pme-input pme-plural" title="<?php _e( 'Plural', 'pomoedit' ); ?>"><%- translations[1] %></textarea>
+						<textarea class="pme-input pme-singular" title="<?php _e( 'Singular', 'pomoedit' ); ?>" rows="4"><%- translations[0] %></textarea>
+						<textarea class="pme-input pme-plural" title="<?php _e( 'Plural', 'pomoedit' ); ?>" rows="4"><%- translations[1] %></textarea>
 					</div>
 				</td>
 				<td class="pme-context">

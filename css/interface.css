@@ -52,10 +52,14 @@
   width: 100%;
   max-width: 100%;
   margin: 0; }
+  .pme-input[readonly] {
+    background: #fefefe;
+    box-shadow: none; }
   .pme-input + .pme-input {
     margin-top: 5px; }
 
-.pme-button {
+.pme-button,
+#pomoedit-srcedit-toggle {
   display: block;
   font: 0/0 a;
   width: 35px;
@@ -65,10 +69,16 @@
   border: none;
   opacity: .5;
   cursor: pointer; }
-  .pme-button:after {
+  .pme-button:after,
+  #pomoedit-srcedit-toggle:after {
     font: 20px/35px dashicons; }
-  .pme-entry:hover .pme-button {
+  .pme-button:hover, .pme-button.active,
+  #pomoedit-srcedit-toggle:hover,
+  #pomoedit-srcedit-toggle.active {
     opacity: 1; }
+
+.pme-entry:hover .pme-button {
+  opacity: 1; }
 
 .pme-edit:after {
   content: '\f464'; }
@@ -88,6 +98,9 @@
 .pme-save:after {
   content: '\f147';
   font-size: 28px; }
+
+#pomoedit-srcedit-toggle:after {
+  content: '\f119'; }
 
 .pme-direction-ltr .pme-translation {
   direction: ltr;
