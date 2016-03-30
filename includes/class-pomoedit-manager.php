@@ -39,6 +39,7 @@ final class Manager extends Handler {
 		// Settings & Pages
 		static::add_action( 'admin_menu', 'add_menu_pages' );
 		static::add_action( 'admin_init', 'process_request' );
+		static::add_action( 'admin_head', 'display_help_tabs' );
 	}
 
 	// =========================
@@ -57,7 +58,6 @@ final class Manager extends Handler {
 	 * @since 1.0.0
 	 *
 	 * @uses Manager::settings_page() for general options page output.
-	 * @uses Documenter::register_help_tabs() to register help tabs for all screens.
 	 */
 	public static function add_menu_pages() {
 		// Main Interface page
@@ -68,11 +68,30 @@ final class Manager extends Handler {
 			'pomoedit', // slug
 			array( get_called_class(), 'admin_page' ) // callback
 		);
+	}
 
-		// Setup the help tabs for each page
-		Documenter::register_help_tabs( array(
-			$interface_page_hook => 'interface',
-		) );
+	/**
+	 * Setup the help tabs based on what's being displayed for the page.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @uses Documenter::setup_help_tabs() to display the appropriate help tabs.
+	 */
+	public static function display_help_tabs() {
+		$screen = get_current_screen();
+		// Abort if not the admin page for this plugin
+		if ( $screen->id != 'tools_page_pomoedit' ) {
+			return;
+		}
+
+		// If the file is specified, setup the interface help tabs
+		if ( isset( $_GET['pomoedit_file'] ) ) {
+			Documenter::setup_help_tabs( 'editor' );
+		}
+		// Otherwise, assume it's the index
+		else {
+			Documenter::setup_help_tabs( 'index' );
+		}
 	}
 
 	// =========================
@@ -198,7 +217,7 @@ final class Manager extends Handler {
 		</table>
 
 		<script type="text/template" id="pomoedit-item-template">
-			<td class="column-pmeproject-file"><a href="<?php echo admin_url( "tools.php?page={$plugin_page}&pomoedit_file=" ); ?><%= file.dirname %>/<%= file.basename %>">
+			<td class="column-pmeproject-file"><a href="<?php echo admin_url( "tools.php?page={$plugin_page}&pomoedit_file=" ); ?><%= file.dirname %>/<%= file.basename %>" target="_blank">
 				<%= file.dirname %>/<strong><%= file.basename %></strong>
 			</a></td>
 			<td class="column-pmeproject-title"><%= pkginfo.name %></td>
@@ -251,6 +270,7 @@ final class Manager extends Handler {
 				<thead>
 					<tr>
 						<th class="pme-source"><?php _e( 'Source Text' ); ?></th>
+						<th class="pme-context"><?php _e( 'Context' ); ?></th>
 						<th class="pme-translation"><?php _e( 'Translated Text' ); ?></th>
 					</tr>
 				</thead>
@@ -260,7 +280,7 @@ final class Manager extends Handler {
 			<?php submit_button( __( 'Update Project' ) ); ?>
 
 			<script type="text/template" id="pomoedit-entry-template">
-				<td class="pme-source" data-context="<%- context %>">
+				<td class="pme-source">
 					<span class="pme-value pme-singular"><%- singular %></span>
 					<span class="pme-value pme-plural"><%- plural %></span>
 
@@ -270,6 +290,9 @@ final class Manager extends Handler {
 
 						<button type="button" class="pme-save button button-primary button-small"><?php _e( 'Save' ); ?></button>
 					</div>
+				</td>
+				<td class="pme-context">
+					<span class="pme-value"><%= context %></span>
 				</td>
 				<td class="pme-translation">
 					<span class="pme-value pme-singular"><%- translations[0] %></span>
