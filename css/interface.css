@@ -10,8 +10,8 @@
   #pomoedit-editor > tbody > tr:hover, #pomoedit-editor > tbody > tr.open {
     background-color: #eee; }
   #pomoedit-editor .pme-edit-col {
-    width: 40px;
-    padding: 5px; }
+    width: 35px;
+    padding: 0; }
   #pomoedit-editor .pme-context {
     width: 150px;
     text-align: center;
@@ -57,15 +57,15 @@
 .pme-button {
   display: block;
   font: 0/0 a;
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
   padding: 0;
   background: transparent;
   border: none;
   opacity: .5;
   cursor: pointer; }
   .pme-button:after {
-    font: 20px/30px dashicons; }
+    font: 20px/35px dashicons; }
   .pme-entry:hover .pme-button {
     opacity: 1; }
 

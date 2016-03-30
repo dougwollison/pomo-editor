@@ -23,8 +23,8 @@
 	}
 
 	.pme-edit-col {
-		width: 40px;
-		padding: 5px;
+		width: 35px;
+		padding: 0;
 	}
 
 	.pme-context {
@@ -84,8 +84,8 @@
 		.pme-button {
 			display: block;
 			font: 0/0 a;
-			width: 30px;
-			height: 30px;
+			width: 35px;
+			height: 35px;
 			padding: 0;
 			background: transparent;
 			border: none;
@@ -93,7 +93,7 @@
 			cursor: pointer;
 
 			&:after {
-				font: 20px/30px dashicons;
+				font: 20px/35px dashicons;
 			}
 
 			.pme-entry:hover & {
