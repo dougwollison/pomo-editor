@@ -178,6 +178,65 @@ final class Projects implements \Iterator {
 	}
 
 	/**
+	 * Get a list of all types present.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array A list of types.
+	 */
+	public function types() {
+		$types = array();
+		foreach ( $this as $project ) {
+			$type = $project->package( 'type' );
+			if ( ! isset( $types[ $type ] ) ) {
+				$types[ $type ] = $type;
+			}
+		}
+		asort( $types );
+		return $types;
+	}
+
+	/**
+	 * Get a list of all packages present.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array A list of packages.
+	 */
+	public function packages() {
+		$packages = array();
+		foreach ( $this as $project ) {
+			$name = $project->package( 'name' );
+			$slug = $project->package( 'slug' );
+			if ( ! isset( $packages[ $slug ] ) ) {
+				$packages[ $slug ] = $name;
+			}
+		}
+		asort( $packages );
+		return $packages;
+	}
+
+	/**
+	 * Get a list of all languages present.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array A list of languages.
+	 */
+	public function languages() {
+		$languages = array();
+		foreach ( $this as $project ) {
+			$name = $project->language( false );
+			$slug = $project->language( true );
+			if ( ! isset( $packages[ $slug ] ) ) {
+				$languages[ $slug ] = $name;
+			}
+		}
+		asort( $languages );
+		return $languages;
+	}
+
+	/**
 	 * Sort the object index.
 	 *
 	 * @since 1.0.0

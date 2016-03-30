@@ -159,11 +159,36 @@ final class Manager extends Handler {
 		$projects = new Projects();
 		$projects->scan();
 		?>
+		<div class="tablenav top">
+			<div class="alignleft actions">
+				<label for="filter-by-type" class="screen-reader-text">Filter by type</label>
+				<select id="filter-by-type" class="pomoedit-filter">
+					<option value="">All types</option>
+					<?php foreach ( $projects->types() as $type => $label ) : ?>
+					<option value="<?php echo $type; ?>"><?php echo $label; ?></option>
+					<?php endforeach; ?>
+				</select>
+				<label for="filter-by-package" class="screen-reader-text">Filter by package</label>
+				<select id="filter-by-package" class="pomoedit-filter">
+					<option value="">All projects</option>
+					<?php foreach ( $projects->packages() as $package => $label ) : ?>
+					<option value="<?php echo $package; ?>"><?php echo $label; ?></option>
+					<?php endforeach; ?>
+				</select>
+				<label for="filter-by-language" class="screen-reader-text">Filter by type</label>
+				<select id="filter-by-language" class="pomoedit-filter">
+					<option value="">All languages</option>
+					<?php foreach ( $projects->languages() as $language => $label ) : ?>
+					<option value="<?php echo $language; ?>"><?php echo $label; ?></option>
+					<?php endforeach; ?>
+				</select>
+			</div>
+		</div>
 		<table id="pomoedit-projects" class="wp-list-table widefat fixed striped">
 			<thead>
 				<tr>
 					<th id="pmeproject-file" class="manage-column column-pmeproject-file"><?php _e( 'File' ); ?></th>
-					<th id="pmeproject-title" class="manage-column column-pmeproject-title column-primary"><?php _e( 'Project' ); ?></th>
+					<th id="pmeproject-title" class="manage-column column-pmeproject-title column-primary"><?php _e( 'Package' ); ?></th>
 					<th id="pmeproject-type" class="manage-column column-pmeproject-type"><?php _e( 'Type' ); ?></th>
 					<th id="pmeproject-language" class="manage-column column-pmeproject-language"><?php _e( 'Language' ); ?></th>
 				</tr>
@@ -218,7 +243,7 @@ final class Manager extends Handler {
 			<h2><?php printf( __( 'Editing: <code>%s</code>' ), $file ); ?></h2>
 
 			<p>
-				<strong>Project:</strong> <?php echo $project->package( 'name' ); ?> (<?php echo $project->package( 'type' ); ?>)<br />
+				<strong>Package:</strong> <?php echo $project->package( 'name' ); ?> (<?php echo $project->package( 'type' ); ?>)<br />
 				<strong>Language:</strong> <?php echo $project->language(); ?>
 			</p>
 
