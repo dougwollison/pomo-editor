@@ -308,7 +308,7 @@ final class Manager extends Handler {
 					</div>
 				</td>
 				<td class="pme-context">
-					<span class="pme-value" title="<%= context %>"><%= context %></span>
+					<%= context %>
 				</td>
 			</script>
 
