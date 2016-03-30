@@ -1,3 +1,3 @@
-<title><?php _e( 'Overview', 'wp-cloak' ); ?></title>
+<title><?php _e( 'Overview', 'pomoedit' ); ?></title>
 
-<p><?php _e( 'Below you can edit the selected translation file, updating translation entries as needed.', 'wp-cloak' ); ?></p>
+<p><?php _e( 'Below you can edit the selected translation file, updating translation entries as needed.', 'pomoedit' ); ?></p>
