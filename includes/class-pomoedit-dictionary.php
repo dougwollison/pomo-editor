@@ -486,6 +486,17 @@ final class Dictionary {
 		'ZW' => 'Zimbabwe',
 	);
 
+	/**
+	 * A list of languages that are right-to-left.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access public
+	 *
+	 * @var array
+	 */
+	public static $rtl_languages = array( 'ar', 'dv', 'fa', 'he', 'ps', 'sd', 'ug', 'ur', 'yi' );
+
 	// =========================
 	// ! Methods
 	// =========================
