@@ -1,4 +1,4 @@
-/* globals _, POMOEdit */
+/* globals _, POMOEdit, pomoeditL10n, confirm */
 jQuery( function( $ ) {
 	var $filters = {
 		type: $( '#filter-by-type' ),
@@ -63,6 +63,16 @@ jQuery( function( $ ) {
 	} );
 
 	$( '#pomoedit-manage' ).submit( function() {
+		if ( $( '.pme-entry.changed' ).length > 0 ) {
+			if ( ! confirm( pomoeditL10n.ConfirmSave ) ) {
+				return;
+			}
+		}
+
+		_( POMOEdit.List.children ).each( function( row ) {
+			row.close( null, true );
+		} );
+
 		var Project = POMOEdit.Project;
 		var $storage = $('<textarea name="pomoedit_data"></textarea>').hide().appendTo(this);
 

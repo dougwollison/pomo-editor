@@ -265,7 +265,7 @@ final class Manager extends Handler {
 			<h2><?php printf( __( 'Editing: <code>%s</code>', 'pomoedit' ), $file ); ?></h2>
 
 			<p>
-			<?php printf( __( '<strong>Package:</strong> %1$s (%2$s)', 'pomoedit' ), $project->package( 'name' ), $project->package( 'type' ) ); ?>
+			<?php printf( __( '<strong>Package:</strong> %1$s (%2$s)', 'pomoedit' ), $project->package( 'name' ), $project->package( 'type' ) ); ?><br />
 			<?php printf( __( '<strong>Language:</strong> %1$s', 'pomoedit' ), $project->language() ); ?>
 			</p>
 
@@ -274,8 +274,8 @@ final class Manager extends Handler {
 					<tr>
 						<th class="pme-edit-col"></th>
 						<th class="pme-source"><?php _e( 'Source Text', 'pomoedit' ); ?></th>
-						<th class="pme-context"><?php _e( 'Context', 'pomoedit' ); ?></th>
 						<th class="pme-translation"><?php _e( 'Translated Text', 'pomoedit' ); ?></th>
+						<th class="pme-context"><?php _e( 'Context', 'pomoedit' ); ?></th>
 					</tr>
 				</thead>
 				<tbody></tbody>
@@ -290,25 +290,25 @@ final class Manager extends Handler {
 					<button type="button" title="Save Changes" class="pme-button pme-save"><?php _e( 'Save', 'pomoedit' ); ?></button>
 				</td>
 				<td class="pme-source">
-					<span class="pme-value pme-singular"><%- singular %></span>
-					<span class="pme-value pme-plural"><%- plural %></span>
+					<span class="pme-value pme-singular" title="<?php _e( 'Singular', 'pomoedit' ); ?>"><%= singular %></span>
+					<span class="pme-value pme-plural" title="<?php _e( 'Plural', 'pomoedit' ); ?>"><%= plural %></span>
 
 					<div class="pme-fields">
-						<textarea class="pme-input pme-singular"><%- singular %></textarea>
-						<textarea class="pme-input pme-plural"><%- plural %></textarea>
+						<textarea class="pme-input pme-singular" title="<?php _e( 'Singular', 'pomoedit' ); ?>"><%- singular %></textarea>
+						<textarea class="pme-input pme-plural" title="<?php _e( 'Plural', 'pomoedit' ); ?>"><%- plural %></textarea>
+					</div>
+				</td>
+				<td class="pme-translation">
+					<span class="pme-value pme-singular" title="<?php _e( 'Singular', 'pomoedit' ); ?>"><%= translations[0] %></span>
+					<span class="pme-value pme-plural" title="<?php _e( 'Plural', 'pomoedit' ); ?>"><%= translations[1] %></span>
+
+					<div class="pme-fields">
+						<textarea class="pme-input pme-singular" title="<?php _e( 'Singular', 'pomoedit' ); ?>"><%- translations[0] %></textarea>
+						<textarea class="pme-input pme-plural" title="<?php _e( 'Plural', 'pomoedit' ); ?>"><%- translations[1] %></textarea>
 					</div>
 				</td>
 				<td class="pme-context">
 					<span class="pme-value" title="<%= context %>"><%= context %></span>
-				</td>
-				<td class="pme-translation">
-					<span class="pme-value pme-singular"><%- translations[0] %></span>
-					<span class="pme-value pme-plural"><%- translations[1] %></span>
-
-					<div class="pme-fields">
-						<textarea class="pme-input pme-singular"><%- translations[0] %></textarea>
-						<textarea class="pme-input pme-plural"><%- translations[1] %></textarea>
-					</div>
 				</td>
 			</script>
 

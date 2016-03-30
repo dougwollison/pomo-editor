@@ -90,6 +90,7 @@
 
 			this.$el.toggleClass( 'has-context', this.model.get( 'context' ) !== null );
 			this.$el.toggleClass( 'has-plural', this.model.get( 'is_plural' ) );
+			this.$el.toggleClass( 'no-plural', !this.model.get( 'is_plural' ) );
 
 			this.listenTo( this.model, 'change:singular change:plural', this.renderSource );
 			this.listenTo( this.model, 'change:translations', this.renderTranslation );
@@ -107,20 +108,20 @@
 			var singular = this.model.get( 'singular' );
 			var plural = this.model.get( 'plural' );
 
-			this.$el.find( '.pme-source .pme-value.pme-singular' ).text( singular );
+			this.$el.find( '.pme-source .pme-value.pme-singular' ).html( singular );
 			this.$el.find( '.pme-source .pme-input.pme-singular' ).val( singular );
 
-			this.$el.find( '.pme-source .pme-value.pme-plural' ).text( plural );
+			this.$el.find( '.pme-source .pme-value.pme-plural' ).html( plural );
 			this.$el.find( '.pme-source .pme-input.pme-plural' ).val( plural );
 		},
 
 		renderTranslation: function() {
 			var translations = this.model.get( 'translations' );
 
-			this.$el.find( '.pme-translation .pme-value.pme-singular' ).text( translations[0] );
+			this.$el.find( '.pme-translation .pme-value.pme-singular' ).html( translations[0] );
 			this.$el.find( '.pme-translation .pme-input.pme-singular' ).val( translations[0] );
 
-			this.$el.find( '.pme-translation .pme-value.pme-plural' ).text( translations[1] );
+			this.$el.find( '.pme-translation .pme-value.pme-plural' ).html( translations[1] );
 			this.$el.find( '.pme-translation .pme-input.pme-plural' ).val( translations[1] );
 		},
 
@@ -137,8 +138,8 @@
 			return this;
 		},
 
-		close: function() {
-			if ( this.$el.hasClass( 'changed' ) ) {
+		close: function( e, noconfirm ) {
+			if ( this.$el.hasClass( 'changed' ) && noconfirm !== true ) {
 				if ( confirm( pomoeditL10n.ConfirmCancel ) ) {
 					this.renderSource();
 					this.renderTranslation();
