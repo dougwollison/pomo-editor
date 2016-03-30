@@ -189,7 +189,7 @@ final class Manager extends Handler {
 				</select>
 				<label for="filter-by-package" class="screen-reader-text">Filter by package</label>
 				<select id="filter-by-package" class="pomoedit-filter">
-					<option value="">All projects</option>
+					<option value="">All packages</option>
 					<?php foreach ( $projects->packages() as $package => $label ) : ?>
 					<option value="<?php echo $package; ?>"><?php echo $label; ?></option>
 					<?php endforeach; ?>
