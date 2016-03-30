@@ -62,8 +62,8 @@ final class Manager extends Handler {
 	public static function add_menu_pages() {
 		// Main Interface page
 		$interface_page_hook = add_management_page(
-			__( 'PO/MO Editor' ), // page title
-			__( 'PO/MO Editor' ), // menu title
+			__( 'PO/MO Editor', 'pomoedit' ), // page title
+			__( 'PO/MO Editor', 'pomoedit' ), // menu title
 			'manage_options', // capability
 			'pomoedit', // slug
 			array( get_called_class(), 'admin_page' ) // callback
@@ -120,7 +120,7 @@ final class Manager extends Handler {
 		$file = $_REQUEST['pomoedit_file'];
 		$path = realpath( WP_CONTENT_DIR . '/' . $file );
 		if ( ! file_exists( $path ) ) {
-			wp_die( sprintf( __( 'That file cannot be found: %s' ), $path ) );
+			wp_die( sprintf( __( 'That file cannot be found: %s', 'pomoedit' ), $path ) );
 		}
 		// Check if the file is being updated
 		elseif ( isset( $_POST['pomoedit_data'] ) ) {
@@ -180,23 +180,23 @@ final class Manager extends Handler {
 		?>
 		<div class="tablenav top">
 			<div class="alignleft actions">
-				<label for="filter-by-type" class="screen-reader-text">Filter by type</label>
+				<label for="filter-by-type" class="screen-reader-text"><?php _e( 'Filter by type', 'pomoedit' ); ?></label>
 				<select id="filter-by-type" class="pomoedit-filter">
-					<option value="">All types</option>
+					<option value=""><?php _e( 'All types', 'pomoedit' ); ?></option>
 					<?php foreach ( $projects->types() as $type => $label ) : ?>
 					<option value="<?php echo $type; ?>"><?php echo $label; ?></option>
 					<?php endforeach; ?>
 				</select>
-				<label for="filter-by-package" class="screen-reader-text">Filter by package</label>
+				<label for="filter-by-package" class="screen-reader-text"><?php _e( 'Filter by package', 'pomoedit' ); ?></label>
 				<select id="filter-by-package" class="pomoedit-filter">
-					<option value="">All packages</option>
+					<option value=""><?php _e( 'All packages', 'pomoedit' ); ?></option>
 					<?php foreach ( $projects->packages() as $package => $label ) : ?>
 					<option value="<?php echo $package; ?>"><?php echo $label; ?></option>
 					<?php endforeach; ?>
 				</select>
-				<label for="filter-by-language" class="screen-reader-text">Filter by type</label>
+				<label for="filter-by-language" class="screen-reader-text"><?php _e( 'Filter by type', 'pomoedit' ); ?></label>
 				<select id="filter-by-language" class="pomoedit-filter">
-					<option value="">All languages</option>
+					<option value=""><?php _e( 'All languages', 'pomoedit' ); ?></option>
 					<?php foreach ( $projects->languages() as $language => $label ) : ?>
 					<option value="<?php echo $language; ?>"><?php echo $label; ?></option>
 					<?php endforeach; ?>
@@ -206,10 +206,10 @@ final class Manager extends Handler {
 		<table id="pomoedit-projects" class="wp-list-table widefat fixed striped">
 			<thead>
 				<tr>
-					<th id="pmeproject-file" class="manage-column column-pmeproject-file"><?php _e( 'File' ); ?></th>
-					<th id="pmeproject-title" class="manage-column column-pmeproject-title column-primary"><?php _e( 'Package' ); ?></th>
-					<th id="pmeproject-type" class="manage-column column-pmeproject-type"><?php _e( 'Type' ); ?></th>
-					<th id="pmeproject-language" class="manage-column column-pmeproject-language"><?php _e( 'Language' ); ?></th>
+					<th id="pmeproject-file" class="manage-column column-pmeproject-file"><?php _e( 'File', 'pomoedit' ); ?></th>
+					<th id="pmeproject-title" class="manage-column column-pmeproject-title column-primary"><?php _e( 'Package', 'pomoedit' ); ?></th>
+					<th id="pmeproject-type" class="manage-column column-pmeproject-type"><?php _e( 'Type', 'pomoedit' ); ?></th>
+					<th id="pmeproject-language" class="manage-column column-pmeproject-language"><?php _e( 'Language', 'pomoedit' ); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -262,32 +262,32 @@ final class Manager extends Handler {
 			<input type="hidden" name="pomoedit_file" value="<?php echo $file; ?>" />
 			<?php wp_nonce_field( 'pomoedit-manage-' . md5( $file ), '_pomoedit_nonce' ); ?>
 
-			<h2><?php printf( __( 'Editing: <code>%s</code>' ), $file ); ?></h2>
+			<h2><?php printf( __( 'Editing: <code>%s</code>', 'pomoedit' ), $file ); ?></h2>
 
 			<p>
-				<strong>Package:</strong> <?php echo $project->package( 'name' ); ?> (<?php echo $project->package( 'type' ); ?>)<br />
-				<strong>Language:</strong> <?php echo $project->language(); ?>
+			<?php printf( __( '<strong>Package:</strong> %1$s (%2$s)', 'pomoedit' ), $project->package( 'name' ), $project->package( 'type' ) ); ?>
+			<?php printf( __( '<strong>Language:</strong> %1$s', 'pomoedit' ), $project->language() ); ?>
 			</p>
 
 			<table id="pomoedit-editor" class="fixed striped widefat pme-direction-<?php echo $direction; ?>">
 				<thead>
 					<tr>
 						<th class="pme-edit-col"></th>
-						<th class="pme-source"><?php _e( 'Source Text' ); ?></th>
-						<th class="pme-context"><?php _e( 'Context' ); ?></th>
-						<th class="pme-translation"><?php _e( 'Translated Text' ); ?></th>
+						<th class="pme-source"><?php _e( 'Source Text', 'pomoedit' ); ?></th>
+						<th class="pme-context"><?php _e( 'Context', 'pomoedit' ); ?></th>
+						<th class="pme-translation"><?php _e( 'Translated Text', 'pomoedit' ); ?></th>
 					</tr>
 				</thead>
 				<tbody></tbody>
 			</table>
 
-			<?php submit_button( __( 'Update Project' ) ); ?>
+			<?php submit_button( __( 'Save Translations', 'pomoedit' ) ); ?>
 
 			<script type="text/template" id="pomoedit-entry-template">
 				<td class="pme-edit-col">
-					<button type="button" title="Edit Entry" class="pme-button pme-edit">Edit</button>
-					<button type="button" title="Cancel (discard changes)" class="pme-button pme-cancel">Cancel</button>
-					<button type="button" title="Save Changes" class="pme-button pme-save">Save</button>
+					<button type="button" title="Edit Entry" class="pme-button pme-edit"><?php _e( 'Edit', 'pomoedit' ); ?></button>
+					<button type="button" title="Cancel (discard changes)" class="pme-button pme-cancel"><?php _e( 'Cancel', 'pomoedit' ); ?></button>
+					<button type="button" title="Save Changes" class="pme-button pme-save"><?php _e( 'Save', 'pomoedit' ); ?></button>
 				</td>
 				<td class="pme-source">
 					<span class="pme-value pme-singular"><%- singular %></span>
@@ -299,7 +299,7 @@ final class Manager extends Handler {
 					</div>
 				</td>
 				<td class="pme-context">
-					<span class="pme-value"><%= context %></span>
+					<span class="pme-value" title="<%= context %>"><%= context %></span>
 				</td>
 				<td class="pme-translation">
 					<span class="pme-value pme-singular"><%- translations[0] %></span>
