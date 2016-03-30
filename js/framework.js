@@ -213,10 +213,10 @@
 	var ProjectsList = Framework.ProjectsList = Backbone.View.extend( {
 		initialize : function( options ) {
 			this.collection = options.collection || new Projects();
-			this._views = [];
+			this.children = [];
 
 			options.collection.each( function( project ) {
-				this._views.push( new ProjectItem( {
+				this.children.push( new ProjectItem( {
 					model: project,
 					template: options.itemTemplate
 				} ) );
@@ -228,7 +228,7 @@
 		render: function() {
 			this.$el.find( 'tbody' ).empty();
 
-			_( this._views ).each( function( view ) {
+			_( this.children ).each( function( view ) {
 				this.$el.find( 'tbody' ).append( view.render().el );
 			}.bind( this ) );
 		}
