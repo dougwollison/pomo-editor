@@ -13,8 +13,18 @@
 }
 
 #pomoedit-editor {
+	font-family: 'Helvetica Neue', Tahoma, Arial, sans-serif;
+
 	> tbody > tr {
 		cursor: pointer;
+	}
+
+	.pme-context {
+		width: 150px;
+		text-align: center;
+		font-style: italic;
+		border-left: 1px solid #ddd;
+		border-right: 1px solid #ddd;
 	}
 }
 	.pme-entry {
@@ -23,21 +33,11 @@
 			padding: 8px 10px;
 		}
 
-		&.has-context {
-			td {
-				position: relative;
-			}
-
-			.pme-source:before {
-				content: '[' attr(data-context) ']';
-				float: right;
-			}
-		}
-
 		.button {
 			margin-top: 5px;
 		}
 	}
+
 		.pme-value {
 			display: block;
 			white-space: nowrap;

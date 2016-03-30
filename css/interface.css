@@ -5,17 +5,20 @@
 #pomoedit-projects .column-pmeproject-language {
   width: 200px; }
 
-#pomoedit-editor > tbody > tr {
-  cursor: pointer; }
+#pomoedit-editor {
+  font-family: 'Helvetica Neue', Tahoma, Arial, sans-serif; }
+  #pomoedit-editor > tbody > tr {
+    cursor: pointer; }
+  #pomoedit-editor .pme-context {
+    width: 150px;
+    text-align: center;
+    font-style: italic;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd; }
 
 .pme-entry td {
   position: relative;
   padding: 8px 10px; }
-.pme-entry.has-context td {
-  position: relative; }
-.pme-entry.has-context .pme-source:before {
-  content: "[" attr(data-context) "]";
-  float: right; }
 .pme-entry .button {
   margin-top: 5px; }
 
