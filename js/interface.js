@@ -87,6 +87,7 @@ jQuery( function( $ ) {
 	$( '#pomoeditor' ).submit( function( e ) {
 		if ( $( '.pme-translation.changed' ).length > 0 ) {
 			if ( ! confirm( pomoeditorL10n.ConfirmSave ) ) {
+				e.preventDefault();
 				return;
 			}
 		}

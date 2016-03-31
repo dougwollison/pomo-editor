@@ -267,7 +267,7 @@
 			'click .pme-edit': 'toggle',
 			'click .pme-save': 'save',
 			'click .pme-cancel': 'close',
-			'change .pme-input': 'checkChanges',
+			'keyup .pme-input': 'checkChanges',
 		},
 
 		initialize: function() {
@@ -310,7 +310,18 @@
 		},
 
 		checkChanges: function() {
-			this.$el.addClass( 'changed' );
+			var context = this.model.get( 'context' );
+			var singular = this.model.get( 'singular' );
+			var plural = this.model.get( 'plural' );
+			var translations = this.model.get( 'translations' );
+
+			if ( this.$el.find( '.pme-context .pme-input' ).val() !== context
+			|| this.$el.find( '.pme-source .pme-input.pme-singular' ).val() !== singular
+			|| this.$el.find( '.pme-source .pme-input.pme-singular' ).val() !== plural
+			|| this.$el.find( '.pme-translated .pme-input.pme-singular' ).val() !== this.model.get( translations[0] )
+			|| this.$el.find( '.pme-translated .pme-input.pme-singular' ).val() !== this.model.get( translations[1] ) ) {
+				this.$el.addClass( 'changed' );
+			}
 		},
 
 		toggle: function() {
