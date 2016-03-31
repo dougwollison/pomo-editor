@@ -7,7 +7,7 @@
 
 #pomoedit-editor {
   font-family: 'Helvetica Neue', Tahoma, Arial, sans-serif; }
-  #pomoedit-editor > tbody > tr:hover, #pomoedit-editor > tbody > tr.open {
+  #pomoedit-editor > tbody > tr:hover {
     background-color: #eee; }
   #pomoedit-editor th, #pomoedit-editor td {
     border-left: 1px solid rgba(0, 0, 0, 0.08); }
@@ -70,7 +70,7 @@
   cursor: pointer; }
   .pme-button:after {
     font: 20px/35px dashicons; }
-  .pme-button:hover, .pme-button.active, .pme-entry:hover .pme-button {
+  .pme-button:hover, .pme-button.active, .pme-entry:hover .pme-button, .pme-entry.open .pme-button {
     opacity: 1; }
 
 .pme-edit:after {
@@ -79,10 +79,12 @@
   display: none; }
 
 .pme-cancel,
-.pme-save {
+.pme-save,
+.pme-delete {
   display: none; }
   .pme-entry.open .pme-cancel, .pme-entry.open
-  .pme-save {
+  .pme-save, .pme-entry.open
+  .pme-delete {
     display: block; }
 
 .pme-cancel:after {
@@ -92,6 +94,9 @@
   content: '\f147';
   font-size: 28px; }
 
+.pme-delete:after {
+  content: '\f182'; }
+
 #pomoedit-advanced:after {
   content: '\f160'; }
 #pomoedit-advanced.active:after {
@@ -99,6 +104,11 @@
 #pomoedit-advanced.active {
   cursor: none;
   pointer-events: none; }
+
+#pomoedit-add {
+  padding-top: 2px; }
+  #pomoedit-add:after {
+    content: '\f132'; }
 
 .pme-direction-ltr .pme-translation {
   direction: ltr;

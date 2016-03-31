@@ -16,8 +16,7 @@
 	font-family: 'Helvetica Neue', Tahoma, Arial, sans-serif;
 
 	> tbody > tr {
-		&:hover,
-		&.open {
+		&:hover {
 			background-color: #eee;
 		}
 	}
@@ -107,7 +106,8 @@
 
 			&:hover,
 			&.active,
-			.pme-entry:hover & {
+			.pme-entry:hover &,
+			.pme-entry.open & {
 				opacity: 1;
 			}
 		}
@@ -121,7 +121,8 @@
 				}
 			}
 			.pme-cancel,
-			.pme-save {
+			.pme-save,
+			.pme-delete {
 				display: none;
 
 				.pme-entry.open & {
@@ -139,6 +140,11 @@
 					font-size: 28px;
 				}
 			}
+			.pme-delete {
+				&:after {
+					content: '\f182';
+				}
+			}
 		#pomoedit-advanced {
 			&:after {
 				content: '\f160';
@@ -149,6 +155,13 @@
 			&.active {
 				cursor: none;
 				pointer-events: none;
+			}
+		}
+		#pomoedit-add {
+			padding-top: 2px;
+
+			&:after {
+				content: '\f132';
 			}
 		}
 

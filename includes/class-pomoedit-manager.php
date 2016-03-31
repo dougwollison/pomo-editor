@@ -276,6 +276,16 @@ final class Manager extends Handler {
 					</tr>
 				</thead>
 				<tbody></tbody>
+				<tfoot>
+					<tr>
+						<th class="pme-edit-col">
+							<button type="button" title="<?php _e( 'Add Translation Entry', 'pomoedit' ); ?>" id="pomoedit-add" class="pme-button"><?php _e( 'Add Translation Entry', 'pomoedit' ); ?></button>
+						</th>
+						<th class="pme-source"><?php _e( 'Source Text', 'pomoedit' ); ?></th>
+						<th class="pme-translation"><?php _e( 'Translated Text', 'pomoedit' ); ?></th>
+						<th class="pme-context"><?php _e( 'Context', 'pomoedit' ); ?></th>
+					</tr>
+				</tfoot>
 			</table>
 
 			<?php submit_button( __( 'Save Translations', 'pomoedit' ) ); ?>
@@ -285,6 +295,7 @@ final class Manager extends Handler {
 					<button type="button" title="Edit Entry" class="pme-button pme-edit"><?php _e( 'Edit', 'pomoedit' ); ?></button>
 					<button type="button" title="Cancel (discard changes)" class="pme-button pme-cancel"><?php _e( 'Cancel', 'pomoedit' ); ?></button>
 					<button type="button" title="Save Changes" class="pme-button pme-save"><?php _e( 'Save', 'pomoedit' ); ?></button>
+					<button type="button" title="Delete Entry" class="pme-button pme-delete"><?php _e( 'Delete', 'pomoedit' ); ?></button>
 				</td>
 				<td class="pme-source">
 					<span class="pme-value pme-singular" title="<?php _e( 'Singular', 'pomoedit' ); ?>"><%= singular %></span>

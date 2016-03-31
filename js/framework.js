@@ -68,6 +68,8 @@
 	} );
 
 	var TranslationRow = Framework.TranslationRow = Backbone.View.extend( {
+		isOpen: false,
+
 		tagName: 'tr',
 
 		className: 'pme-entry',
@@ -75,8 +77,13 @@
 		events: {
 			'click .pme-edit': 'toggle',
 			'click .pme-save': 'save',
+			'click .pme-delete': 'destroy',
 			'click .pme-cancel': 'close',
 			'change .pme-input': 'checkChanges',
+		},
+
+		isBlank: function() {
+			return this.$el.find( '.pme-source .pme-input' ).val() === '';
 		},
 
 		initialize: function( options ) {
@@ -96,8 +103,13 @@
 
 			this.listenTo( this.model, 'change:singular change:plural', this.renderSource );
 			this.listenTo( this.model, 'change:translations', this.renderTranslation );
+			this.listenTo( this.model, 'destroy', this.remove );
 
 			this.render();
+		},
+
+		remove: function() {
+			this.$el.remove();
 		},
 
 		render: function( fresh ) {
@@ -138,27 +150,32 @@
 			this.$el.addClass( 'changed' );
 		},
 
-		toggle: function( e ) {
-			if ( e && $( e.target ).hasClass( 'pme-input' ) ) {
-				return this;
-			}
+		toggle: function() {
+			return this.isOpen ? this.close() : this.open();
+		},
 
-			this.$el.toggleClass( 'open' );
+		open: function() {
+			this.$el.addClass( 'open' );
+			this.isOpen = true;
 			return this;
 		},
 
 		close: function( e, noconfirm ) {
 			if ( this.$el.hasClass( 'changed' ) && noconfirm !== true ) {
 				if ( confirm( pomoeditL10n.ConfirmCancel ) ) {
+					// Reset
 					this.renderSource();
 					this.renderTranslation();
 					this.renderContext();
 					this.$el.removeClass( 'changed' );
-					this.$el.removeClass( 'open' );
+				} else {
+					return;
 				}
-			} else {
-				this.$el.removeClass( 'open' );
 			}
+
+			this.$el.removeClass( 'open' );
+			this.isOpen = false;
+			return this;
 		},
 
 		save: function() {
@@ -173,6 +190,16 @@
 
 			this.$el.removeClass( 'changed' );
 			this.close();
+
+			this.model.isSaved = true;
+		},
+
+		destroy: function() {
+			if ( ! this.isBlank() && ! confirm( pomoeditL10n.ConfirmDelete ) ) {
+				return;
+			}
+
+			this.model.destroy();
 		}
 	} );
 
@@ -216,15 +243,36 @@
 	} );
 
 	var ProjectTable = Framework.ProjectTable = Backbone.View.extend( {
-		initialize: function( options ) {
-			this.model.Translations.each( function( entry ) {
-				var row = new TranslationRow( {
-					model: entry,
-					template: options.rowTemplate,
-				} );
+		events: {
+			'click #pomoedit-add': 'addEntry',
+		},
 
-				row.$el.appendTo( this.$el.find( 'tbody' ) );
-			}.bind( this ) );
+		initialize: function( options ) {
+			// Save the row template
+			this.rowTemplate = options.rowTemplate;
+
+			// Generate the rows for each entry
+			this.model.Translations.each( this.addEntry.bind( this ) );
+		},
+
+		addEntry: function( entry ) {
+			// Create a blank entry if no valid Translation was provided
+			if ( ! ( entry instanceof Translation ) ) {
+				entry = new Translation();
+				this.model.Translations.add(entry);
+			}
+
+			// Creat the row and add it
+			var row = new TranslationRow( {
+				model: entry,
+				template: this.rowTemplate,
+			} );
+			row.$el.appendTo( this.$el.find( 'tbody' ) );
+
+			// If newly generated, open for editing
+			if ( row.isBlank() ) {
+				row.open();
+			}
 		}
 	} );
 
