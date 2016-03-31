@@ -329,6 +329,17 @@ final class Project {
 
 			$this->po->set_headers( $data['headers'] );
 		}
+		// Update entries if present
+		if ( isset( $data['entries'] ) ) {
+			if ( $replace ) {
+				// empty all entries
+				$this->po->entries = array();
+			}
+
+			foreach ( $data['entries'] as $entry ) {
+				$this->po->add_entry( $entry );
+			}
+		}
 		// Update metadata if present
 		if ( isset( $data['metadata'] ) ) {
 			if ( $replace ) {
@@ -342,17 +353,6 @@ final class Project {
 
 			foreach ( $data['metadata'] as $prop => $value ) {
 				$this->po->$prop = $value;
-			}
-		}
-		// Update entries if present
-		if ( isset( $data['entries'] ) ) {
-			if ( $replace ) {
-				// empty all entries
-				$this->po->entries = array();
-			}
-
-			foreach ( $data['entries'] as $entry ) {
-				$this->po->add_entry( $entry );
 			}
 		}
 	}
@@ -429,10 +429,10 @@ final class Project {
 			$data['po_entries'] = array_values( $this->po->entries );
 			$data['po_metadata'] = array();
 
-			// All other properties go in 'metadata'
+			// All other properties go in 'po_metadata'
 			foreach ( get_object_vars( $this->po ) as $prop => $value ) {
 				if ( $prop !== 'headers' && $prop !== 'entries' ) {
-					$data['po']['metadata'][ $prop ] = $value;
+					$data['po_metadata'][ $prop ] = $value;
 				}
 			}
 		}

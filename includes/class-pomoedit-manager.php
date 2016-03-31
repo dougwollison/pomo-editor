@@ -253,7 +253,7 @@ final class Manager extends Handler {
 		// Figure out the text direction for the translated text
 		$direction = in_array( substr( $project->language( true ), 0, 2 ), Dictionary::$rtl_languages ) ? 'rtl' : 'ltr';
 		?>
-		<form method="post" action="tools.php?page=<?php echo $plugin_page; ?>" id="<?php echo $plugin_page; ?>-manage">
+		<form method="post" action="tools.php?page=<?php echo $plugin_page; ?>" id="pomoedit-editor">
 			<input type="hidden" name="pomoedit_file" value="<?php echo $file; ?>" />
 			<?php wp_nonce_field( 'pomoedit-manage-' . md5( $file ), '_pomoedit_nonce' ); ?>
 
@@ -264,12 +264,12 @@ final class Manager extends Handler {
 			<?php printf( __( '<strong>Language:</strong> %1$s', 'pomoedit' ), $project->language() ); ?>
 			</p>
 
-			<table id="pomoedit-editor" class="fixed striped widefat pme-direction-<?php echo $direction; ?>">
+			<h3><?php _e( 'Translations', 'pomoedit' ); ?></h3>
+
+			<table id="pomoedit-translations" class="fixed striped widefat pme-direction-<?php echo $direction; ?>">
 				<thead>
 					<tr>
-						<th class="pme-edit-col">
-							<button type="button" title="<?php _e( 'Enable Advanced Editing', 'pomoedit' ); ?>" id="pomoedit-advanced" class="pme-button"><?php _e( 'Enable Advanced Editing', 'pomoedit' ); ?></button>
-						</th>
+						<th class="pme-edit-col">&nbsp;</th>
 						<th class="pme-source"><?php _e( 'Source Text', 'pomoedit' ); ?></th>
 						<th class="pme-translation"><?php _e( 'Translated Text', 'pomoedit' ); ?></th>
 						<th class="pme-context"><?php _e( 'Context', 'pomoedit' ); ?></th>
@@ -279,7 +279,7 @@ final class Manager extends Handler {
 				<tfoot>
 					<tr>
 						<th class="pme-edit-col">
-							<button type="button" title="<?php _e( 'Add Translation Entry', 'pomoedit' ); ?>" id="pomoedit-add" class="pme-button"><?php _e( 'Add Translation Entry', 'pomoedit' ); ?></button>
+							<button type="button" title="<?php _e( 'Add Translation Entry', 'pomoedit' ); ?>" class="pme-button pme-add"><?php _e( 'Add Translation Entry', 'pomoedit' ); ?></button>
 						</th>
 						<th class="pme-source"><?php _e( 'Source Text', 'pomoedit' ); ?></th>
 						<th class="pme-translation"><?php _e( 'Translated Text', 'pomoedit' ); ?></th>
@@ -288,37 +288,103 @@ final class Manager extends Handler {
 				</tfoot>
 			</table>
 
-			<?php submit_button( __( 'Save Translations', 'pomoedit' ) ); ?>
+			<div class="pomoedit-advanced">
+				<h3><?php _e( 'Headers', 'pomoedit' ); ?></h3>
 
-			<script type="text/template" id="pomoedit-entry-template">
+				<table id="pomoedit-headers" class="fixed striped widefat">
+					<thead>
+						<tr>
+							<th class="pme-edit-col">&nbsp;</th>
+							<th class="pme-header-name"><?php _ex( 'Name', 'header name', 'pomoedit' ); ?></th>
+							<th class="pme-header-value"><?php _ex( 'Value', 'header value', 'pomoedit' ); ?></th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+					<tfoot>
+						<tr>
+							<th class="pme-edit-col">
+								<button type="button" title="<?php _e( 'Add Translation Entry', 'pomoedit' ); ?>" class="pme-button pme-add"><?php _e( 'Add Translation Entry', 'pomoedit' ); ?></button>
+							</th>
+							<th class="pme-header-name"><?php _ex( 'Name', 'header name', 'pomoedit' ); ?></th>
+							<th class="pme-header-value"><?php _ex( 'Value', 'header value', 'pomoedit' ); ?></th>
+						</tr>
+					</tfoot>
+				</table>
+
+				<h3><?php _e( 'Metadata', 'pomoedit' ); ?></h3>
+
+				<table id="pomoedit-metadata" class="fixed striped widefat">
+					<thead>
+						<tr>
+							<th class="pme-edit-col">&nbsp;</th>
+							<th class="pme-header-name"><?php _ex( 'Name', 'header name', 'pomoedit' ); ?></th>
+							<th class="pme-header-value"><?php _ex( 'Value', 'header value', 'pomoedit' ); ?></th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+					<tfoot>
+						<tr>
+							<th class="pme-edit-col">
+								<button type="button" title="<?php _e( 'Add Translation Entry', 'pomoedit' ); ?>" class="pme-button pme-add"><?php _e( 'Add Translation Entry', 'pomoedit' ); ?></button>
+							</th>
+							<th class="pme-header-name"><?php _ex( 'Name', 'header name', 'pomoedit' ); ?></th>
+							<th class="pme-header-value"><?php _ex( 'Value', 'header value', 'pomoedit' ); ?></th>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+
+			<p class="submit">
+				<button type="submit" id="submit" class="button button-primary"><?php _e( 'Save Translations', 'pomoedit' ); ?></button>
+				<button type="button" id="pomoedit-advanced" class="button button-secondary"><?php _e( 'Enable Advanced Editing', 'pomoedit' ); ?></button>
+			</p>
+
+			<script type="text/template" id="pomoedit-record-template">
+				<th class="pme-edit-col">
+					<button type="button" title="Delete Record" class="pme-button pme-delete"><?php _e( 'Delete', 'pomoedit' ); ?></button>
+				</th>
+				<td class="pme-record-name">
+					<input type="text" class="pme-input pme-name-input" value="<%- name %>" />
+				</td>
+				<td class="pme-record-value">
+					<input type="text" class="pme-input pme-value-input" value="<%- value %>" />
+				</td>
+			</script>
+
+			<script type="text/template" id="pomoedit-translation-template">
 				<td class="pme-edit-col">
 					<button type="button" title="Edit Entry" class="pme-button pme-edit"><?php _e( 'Edit', 'pomoedit' ); ?></button>
-					<button type="button" title="Cancel (discard changes)" class="pme-button pme-cancel"><?php _e( 'Cancel', 'pomoedit' ); ?></button>
-					<button type="button" title="Save Changes" class="pme-button pme-save"><?php _e( 'Save', 'pomoedit' ); ?></button>
-					<button type="button" title="Delete Entry" class="pme-button pme-delete"><?php _e( 'Delete', 'pomoedit' ); ?></button>
+					<div class="pme-actions">
+						<button type="button" title="Cancel (discard changes)" class="pme-button pme-cancel"><?php _e( 'Cancel', 'pomoedit' ); ?></button>
+						<button type="button" title="Save Changes" class="pme-button pme-save"><?php _e( 'Save', 'pomoedit' ); ?></button>
+						<button type="button" title="Delete Entry" class="pme-button pme-delete"><?php _e( 'Delete', 'pomoedit' ); ?></button>
+					</div>
 				</td>
 				<td class="pme-source">
-					<span class="pme-value pme-singular" title="<?php _e( 'Singular', 'pomoedit' ); ?>"><%= singular %></span>
-					<span class="pme-value pme-plural" title="<?php _e( 'Plural', 'pomoedit' ); ?>"><%= plural %></span>
-
-					<div class="pme-fields">
+					<div class="pme-previews">
+						<div class="pme-preview pme-singular" title="<?php _e( 'Singular', 'pomoedit' ); ?>"><%= singular %></div>
+						<div class="pme-preview pme-plural" title="<?php _e( 'Plural', 'pomoedit' ); ?>"><%= plural %></div>
+					</div>
+					<div class="pme-inputs">
 						<textarea class="pme-input pme-singular" title="<?php _e( 'Singular', 'pomoedit' ); ?>" rows="4" readonly><%- singular %></textarea>
 						<textarea class="pme-input pme-plural" title="<?php _e( 'Plural', 'pomoedit' ); ?>" rows="4" readonly><%- plural %></textarea>
 					</div>
 				</td>
-				<td class="pme-translation">
-					<span class="pme-value pme-singular" title="<?php _e( 'Singular', 'pomoedit' ); ?>"><%= translations[0] %></span>
-					<span class="pme-value pme-plural" title="<?php _e( 'Plural', 'pomoedit' ); ?>"><%= translations[1] %></span>
-
-					<div class="pme-fields">
+				<td class="pme-translated">
+					<div class="pme-previews">
+						<div class="pme-preview pme-singular" title="<?php _e( 'Singular', 'pomoedit' ); ?>"><%= translations[0] %></div>
+						<div class="pme-preview pme-plural" title="<?php _e( 'Plural', 'pomoedit' ); ?>"><%= translations[1] %></div>
+					</div>
+					<div class="pme-inputs">
 						<textarea class="pme-input pme-singular" title="<?php _e( 'Singular', 'pomoedit' ); ?>" rows="4"><%- translations[0] %></textarea>
 						<textarea class="pme-input pme-plural" title="<?php _e( 'Plural', 'pomoedit' ); ?>" rows="4"><%- translations[1] %></textarea>
 					</div>
 				</td>
 				<td class="pme-context">
-					<div class="pme-value"><%= context %></div>
-
-					<div class="pme-fields">
+					<div class="pme-previews">
+						<div class="pme-preview"><%= context %></div>
+					</div>
+					<div class="pme-inputs">
 						<textarea class="pme-input" rows="4" readonly><%- context %></textarea>
 					</div>
 				</td>
@@ -327,12 +393,28 @@ final class Manager extends Handler {
 			<script>
 			POMOEdit.Project = new POMOEdit.Framework.Project(<?php echo json_encode( $project->dump() ); ?>);
 
-			POMOEdit.Editor = new POMOEdit.Framework.ProjectTable( {
-				el: document.getElementById( 'pomoedit-editor' ),
+			POMOEdit.HeadersEditor = new POMOEdit.Framework.RecordsEditor( {
+				el: document.getElementById( 'pomoedit-headers' ),
 
-				model: POMOEdit.Project,
+				collection: POMOEdit.Project.Headers,
 
-				rowTemplate: document.getElementById( 'pomoedit-entry-template' ),
+				rowTemplate: document.getElementById( 'pomoedit-record-template' ),
+			} );
+
+			POMOEdit.MetadataEditor = new POMOEdit.Framework.RecordsEditor( {
+				el: document.getElementById( 'pomoedit-metadata' ),
+
+				collection: POMOEdit.Project.Metadata,
+
+				rowTemplate: document.getElementById( 'pomoedit-record-template' ),
+			} );
+
+			POMOEdit.TranslationsEditor = new POMOEdit.Framework.TranslationsEditor( {
+				el: document.getElementById( 'pomoedit-translations' ),
+
+				collection: POMOEdit.Project.Translations,
+
+				rowTemplate: document.getElementById( 'pomoedit-translation-template' ),
 			} );
 			</script>
 		</form>

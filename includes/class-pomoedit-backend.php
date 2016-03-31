@@ -122,7 +122,7 @@ final class Backend extends Handler {
 			'ContextEditingNotice' => __( 'You should not edit the context; errors may occur with displaying the translated text if you do.', 'pomoedit' ),
 			'ConfirmAdvancedEditing' => __( 'Are you sure you want enable advanced editing? You must ensure the associated PHP code is updated with the new source text and context values.', 'pomoedit' ),
 			'ConfirmCancel' => __( 'Are you sure you want to discard your changes?', 'pomoedit' ),
-			'ConfirmDelete' => __( 'Are you sure you want to delete this translation entry? It cannot be undone.', 'pomoedit' ),
+			'ConfirmDelete' => __( 'Are you sure you want to delete this entry? It cannot be undone.', 'pomoedit' ),
 			'ConfirmSave' => __( 'You have uncommitted translation changes, do you want to discard them before saving?', 'pomoedit' ),
 			'Saving' => __( 'Saving Translations...', 'pomoedit' ),
 		) );

@@ -13,29 +13,32 @@
 }
 
 #pomoedit-editor {
-	font-family: 'Helvetica Neue', Tahoma, Arial, sans-serif;
+	table {
+		font-family: 'Helvetica Neue', Tahoma, Arial, sans-serif;
 
-	> tbody > tr {
-		&:hover {
-			background-color: #eee;
+		> tbody > tr {
+			&:hover {
+				background-color: #eee;
+			}
+		}
+
+		th, td {
+			border-left: 1px solid rgba(#000, .08);
 		}
 	}
-
-	th, td {
-		border-left: 1px solid rgba(#000, .08);
-	}
-
 	.pme-edit-col {
 		width: 35px;
 		padding: 0;
 		border-left: none;
 	}
+}
 
+#pomoedit-translations {
 	.pme-context {
 		width: 200px;
 	}
 }
-	.pme-entry {
+	.pme-translation {
 		td {
 			position: relative;
 			padding: 8px 10px;
@@ -44,35 +47,23 @@
 		.button {
 			margin-top: 5px;
 		}
-	}
-		.pme-value {
-			display: block;
-			//white-space: nowrap;
-			//overflow: hidden;
-			//text-overflow: ellipsis;
 
-			.pme-entry.open & {
-				display: none;
-			}
-		}
-			.has-plural .pme-value.pme-plural {
-				border-top: 1px solid rgba(#000, .08);
-				padding-top: 5px;
-				margin-top: 5px;
-			}
-			.pme-entry.no-plural .pme-plural {
-				display: none;
-			}
-
-		.pme-fields {
-			@include pie-clearfix;
+		.pme-actions,
+		.pme-inputs {
 			display: none;
+		}
 
-			.pme-entry.open & {
+		&.open {
+			.pme-edit,
+			.pme-previews {
+				display: none;
+			}
+			.pme-actions,
+			.pme-inputs {
 				display: block;
 			}
 		}
-
+	}
 		.pme-input {
 			display: block;
 			width: 100%;
@@ -88,6 +79,16 @@
 				margin-top: 5px;
 			}
 		}
+			.pme-plural {
+				display: none;
+				border-top: 1px solid rgba(#000, .08);
+				padding-top: 5px;
+				margin-top: 5px;
+
+				.has-plural & {
+					display: block;
+				}
+			}
 
 		.pme-button {
 			display: block;
@@ -106,27 +107,14 @@
 
 			&:hover,
 			&.active,
-			.pme-entry:hover &,
-			.pme-entry.open & {
+			tr:hover &,
+			tr.open & {
 				opacity: 1;
 			}
 		}
 			.pme-edit {
 				&:after {
 					content: '\f464';
-				}
-
-				.pme-entry.open & {
-					display: none;
-				}
-			}
-			.pme-cancel,
-			.pme-save,
-			.pme-delete {
-				display: none;
-
-				.pme-entry.open & {
-					display: block;
 				}
 			}
 			.pme-cancel {
@@ -145,31 +133,27 @@
 					content: '\f182';
 				}
 			}
-		#pomoedit-advanced {
-			&:after {
-				content: '\f160';
-			}
-			&.active:after {
-				content: '\f528';
-			}
-			&.active {
-				cursor: none;
-				pointer-events: none;
-			}
-		}
-		#pomoedit-add {
-			padding-top: 2px;
+			.pme-add {
+				padding-top: 2px;
 
-			&:after {
-				content: '\f132';
+				&:after {
+					content: '\f132';
+				}
 			}
-		}
 
-	.pme-direction-ltr .pme-translation {
+	.pme-direction-ltr .pme-translated {
 		direction: ltr;
 		text-align: left;
 	}
-	.pme-direction-rtl .pme-translation {
+	.pme-direction-rtl .pme-translated {
 		direction: rtl;
 		text-align: right;
 	}
+
+.pomoedit-advanced {
+	display: none;
+
+	.pomoedit-advanced-mode & {
+		display: block;
+	}
+}

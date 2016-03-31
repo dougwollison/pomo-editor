@@ -6,15 +6,15 @@ jQuery( function( $ ) {
 		lang: $( '#filter-by-language' )
 	};
 
-	$( '#pomoedit-editor' ).on( 'click', '.pme-source .pme-input[readonly]', function() {
+	$( '#pomoedit-translations' ).on( 'click', '.pme-source .pme-input[readonly]', function() {
 		alert( pomoeditL10n.SourceEditingNotice );
 	} );
-	$( '#pomoedit-editor' ).on( 'click', '.pme-context .pme-input[readonly]', function() {
+	$( '#pomoedit-translations' ).on( 'click', '.pme-context .pme-input[readonly]', function() {
 		alert( pomoeditL10n.ContextEditingNotice );
 	} );
 
 	$( '#pomoedit-advanced' ).click( function() {
-		if ( $( '#pomoedit-editor' ).hasClass( 'srcedit-enabled' ) ) {
+		if ( POMOEdit.advanced ) {
 			return;
 		}
 
@@ -22,9 +22,10 @@ jQuery( function( $ ) {
 			return;
 		}
 
+		POMOEdit.advanced = true;
 		$( this ).addClass( 'active' );
-		$( '#pomoedit-editor' ).addClass( 'srcedit-enabled' );
 		$( '.pme-input' ).attr( 'readonly', false );
+		$( 'body' ).addClass( 'pomoedit-advanced-mode' );
 	} );
 
 	$( '.pomoedit-filter' ).change( function() {
@@ -83,8 +84,8 @@ jQuery( function( $ ) {
 		} );
 	} );
 
-	$( '#pomoedit-manage' ).submit( function() {
-		if ( $( '.pme-entry.changed' ).length > 0 ) {
+	$( '#pomoedit-editor' ).submit( function( e ) {
+		if ( $( '.pme-translation.changed' ).length > 0 ) {
 			if ( ! confirm( pomoeditL10n.ConfirmSave ) ) {
 				return;
 			}
@@ -100,15 +101,26 @@ jQuery( function( $ ) {
 		var $storage = $('<textarea name="pomoedit_data"></textarea>').hide().appendTo(this);
 
 		var data = {
-			entries: []
+			entries: [],
 		};
-		for ( var attr in Project.attributes ) {
-			data[attr] = Project.get( attr );
-		}
 
 		Project.Translations.each( function( entry ) {
 			data.entries.push( entry.attributes );
 		} );
+
+		// If in advanced editing mode, include the headers/metadata
+		if ( POMOEdit.advanced ) {
+			data.headers = {};
+			data.metadata = {};
+
+			Project.Headers.each( function( entry ) {
+				data.headers[ entry.get( 'name' ) ] = entry.get( 'value' );
+			} );
+
+			Project.Metadata.each( function( entry ) {
+				data.metadata[ entry.get( 'name' ) ] = entry.get( 'value' );
+			} );
+		}
 
 		$storage.val( JSON.stringify( data ) );
 	} );

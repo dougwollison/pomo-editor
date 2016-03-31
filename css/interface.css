@@ -5,47 +5,34 @@
 #pomoedit-projects .column-pmeproject-language {
   width: 200px; }
 
-#pomoedit-editor {
+#pomoedit-editor table {
   font-family: 'Helvetica Neue', Tahoma, Arial, sans-serif; }
-  #pomoedit-editor > tbody > tr:hover {
+  #pomoedit-editor table > tbody > tr:hover {
     background-color: #eee; }
-  #pomoedit-editor th, #pomoedit-editor td {
+  #pomoedit-editor table th, #pomoedit-editor table td {
     border-left: 1px solid rgba(0, 0, 0, 0.08); }
-  #pomoedit-editor .pme-edit-col {
-    width: 35px;
-    padding: 0;
-    border-left: none; }
-  #pomoedit-editor .pme-context {
-    width: 200px; }
+#pomoedit-editor .pme-edit-col {
+  width: 35px;
+  padding: 0;
+  border-left: none; }
 
-.pme-entry td {
+#pomoedit-translations .pme-context {
+  width: 200px; }
+
+.pme-translation td {
   position: relative;
   padding: 8px 10px; }
-.pme-entry .button {
+.pme-translation .button {
   margin-top: 5px; }
-
-.pme-value {
+.pme-translation .pme-actions,
+.pme-translation .pme-inputs {
+  display: none; }
+.pme-translation.open .pme-edit,
+.pme-translation.open .pme-previews {
+  display: none; }
+.pme-translation.open .pme-actions,
+.pme-translation.open .pme-inputs {
   display: block; }
-  .pme-entry.open .pme-value {
-    display: none; }
-
-.has-plural .pme-value.pme-plural {
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
-  padding-top: 5px;
-  margin-top: 5px; }
-
-.pme-entry.no-plural .pme-plural {
-  display: none; }
-
-.pme-fields {
-  *zoom: 1;
-  display: none; }
-  .pme-fields:after {
-    content: "";
-    display: table;
-    clear: both; }
-  .pme-entry.open .pme-fields {
-    display: block; }
 
 .pme-input {
   display: block;
@@ -57,6 +44,14 @@
     box-shadow: none; }
   .pme-input + .pme-input {
     margin-top: 5px; }
+
+.pme-plural {
+  display: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding-top: 5px;
+  margin-top: 5px; }
+  .has-plural .pme-plural {
+    display: block; }
 
 .pme-button {
   display: block;
@@ -70,22 +65,11 @@
   cursor: pointer; }
   .pme-button:after {
     font: 20px/35px dashicons; }
-  .pme-button:hover, .pme-button.active, .pme-entry:hover .pme-button, .pme-entry.open .pme-button {
+  .pme-button:hover, .pme-button.active, tr:hover .pme-button, tr.open .pme-button {
     opacity: 1; }
 
 .pme-edit:after {
   content: '\f464'; }
-.pme-entry.open .pme-edit {
-  display: none; }
-
-.pme-cancel,
-.pme-save,
-.pme-delete {
-  display: none; }
-  .pme-entry.open .pme-cancel, .pme-entry.open
-  .pme-save, .pme-entry.open
-  .pme-delete {
-    display: block; }
 
 .pme-cancel:after {
   content: '\f158'; }
@@ -97,23 +81,20 @@
 .pme-delete:after {
   content: '\f182'; }
 
-#pomoedit-advanced:after {
-  content: '\f160'; }
-#pomoedit-advanced.active:after {
-  content: '\f528'; }
-#pomoedit-advanced.active {
-  cursor: none;
-  pointer-events: none; }
-
-#pomoedit-add {
+.pme-add {
   padding-top: 2px; }
-  #pomoedit-add:after {
+  .pme-add:after {
     content: '\f132'; }
 
-.pme-direction-ltr .pme-translation {
+.pme-direction-ltr .pme-translated {
   direction: ltr;
   text-align: left; }
 
-.pme-direction-rtl .pme-translation {
+.pme-direction-rtl .pme-translated {
   direction: rtl;
   text-align: right; }
+
+.pomoedit-advanced {
+  display: none; }
+  .pomoedit-advanced-mode .pomoedit-advanced {
+    display: block; }
