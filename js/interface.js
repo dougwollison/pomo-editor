@@ -1,19 +1,19 @@
 /* globals _, POMOEdit, pomoeditL10n, alert, confirm */
 jQuery( function( $ ) {
 	var $filters = {
-		type: $( '#filter-by-type' ),
-		slug: $( '#filter-by-package' ),
-		lang: $( '#filter-by-language' )
+		type: $( '#filter_by_type' ),
+		slug: $( '#filter_by_package' ),
+		lang: $( '#filter_by_language' )
 	};
 
-	$( '#pomoedit-translations' ).on( 'click', '.pme-source .pme-input[readonly]', function() {
+	$( '#pomoedit_translations' ).on( 'click', '.pme-source .pme-input[readonly]', function() {
 		alert( pomoeditL10n.SourceEditingNotice );
 	} );
-	$( '#pomoedit-translations' ).on( 'click', '.pme-context .pme-input[readonly]', function() {
+	$( '#pomoedit_translations' ).on( 'click', '.pme-context .pme-input[readonly]', function() {
 		alert( pomoeditL10n.ContextEditingNotice );
 	} );
 
-	$( '#pomoedit-advanced' ).click( function() {
+	$( '#pomoedit_advanced' ).click( function() {
 		if ( POMOEdit.advanced ) {
 			return;
 		}
@@ -84,7 +84,7 @@ jQuery( function( $ ) {
 		} );
 	} );
 
-	$( '#pomoedit-editor' ).submit( function( e ) {
+	$( '#pomoedit_editor' ).submit( function( e ) {
 		if ( $( '.pme-translation.changed' ).length > 0 ) {
 			if ( ! confirm( pomoeditL10n.ConfirmSave ) ) {
 				return;

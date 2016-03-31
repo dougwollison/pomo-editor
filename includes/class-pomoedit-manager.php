@@ -187,22 +187,22 @@ final class Manager extends Handler {
 		?>
 		<div class="tablenav top">
 			<div class="alignleft actions">
-				<label for="filter-by-type" class="screen-reader-text"><?php _e( 'Filter by type', 'pomoedit' ); ?></label>
-				<select id="filter-by-type" class="pomoedit-filter">
+				<label for="filter_by_type" class="screen-reader-text"><?php _e( 'Filter by type', 'pomoedit' ); ?></label>
+				<select id="filter_by_type" class="pomoedit-filter">
 					<option value=""><?php _e( 'All types', 'pomoedit' ); ?></option>
 					<?php foreach ( $projects->types() as $type => $label ) : ?>
 					<option value="<?php echo $type; ?>"><?php echo $label; ?></option>
 					<?php endforeach; ?>
 				</select>
-				<label for="filter-by-package" class="screen-reader-text"><?php _e( 'Filter by package', 'pomoedit' ); ?></label>
-				<select id="filter-by-package" class="pomoedit-filter">
+				<label for="filter_by_package" class="screen-reader-text"><?php _e( 'Filter by package', 'pomoedit' ); ?></label>
+				<select id="filter_by_package" class="pomoedit-filter">
 					<option value=""><?php _e( 'All packages', 'pomoedit' ); ?></option>
 					<?php foreach ( $projects->packages() as $package => $label ) : ?>
 					<option value="<?php echo $package; ?>"><?php echo $label; ?></option>
 					<?php endforeach; ?>
 				</select>
-				<label for="filter-by-language" class="screen-reader-text"><?php _e( 'Filter by type', 'pomoedit' ); ?></label>
-				<select id="filter-by-language" class="pomoedit-filter">
+				<label for="filter_by_language" class="screen-reader-text"><?php _e( 'Filter by type', 'pomoedit' ); ?></label>
+				<select id="filter_by_language" class="pomoedit-filter">
 					<option value=""><?php _e( 'All languages', 'pomoedit' ); ?></option>
 					<?php foreach ( $projects->languages() as $language => $label ) : ?>
 					<option value="<?php echo $language; ?>"><?php echo $label; ?></option>
@@ -210,20 +210,20 @@ final class Manager extends Handler {
 				</select>
 			</div>
 		</div>
-		<table id="pomoedit-projects" class="wp-list-table widefat fixed striped">
+		<table id="pomoedit_projects" class="wp-list-table widefat fixed striped">
 			<thead>
 				<tr>
-					<th id="pmeproject-file" class="manage-column column-pmeproject-file"><?php _e( 'File', 'pomoedit' ); ?></th>
-					<th id="pmeproject-title" class="manage-column column-pmeproject-title column-primary"><?php _e( 'Package', 'pomoedit' ); ?></th>
-					<th id="pmeproject-type" class="manage-column column-pmeproject-type"><?php _e( 'Type', 'pomoedit' ); ?></th>
-					<th id="pmeproject-language" class="manage-column column-pmeproject-language"><?php _e( 'Language', 'pomoedit' ); ?></th>
+					<th class="manage-column column-pmeproject-file"><?php _e( 'File', 'pomoedit' ); ?></th>
+					<th class="manage-column column-pmeproject-title column-primary"><?php _e( 'Package', 'pomoedit' ); ?></th>
+					<th class="manage-column column-pmeproject-type"><?php _e( 'Type', 'pomoedit' ); ?></th>
+					<th class="manage-column column-pmeproject-language"><?php _e( 'Language', 'pomoedit' ); ?></th>
 				</tr>
 			</thead>
 			<tbody>
 			</tbody>
 		</table>
 
-		<script type="text/template" id="pomoedit-item-template">
+		<script type="text/template" id="pomoedit_item_template">
 			<td class="column-pmeproject-file"><a href="<?php echo admin_url( "tools.php?page={$plugin_page}&pomoedit_file=" ); ?><%= file.dirname %>/<%= file.basename %>" target="_blank">
 				<%= file.dirname %>/<strong><%= file.basename %></strong>
 			</a></td>
@@ -236,11 +236,11 @@ final class Manager extends Handler {
 		POMOEdit.Projects = new POMOEdit.Framework.Projects(<?php echo json_encode( $projects->dump() ); ?>);
 
 		POMOEdit.List = new POMOEdit.Framework.ProjectsList( {
-			el: document.getElementById( 'pomoedit-projects' ),
+			el: document.getElementById( 'pomoedit_projects' ),
 
 			collection: POMOEdit.Projects,
 
-			itemTemplate: document.getElementById( 'pomoedit-item-template' ),
+			itemTemplate: document.getElementById( 'pomoedit_item_template' ),
 		} );
 		</script>
 		<?php
@@ -265,7 +265,7 @@ final class Manager extends Handler {
 		// Figure out the text direction for the translated text
 		$direction = in_array( substr( $project->language( true ), 0, 2 ), Dictionary::$rtl_languages ) ? 'rtl' : 'ltr';
 		?>
-		<form method="post" action="tools.php?page=<?php echo $plugin_page; ?>" id="pomoedit-editor">
+		<form method="post" action="tools.php?page=<?php echo $plugin_page; ?>" id="pomoedit_editor">
 			<input type="hidden" name="pomoedit_file" value="<?php echo $file; ?>" />
 			<?php wp_nonce_field( 'pomoedit-manage-' . md5( $file ), '_pomoedit_nonce' ); ?>
 
@@ -278,17 +278,8 @@ final class Manager extends Handler {
 
 			<h3><?php _e( 'Translations', 'pomoedit' ); ?></h3>
 
-			<table id="pomoedit-translations" class="fixed striped widefat pme-direction-<?php echo $direction; ?>">
+			<table id="pomoedit_translations" class="fixed striped widefat pme-direction-<?php echo $direction; ?>">
 				<thead>
-					<tr>
-						<th class="pme-edit-col">&nbsp;</th>
-						<th class="pme-source"><?php _e( 'Source Text', 'pomoedit' ); ?></th>
-						<th class="pme-translation"><?php _e( 'Translated Text', 'pomoedit' ); ?></th>
-						<th class="pme-context"><?php _e( 'Context', 'pomoedit' ); ?></th>
-					</tr>
-				</thead>
-				<tbody></tbody>
-				<tfoot>
 					<tr>
 						<th class="pme-edit-col">
 							<button type="button" title="<?php _e( 'Add Translation Entry', 'pomoedit' ); ?>" class="pme-button pme-add"><?php _e( 'Add Translation Entry', 'pomoedit' ); ?></button>
@@ -297,22 +288,16 @@ final class Manager extends Handler {
 						<th class="pme-translation"><?php _e( 'Translated Text', 'pomoedit' ); ?></th>
 						<th class="pme-context"><?php _e( 'Context', 'pomoedit' ); ?></th>
 					</tr>
-				</tfoot>
+				</thead>
+				<tfoot></tfoot>
+				<tbody></tbody>
 			</table>
 
 			<div class="pomoedit-advanced">
 				<h3><?php _e( 'Headers', 'pomoedit' ); ?></h3>
 
-				<table id="pomoedit-headers" class="fixed striped widefat">
+				<table id="pomoedit_headers" class="fixed striped widefat">
 					<thead>
-						<tr>
-							<th class="pme-edit-col">&nbsp;</th>
-							<th class="pme-header-name"><?php _ex( 'Name', 'header name', 'pomoedit' ); ?></th>
-							<th class="pme-header-value"><?php _ex( 'Value', 'header value', 'pomoedit' ); ?></th>
-						</tr>
-					</thead>
-					<tbody></tbody>
-					<tfoot>
 						<tr>
 							<th class="pme-edit-col">
 								<button type="button" title="<?php _e( 'Add Translation Entry', 'pomoedit' ); ?>" class="pme-button pme-add"><?php _e( 'Add Translation Entry', 'pomoedit' ); ?></button>
@@ -320,12 +305,14 @@ final class Manager extends Handler {
 							<th class="pme-header-name"><?php _ex( 'Name', 'header name', 'pomoedit' ); ?></th>
 							<th class="pme-header-value"><?php _ex( 'Value', 'header value', 'pomoedit' ); ?></th>
 						</tr>
-					</tfoot>
+					</thead>
+					<tfoot></tfoot>
+					<tbody></tbody>
 				</table>
 
 				<h3><?php _e( 'Metadata', 'pomoedit' ); ?></h3>
 
-				<table id="pomoedit-metadata" class="fixed striped widefat">
+				<table id="pomoedit_metadata" class="fixed striped widefat">
 					<thead>
 						<tr>
 							<th class="pme-edit-col">&nbsp;</th>
@@ -333,25 +320,17 @@ final class Manager extends Handler {
 							<th class="pme-header-value"><?php _ex( 'Value', 'header value', 'pomoedit' ); ?></th>
 						</tr>
 					</thead>
+					<tfoot></tfoot>
 					<tbody></tbody>
-					<tfoot>
-						<tr>
-							<th class="pme-edit-col">
-								<button type="button" title="<?php _e( 'Add Translation Entry', 'pomoedit' ); ?>" class="pme-button pme-add"><?php _e( 'Add Translation Entry', 'pomoedit' ); ?></button>
-							</th>
-							<th class="pme-header-name"><?php _ex( 'Name', 'header name', 'pomoedit' ); ?></th>
-							<th class="pme-header-value"><?php _ex( 'Value', 'header value', 'pomoedit' ); ?></th>
-						</tr>
-					</tfoot>
 				</table>
 			</div>
 
 			<p class="submit">
 				<button type="submit" id="submit" class="button button-primary"><?php _e( 'Save Translations', 'pomoedit' ); ?></button>
-				<button type="button" id="pomoedit-advanced" class="button button-secondary"><?php _e( 'Enable Advanced Editing', 'pomoedit' ); ?></button>
+				<button type="button" id="pomoedit_advanced" class="button button-secondary"><?php _e( 'Enable Advanced Editing', 'pomoedit' ); ?></button>
 			</p>
 
-			<script type="text/template" id="pomoedit-record-template">
+			<script type="text/template" id="pomoedit_record_template">
 				<th class="pme-edit-col">
 					<button type="button" title="Delete Record" class="pme-button pme-delete"><?php _e( 'Delete', 'pomoedit' ); ?></button>
 				</th>
@@ -363,7 +342,7 @@ final class Manager extends Handler {
 				</td>
 			</script>
 
-			<script type="text/template" id="pomoedit-translation-template">
+			<script type="text/template" id="pomoedit_translation_template">
 				<td class="pme-edit-col">
 					<button type="button" title="Edit Entry" class="pme-button pme-edit"><?php _e( 'Edit', 'pomoedit' ); ?></button>
 					<div class="pme-actions">
@@ -406,27 +385,27 @@ final class Manager extends Handler {
 			POMOEdit.Project = new POMOEdit.Framework.Project(<?php echo json_encode( $project->dump() ); ?>);
 
 			POMOEdit.HeadersEditor = new POMOEdit.Framework.RecordsEditor( {
-				el: document.getElementById( 'pomoedit-headers' ),
+				el: document.getElementById( 'pomoedit_headers' ),
 
 				collection: POMOEdit.Project.Headers,
 
-				rowTemplate: document.getElementById( 'pomoedit-record-template' ),
+				rowTemplate: document.getElementById( 'pomoedit_record_template' ),
 			} );
 
 			POMOEdit.MetadataEditor = new POMOEdit.Framework.RecordsEditor( {
-				el: document.getElementById( 'pomoedit-metadata' ),
+				el: document.getElementById( 'pomoedit_metadata' ),
 
 				collection: POMOEdit.Project.Metadata,
 
-				rowTemplate: document.getElementById( 'pomoedit-record-template' ),
+				rowTemplate: document.getElementById( 'pomoedit_record_template' ),
 			} );
 
 			POMOEdit.TranslationsEditor = new POMOEdit.Framework.TranslationsEditor( {
-				el: document.getElementById( 'pomoedit-translations' ),
+				el: document.getElementById( 'pomoedit_translations' ),
 
 				collection: POMOEdit.Project.Translations,
 
-				rowTemplate: document.getElementById( 'pomoedit-translation-template' ),
+				rowTemplate: document.getElementById( 'pomoedit_translation_template' ),
 			} );
 			</script>
 		</form>
