@@ -108,14 +108,14 @@ final class Manager extends Handler {
 
 		// If file was specified via $_POST, check for manage nonce action
 		if ( isset( $_POST['pomoedit_file'] ) && ( ! isset( $_POST['_pomoedit_nonce'] ) || ! wp_verify_nonce( $_POST['_pomoedit_nonce'], 'pomoedit-manage-' . md5( $_POST['pomoedit_file'] ) ) ) ) {
-			cheatin();
+			wp_die( __( 'Cheatin&#8217; uh?' ), 403 );
 		}
 
 		// Check if the file exists...
 		$file = $_REQUEST['pomoedit_file'];
 		$path = realpath( WP_CONTENT_DIR . '/' . $file );
 		if ( ! file_exists( $path ) ) {
-			wp_die( sprintf( __( 'That file cannot be found: %s', 'pomoedit' ), $path ) );
+			wp_die( sprintf( __( 'That file cannot be found: %s', 'pomoedit' ), $path ), 404 );
 		}
 		// Check if the file is being updated
 		elseif ( isset( $_POST['pomoedit_data'] ) ) {
@@ -342,7 +342,7 @@ final class Manager extends Handler {
 		if ( isset( $_GET['changes-saved'] ) && $_GET['changes-saved'] ) {
 			?>
 			<div class="updated notice is-dismissible">
-				<p><strong><?php _e( 'Translations saved and recompiled.' ); ?></strong></p>
+				<p><strong><?php _e( 'Translations saved and recompiled.', 'pomoedit' ); ?></strong></p>
 			</div>
 			<?php
 		}

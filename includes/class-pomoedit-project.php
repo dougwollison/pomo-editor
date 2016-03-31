@@ -256,17 +256,17 @@ final class Project {
 						$this->package['type'] = 'system';
 						switch ( $slug ) {
 							case 'admin':
-								$this->package['name'] = __( 'WordPress Admin' );
+								$this->package['name'] = __( 'WordPress Admin', 'pomoedit' );
 								break;
 							case 'admin-network':
-								$this->package['name'] = __( 'WordPress Network Admin' );
+								$this->package['name'] = __( 'WordPress Network Admin', 'pomoedit' );
 								break;
 							case 'continents-cities':
-								$this->package['name'] = __( 'Continent & City Names' );
+								$this->package['name'] = __( 'Continent & City Names', 'pomoedit' );
 								break;
 							case '':
 							case 'core':
-								$this->package['name'] = __( 'WordPress Core' );
+								$this->package['name'] = __( 'WordPress Core', 'pomoedit' );
 								$this->package['slug'] = 'core';
 								break;
 						}
