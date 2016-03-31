@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: PO/MO Edit
+Plugin Name: PO/MO Editor
 Plugin URI: https://github.com/dougwollison/pomo-editor
 Description: Edit gettext po/mo files within WordPress.
 Version: 1.0.0
