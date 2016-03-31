@@ -57,10 +57,10 @@ final class Manager extends Handler {
 	public static function add_menu_pages() {
 		// Main Interface page
 		$interface_page_hook = add_management_page(
-			__( 'PO/MO Editor', 'pomoedit' ), // page title
-			__( 'PO/MO Editor', 'pomoedit' ), // menu title
+			__( 'PO/MO Editor', 'pomoeditor' ), // page title
+			__( 'PO/MO Editor', 'pomoeditor' ), // menu title
 			'manage_options', // capability
-			'pomoedit', // slug
+			'pomoeditor', // slug
 			array( get_called_class(), 'admin_page' ) // callback
 		);
 	}
@@ -75,12 +75,12 @@ final class Manager extends Handler {
 	public static function display_help_tabs() {
 		$screen = get_current_screen();
 		// Abort if not the admin page for this plugin
-		if ( $screen->id != 'tools_page_pomoedit' ) {
+		if ( $screen->id != 'tools_page_pomoeditor' ) {
 			return;
 		}
 
 		// If the file is specified, setup the interface help tabs
-		if ( isset( $_GET['pomoedit_file'] ) ) {
+		if ( isset( $_GET['pomoeditor_file'] ) ) {
 			Documenter::setup_help_tabs( 'editor' );
 		}
 		// Otherwise, assume it's the index
@@ -102,47 +102,47 @@ final class Manager extends Handler {
 	 */
 	public static function process_request() {
 		// Skip if no file is specified
-		if ( ! isset( $_REQUEST['pomoedit_file'] ) ) {
+		if ( ! isset( $_REQUEST['pomoeditor_file'] ) ) {
 			return;
 		}
 
 		// If file was specified via $_POST, check for manage nonce action
-		if ( isset( $_POST['pomoedit_file'] ) && ( ! isset( $_POST['_pomoedit_nonce'] ) || ! wp_verify_nonce( $_POST['_pomoedit_nonce'], 'pomoedit-manage-' . md5( $_POST['pomoedit_file'] ) ) ) ) {
+		if ( isset( $_POST['pomoeditor_file'] ) && ( ! isset( $_POST['_pomoeditor_nonce'] ) || ! wp_verify_nonce( $_POST['_pomoeditor_nonce'], 'pomoeditor-manage-' . md5( $_POST['pomoeditor_file'] ) ) ) ) {
 			wp_die( __( 'Cheatin&#8217; uh?' ), 403 );
 		}
 
 		// Check if the file exists...
-		$file = $_REQUEST['pomoedit_file'];
+		$file = $_REQUEST['pomoeditor_file'];
 		$path = realpath( WP_CONTENT_DIR . '/' . $file );
 		if ( strtolower( pathinfo( $path, PATHINFO_EXTENSION ) ) != 'po' ) {
-			wp_die( sprintf( __( 'The requested file is not supported: %s', 'pomoedit' ), $path ), 400 );
+			wp_die( sprintf( __( 'The requested file is not supported: %s', 'pomoeditor' ), $path ), 400 );
 		}
 		// Check the file is a .po file
 		elseif ( ! file_exists( $path ) ) {
-			wp_die( sprintf( __( 'The requested file cannot be found: %s', 'pomoedit' ), $path ), 404 );
+			wp_die( sprintf( __( 'The requested file cannot be found: %s', 'pomoeditor' ), $path ), 404 );
 		}
 		// Check the file is within permitted path
 		elseif ( ! is_path_permitted( $path ) ) {
-			wp_die( sprintf( __( 'The requested file is not within one of the permitted paths: %s', 'pomoedit' ), $path ), 403 );
+			wp_die( sprintf( __( 'The requested file is not within one of the permitted paths: %s', 'pomoeditor' ), $path ), 403 );
 		}
 		// Check the file is writable
 		elseif ( ! is_writable( $path ) ) {
-			wp_die( sprintf( __( 'The requested file is not writable: %s', 'pomoedit' ), $path ), 403 );
+			wp_die( sprintf( __( 'The requested file is not writable: %s', 'pomoeditor' ), $path ), 403 );
 		}
 		// Check if the file is being updated
-		elseif ( isset( $_POST['pomoedit_data'] ) ) {
+		elseif ( isset( $_POST['pomoeditor_data'] ) ) {
 			// Load
 			$project = new Project( $path );
 			$project->load();
 
 			// Update
-			$project->update( json_decode( stripslashes( $_POST['pomoedit_data'] ), true ), true );
+			$project->update( json_decode( stripslashes( $_POST['pomoeditor_data'] ), true ), true );
 
 			// Save
 			$project->export();
 
 			// Redirect
-			wp_redirect( admin_url( "tools.php?page=pomoedit&pomoedit_file={$file}&changes-saved=true" ) );
+			wp_redirect( admin_url( "tools.php?page=pomoeditor&pomoeditor_file={$file}&changes-saved=true" ) );
 			exit;
 		}
 	}
@@ -162,7 +162,7 @@ final class Manager extends Handler {
 			<h2><?php echo get_admin_page_title(); ?></h2>
 
 			<?php
-			if ( isset( $_REQUEST['pomoedit_file'] ) ) {
+			if ( isset( $_REQUEST['pomoeditor_file'] ) ) {
 				static::project_editor();
 			} else {
 				static::project_index();
@@ -187,44 +187,45 @@ final class Manager extends Handler {
 		?>
 		<div class="tablenav top">
 			<div class="alignleft actions">
-				<label for="filter_by_type" class="screen-reader-text"><?php _e( 'Filter by type', 'pomoedit' ); ?></label>
-				<select id="filter_by_type" class="pomoedit-filter">
-					<option value=""><?php _e( 'All types', 'pomoedit' ); ?></option>
+				<label for="filter_by_type" class="screen-reader-text"><?php _e( 'Filter by type', 'pomoeditor' ); ?></label>
+				<select id="filter_by_type" class="pomoeditor-filter">
+					<option value=""><?php _e( 'All types', 'pomoeditor' ); ?></option>
 					<?php foreach ( $projects->types() as $type => $label ) : ?>
 					<option value="<?php echo $type; ?>"><?php echo $label; ?></option>
 					<?php endforeach; ?>
 				</select>
-				<label for="filter_by_package" class="screen-reader-text"><?php _e( 'Filter by package', 'pomoedit' ); ?></label>
-				<select id="filter_by_package" class="pomoedit-filter">
-					<option value=""><?php _e( 'All packages', 'pomoedit' ); ?></option>
+				<label for="filter_by_package" class="screen-reader-text"><?php _e( 'Filter by package', 'pomoeditor' ); ?></label>
+				<select id="filter_by_package" class="pomoeditor-filter">
+					<option value=""><?php _e( 'All packages', 'pomoeditor' ); ?></option>
 					<?php foreach ( $projects->packages() as $package => $label ) : ?>
 					<option value="<?php echo $package; ?>"><?php echo $label; ?></option>
 					<?php endforeach; ?>
 				</select>
-				<label for="filter_by_language" class="screen-reader-text"><?php _e( 'Filter by type', 'pomoedit' ); ?></label>
-				<select id="filter_by_language" class="pomoedit-filter">
-					<option value=""><?php _e( 'All languages', 'pomoedit' ); ?></option>
+				<label for="filter_by_language" class="screen-reader-text"><?php _e( 'Filter by type', 'pomoeditor' ); ?></label>
+				<select id="filter_by_language" class="pomoeditor-filter">
+					<option value=""><?php _e( 'All languages', 'pomoeditor' ); ?></option>
 					<?php foreach ( $projects->languages() as $language => $label ) : ?>
 					<option value="<?php echo $language; ?>"><?php echo $label; ?></option>
 					<?php endforeach; ?>
 				</select>
 			</div>
 		</div>
-		<table id="pomoedit_projects" class="wp-list-table widefat fixed striped">
+
+		<table id="pomoeditor_projects" class="wp-list-table widefat fixed striped">
 			<thead>
 				<tr>
-					<th class="manage-column column-pmeproject-file"><?php _e( 'File', 'pomoedit' ); ?></th>
-					<th class="manage-column column-pmeproject-title column-primary"><?php _e( 'Package', 'pomoedit' ); ?></th>
-					<th class="manage-column column-pmeproject-type"><?php _e( 'Type', 'pomoedit' ); ?></th>
-					<th class="manage-column column-pmeproject-language"><?php _e( 'Language', 'pomoedit' ); ?></th>
+					<th class="manage-column column-pmeproject-file"><?php _e( 'File', 'pomoeditor' ); ?></th>
+					<th class="manage-column column-pmeproject-title column-primary"><?php _e( 'Package', 'pomoeditor' ); ?></th>
+					<th class="manage-column column-pmeproject-type"><?php _e( 'Type', 'pomoeditor' ); ?></th>
+					<th class="manage-column column-pmeproject-language"><?php _e( 'Language', 'pomoeditor' ); ?></th>
 				</tr>
 			</thead>
 			<tbody>
 			</tbody>
 		</table>
 
-		<script type="text/template" id="pomoedit_item_template">
-			<td class="column-pmeproject-file"><a href="<?php echo admin_url( "tools.php?page={$plugin_page}&pomoedit_file=" ); ?><%= file.dirname %>/<%= file.basename %>" target="_blank">
+		<script type="text/template" id="pomoeditor_item_template">
+			<td class="column-pmeproject-file"><a href="<?php echo admin_url( "tools.php?page={$plugin_page}&pomoeditor_file=" ); ?><%= file.dirname %>/<%= file.basename %>" target="_blank">
 				<%= file.dirname %>/<strong><%= file.basename %></strong>
 			</a></td>
 			<td class="column-pmeproject-title"><%= pkginfo.name %></td>
@@ -236,11 +237,11 @@ final class Manager extends Handler {
 		POMOEdit.Projects = new POMOEdit.Framework.Projects(<?php echo json_encode( $projects->dump() ); ?>);
 
 		POMOEdit.List = new POMOEdit.Framework.ProjectsList( {
-			el: document.getElementById( 'pomoedit_projects' ),
+			el: document.getElementById( 'pomoeditor_projects' ),
 
 			collection: POMOEdit.Projects,
 
-			itemTemplate: document.getElementById( 'pomoedit_item_template' ),
+			itemTemplate: document.getElementById( 'pomoeditor_item_template' ),
 		} );
 		</script>
 		<?php
@@ -256,7 +257,7 @@ final class Manager extends Handler {
 	protected static function project_editor() {
 		global $plugin_page;
 
-		$file = $_REQUEST['pomoedit_file'];
+		$file = $_REQUEST['pomoeditor_file'];
 		// Load
 		$path = realpath( WP_CONTENT_DIR . '/' . $file );
 		$project = new Project( $path );
@@ -265,59 +266,59 @@ final class Manager extends Handler {
 		// Figure out the text direction for the translated text
 		$direction = in_array( substr( $project->language( true ), 0, 2 ), Dictionary::$rtl_languages ) ? 'rtl' : 'ltr';
 		?>
-		<form method="post" action="tools.php?page=<?php echo $plugin_page; ?>" id="pomoedit_editor">
-			<input type="hidden" name="pomoedit_file" value="<?php echo $file; ?>" />
-			<?php wp_nonce_field( 'pomoedit-manage-' . md5( $file ), '_pomoedit_nonce' ); ?>
+		<form method="post" action="tools.php?page=<?php echo $plugin_page; ?>" id="pomoeditor">
+			<input type="hidden" name="pomoeditor_file" value="<?php echo $file; ?>" />
+			<?php wp_nonce_field( 'pomoeditor-manage-' . md5( $file ), '_pomoeditor_nonce' ); ?>
 
-			<h2><?php printf( __( 'Editing: <code>%s</code>', 'pomoedit' ), $file ); ?></h2>
+			<h2><?php printf( __( 'Editing: <code>%s</code>', 'pomoeditor' ), $file ); ?></h2>
 
 			<p>
-			<?php printf( __( '<strong>Package:</strong> %1$s (%2$s)', 'pomoedit' ), $project->package( 'name' ), $project->package( 'type' ) ); ?><br />
-			<?php printf( __( '<strong>Language:</strong> %1$s', 'pomoedit' ), $project->language() ); ?>
+			<?php printf( __( '<strong>Package:</strong> %1$s (%2$s)', 'pomoeditor' ), $project->package( 'name' ), $project->package( 'type' ) ); ?><br />
+			<?php printf( __( '<strong>Language:</strong> %1$s', 'pomoeditor' ), $project->language() ); ?>
 			</p>
 
-			<h3><?php _e( 'Translations', 'pomoedit' ); ?></h3>
+			<h3><?php _e( 'Translations', 'pomoeditor' ); ?></h3>
 
-			<table id="pomoedit_translations" class="fixed striped widefat pme-direction-<?php echo $direction; ?>">
+			<table id="pomoeditor_translations" class="fixed striped widefat pme-direction-<?php echo $direction; ?>">
 				<thead>
 					<tr>
 						<th class="pme-edit-col">
-							<button type="button" title="<?php _e( 'Add Translation Entry', 'pomoedit' ); ?>" class="pme-button pme-add"><?php _e( 'Add Translation Entry', 'pomoedit' ); ?></button>
+							<button type="button" title="<?php _e( 'Add Translation Entry', 'pomoeditor' ); ?>" class="pme-button pme-add"><?php _e( 'Add Translation Entry', 'pomoeditor' ); ?></button>
 						</th>
-						<th class="pme-source"><?php _e( 'Source Text', 'pomoedit' ); ?></th>
-						<th class="pme-translation"><?php _e( 'Translated Text', 'pomoedit' ); ?></th>
-						<th class="pme-context"><?php _e( 'Context', 'pomoedit' ); ?></th>
+						<th class="pme-source"><?php _e( 'Source Text', 'pomoeditor' ); ?></th>
+						<th class="pme-translation"><?php _e( 'Translated Text', 'pomoeditor' ); ?></th>
+						<th class="pme-context"><?php _e( 'Context', 'pomoeditor' ); ?></th>
 					</tr>
 				</thead>
 				<tfoot></tfoot>
 				<tbody></tbody>
 			</table>
 
-			<div class="pomoedit-advanced">
-				<h3><?php _e( 'Headers', 'pomoedit' ); ?></h3>
+			<div class="pomoeditor-advanced">
+				<h3><?php _e( 'Headers', 'pomoeditor' ); ?></h3>
 
-				<table id="pomoedit_headers" class="fixed striped widefat">
+				<table id="pomoeditor_headers" class="fixed striped widefat">
 					<thead>
 						<tr>
 							<th class="pme-edit-col">
-								<button type="button" title="<?php _e( 'Add Translation Entry', 'pomoedit' ); ?>" class="pme-button pme-add"><?php _e( 'Add Translation Entry', 'pomoedit' ); ?></button>
+								<button type="button" title="<?php _e( 'Add Translation Entry', 'pomoeditor' ); ?>" class="pme-button pme-add"><?php _e( 'Add Translation Entry', 'pomoeditor' ); ?></button>
 							</th>
-							<th class="pme-header-name"><?php _ex( 'Name', 'header name', 'pomoedit' ); ?></th>
-							<th class="pme-header-value"><?php _ex( 'Value', 'header value', 'pomoedit' ); ?></th>
+							<th class="pme-header-name"><?php _ex( 'Name', 'header name', 'pomoeditor' ); ?></th>
+							<th class="pme-header-value"><?php _ex( 'Value', 'header value', 'pomoeditor' ); ?></th>
 						</tr>
 					</thead>
 					<tfoot></tfoot>
 					<tbody></tbody>
 				</table>
 
-				<h3><?php _e( 'Metadata', 'pomoedit' ); ?></h3>
+				<h3><?php _e( 'Metadata', 'pomoeditor' ); ?></h3>
 
-				<table id="pomoedit_metadata" class="fixed striped widefat">
+				<table id="pomoeditor_metadata" class="fixed striped widefat">
 					<thead>
 						<tr>
 							<th class="pme-edit-col">&nbsp;</th>
-							<th class="pme-header-name"><?php _ex( 'Name', 'header name', 'pomoedit' ); ?></th>
-							<th class="pme-header-value"><?php _ex( 'Value', 'header value', 'pomoedit' ); ?></th>
+							<th class="pme-header-name"><?php _ex( 'Name', 'header name', 'pomoeditor' ); ?></th>
+							<th class="pme-header-value"><?php _ex( 'Value', 'header value', 'pomoeditor' ); ?></th>
 						</tr>
 					</thead>
 					<tfoot></tfoot>
@@ -326,13 +327,13 @@ final class Manager extends Handler {
 			</div>
 
 			<p class="submit">
-				<button type="submit" id="submit" class="button button-primary"><?php _e( 'Save Translations', 'pomoedit' ); ?></button>
-				<button type="button" id="pomoedit_advanced" class="button button-secondary"><?php _e( 'Enable Advanced Editing', 'pomoedit' ); ?></button>
+				<button type="submit" id="submit" class="button button-primary"><?php _e( 'Save Translations', 'pomoeditor' ); ?></button>
+				<button type="button" id="pomoeditor_advanced" class="button button-secondary"><?php _e( 'Enable Advanced Editing', 'pomoeditor' ); ?></button>
 			</p>
 
-			<script type="text/template" id="pomoedit_record_template">
+			<script type="text/template" id="pomoeditor_record_template">
 				<th class="pme-edit-col">
-					<button type="button" title="Delete Record" class="pme-button pme-delete"><?php _e( 'Delete', 'pomoedit' ); ?></button>
+					<button type="button" title="Delete Record" class="pme-button pme-delete"><?php _e( 'Delete', 'pomoeditor' ); ?></button>
 				</th>
 				<td class="pme-record-name">
 					<input type="text" class="pme-input pme-name-input" value="<%- name %>" />
@@ -342,33 +343,33 @@ final class Manager extends Handler {
 				</td>
 			</script>
 
-			<script type="text/template" id="pomoedit_translation_template">
+			<script type="text/template" id="pomoeditor_translation_template">
 				<td class="pme-edit-col">
-					<button type="button" title="Edit Entry" class="pme-button pme-edit"><?php _e( 'Edit', 'pomoedit' ); ?></button>
+					<button type="button" title="Edit Entry" class="pme-button pme-edit"><?php _e( 'Edit', 'pomoeditor' ); ?></button>
 					<div class="pme-actions">
-						<button type="button" title="Cancel (discard changes)" class="pme-button pme-cancel"><?php _e( 'Cancel', 'pomoedit' ); ?></button>
-						<button type="button" title="Save Changes" class="pme-button pme-save"><?php _e( 'Save', 'pomoedit' ); ?></button>
-						<button type="button" title="Delete Entry" class="pme-button pme-delete"><?php _e( 'Delete', 'pomoedit' ); ?></button>
+						<button type="button" title="Cancel (discard changes)" class="pme-button pme-cancel"><?php _e( 'Cancel', 'pomoeditor' ); ?></button>
+						<button type="button" title="Save Changes" class="pme-button pme-save"><?php _e( 'Save', 'pomoeditor' ); ?></button>
+						<button type="button" title="Delete Entry" class="pme-button pme-delete"><?php _e( 'Delete', 'pomoeditor' ); ?></button>
 					</div>
 				</td>
 				<td class="pme-source">
 					<div class="pme-previews">
-						<div class="pme-preview pme-singular" title="<?php _e( 'Singular', 'pomoedit' ); ?>"><%= singular %></div>
-						<div class="pme-preview pme-plural" title="<?php _e( 'Plural', 'pomoedit' ); ?>"><%= plural %></div>
+						<div class="pme-preview pme-singular" title="<?php _e( 'Singular', 'pomoeditor' ); ?>"><%= singular %></div>
+						<div class="pme-preview pme-plural" title="<?php _e( 'Plural', 'pomoeditor' ); ?>"><%= plural %></div>
 					</div>
 					<div class="pme-inputs">
-						<textarea class="pme-input pme-singular" title="<?php _e( 'Singular', 'pomoedit' ); ?>" rows="4" readonly><%- singular %></textarea>
-						<textarea class="pme-input pme-plural" title="<?php _e( 'Plural', 'pomoedit' ); ?>" rows="4" readonly><%- plural %></textarea>
+						<textarea class="pme-input pme-singular" title="<?php _e( 'Singular', 'pomoeditor' ); ?>" rows="4" readonly><%- singular %></textarea>
+						<textarea class="pme-input pme-plural" title="<?php _e( 'Plural', 'pomoeditor' ); ?>" rows="4" readonly><%- plural %></textarea>
 					</div>
 				</td>
 				<td class="pme-translated">
 					<div class="pme-previews">
-						<div class="pme-preview pme-singular" title="<?php _e( 'Singular', 'pomoedit' ); ?>"><%= translations[0] %></div>
-						<div class="pme-preview pme-plural" title="<?php _e( 'Plural', 'pomoedit' ); ?>"><%= translations[1] %></div>
+						<div class="pme-preview pme-singular" title="<?php _e( 'Singular', 'pomoeditor' ); ?>"><%= translations[0] %></div>
+						<div class="pme-preview pme-plural" title="<?php _e( 'Plural', 'pomoeditor' ); ?>"><%= translations[1] %></div>
 					</div>
 					<div class="pme-inputs">
-						<textarea class="pme-input pme-singular" title="<?php _e( 'Singular', 'pomoedit' ); ?>" rows="4"><%- translations[0] %></textarea>
-						<textarea class="pme-input pme-plural" title="<?php _e( 'Plural', 'pomoedit' ); ?>" rows="4"><%- translations[1] %></textarea>
+						<textarea class="pme-input pme-singular" title="<?php _e( 'Singular', 'pomoeditor' ); ?>" rows="4"><%- translations[0] %></textarea>
+						<textarea class="pme-input pme-plural" title="<?php _e( 'Plural', 'pomoeditor' ); ?>" rows="4"><%- translations[1] %></textarea>
 					</div>
 				</td>
 				<td class="pme-context">
@@ -385,27 +386,27 @@ final class Manager extends Handler {
 			POMOEdit.Project = new POMOEdit.Framework.Project(<?php echo json_encode( $project->dump() ); ?>);
 
 			POMOEdit.HeadersEditor = new POMOEdit.Framework.RecordsEditor( {
-				el: document.getElementById( 'pomoedit_headers' ),
+				el: document.getElementById( 'pomoeditor_headers' ),
 
 				collection: POMOEdit.Project.Headers,
 
-				rowTemplate: document.getElementById( 'pomoedit_record_template' ),
+				rowTemplate: document.getElementById( 'pomoeditor_record_template' ),
 			} );
 
 			POMOEdit.MetadataEditor = new POMOEdit.Framework.RecordsEditor( {
-				el: document.getElementById( 'pomoedit_metadata' ),
+				el: document.getElementById( 'pomoeditor_metadata' ),
 
 				collection: POMOEdit.Project.Metadata,
 
-				rowTemplate: document.getElementById( 'pomoedit_record_template' ),
+				rowTemplate: document.getElementById( 'pomoeditor_record_template' ),
 			} );
 
 			POMOEdit.TranslationsEditor = new POMOEdit.Framework.TranslationsEditor( {
-				el: document.getElementById( 'pomoedit_translations' ),
+				el: document.getElementById( 'pomoeditor_translations' ),
 
 				collection: POMOEdit.Project.Translations,
 
-				rowTemplate: document.getElementById( 'pomoedit_translation_template' ),
+				rowTemplate: document.getElementById( 'pomoeditor_translation_template' ),
 			} );
 			</script>
 		</form>
@@ -419,7 +420,7 @@ final class Manager extends Handler {
 	 */
 	public static function print_notices() {
 		// Return if not on the editor page
-		if ( get_current_screen()->id != 'tools_page_pomoedit' || ! isset( $_GET['pomoedit_file'] ) ) {
+		if ( get_current_screen()->id != 'tools_page_pomoeditor' || ! isset( $_GET['pomoeditor_file'] ) ) {
 			return;
 		}
 
@@ -427,7 +428,7 @@ final class Manager extends Handler {
 		if ( isset( $_GET['changes-saved'] ) && $_GET['changes-saved'] ) {
 			?>
 			<div class="updated notice is-dismissible">
-				<p><strong><?php _e( 'Translations saved and recompiled.', 'pomoedit' ); ?></strong></p>
+				<p><strong><?php _e( 'Translations saved and recompiled.', 'pomoeditor' ); ?></strong></p>
 			</div>
 			<?php
 		}

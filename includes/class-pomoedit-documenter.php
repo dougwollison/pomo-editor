@@ -146,7 +146,7 @@ final class Documenter extends Handler {
 
 		// Return the parsed data
 		return array(
-			'id' => "pomoedit-{$section}-{$tab}",
+			'id' => "pomoeditor-{$section}-{$tab}",
 			'title' => $matches[1],
 			'content' => wpautop( $matches[2] ),
 		);

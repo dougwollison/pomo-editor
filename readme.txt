@@ -1,4 +1,4 @@
-=== PO/MO Edit ===
+=== PO/MO Editor ===
 Contributors: dougwollison
 Tags: pomo, po file, mo file, gettext, file editor
 Requires at least: 4.0
@@ -11,13 +11,13 @@ Edit gettext .po files within WordPress.
 
 == Description ==
 
-PO/MO Edit adds a versatile interface to WordPress for editing and recompiling translation files.
+PO/MO Editor adds a versatile interface to WordPress for editing and recompiling translation files.
 
 = .PO File Searching =
 
 Any .po files found within the wp-content directory will be listed for editing, with the associated project name and language identified for easier organization and filtering to find what file you need to edit.
 
-Should you want to limit what directories are scanned, you can define the `POMOEDIT_SCAN_BLACKLIST` and `POMOEDIT_SCAN_WHITELIST` constants with a list of directories to exclude or exclusively include (preferably in your wp-config.php file). Multiple paths can be separated by a colon (:), similar to `$PATH` in Linux.
+Should you want to limit what directories are scanned, you can define the `POMOEDITOR_SCAN_BLACKLIST` and `POMOEDITOR_SCAN_WHITELIST` constants with a list of directories to exclude or exclusively include (preferably in your wp-config.php file). Multiple paths can be separated by a colon (:), similar to `$PATH` in Linux.
 
 = Basic and Advanced File Editing =
 
@@ -29,14 +29,14 @@ As a precaution, the system will backup the original files before overwriting th
 
 == Installation ==
 
-1. Upload the contents of `pomoedit.tar.gz` to your `/wp-content/plugins/` directory
+1. Upload the contents of `pomoeditor.tar.gz` to your `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Go into the plugin interface page under Tools > PO/MO Editor.
 4. Start editing your gettext files.
 
 == Changelog ==
 
-**Details on each release can be found [on the GitHub releases page](https://github.com/dougwollison/pomoedit/releases) for this project.**
+**Details on each release can be found [on the GitHub releases page](https://github.com/dougwollison/pomoeditor/releases) for this project.**
 
 = 1.0 =
 Initial public release.

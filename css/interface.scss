@@ -1,6 +1,6 @@
 @import 'compass/utilities/general/clearfix';
 
-#pomoedit_projects {
+#pomoeditor_projects {
 	td.column-pmeproject-file {
 		font-family: Consolas, Monaco, monospace;
 	}
@@ -12,7 +12,7 @@
 	}
 }
 
-#pomoedit_editor {
+#pomoeditor {
 	table {
 		font-family: 'Helvetica Neue', Tahoma, Arial, sans-serif;
 
@@ -33,7 +33,7 @@
 	}
 }
 
-#pomoedit_translations {
+#pomoeditor_translations {
 	.pme-context {
 		width: 200px;
 	}
@@ -150,10 +150,10 @@
 		text-align: right;
 	}
 
-.pomoedit-advanced {
+.pomoeditor-advanced {
 	display: none;
 
-	.pomoedit-advanced-mode & {
+	.pomoeditor-advanced-mode & {
 		display: block;
 	}
 }

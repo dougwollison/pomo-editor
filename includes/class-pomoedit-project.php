@@ -184,13 +184,13 @@ final class Project {
 		$this->package['type'] = $type;
 
 		// Get/cache all themes/plugins available
-		if ( ! $themes = wp_cache_get( 'pomoedit', 'all themes' ) ) {
+		if ( ! $themes = wp_cache_get( 'pomoeditor', 'all themes' ) ) {
 			$themes = wp_get_themes();
-			wp_cache_set( 'pomoedit', $themes, 'all themes' );
+			wp_cache_set( 'pomoeditor', $themes, 'all themes' );
 		}
-		if ( ! $plugins = wp_cache_get( 'pomoedit', 'all plugins' ) ) {
+		if ( ! $plugins = wp_cache_get( 'pomoeditor', 'all plugins' ) ) {
 			$plugins = get_plugins();
-			wp_cache_set( 'pomoedit', $plugins, 'all plugins' );
+			wp_cache_set( 'pomoeditor', $plugins, 'all plugins' );
 		}
 
 		switch ( $type ) {
@@ -256,17 +256,17 @@ final class Project {
 						$this->package['type'] = 'system';
 						switch ( $slug ) {
 							case 'admin':
-								$this->package['name'] = __( 'WordPress Admin', 'pomoedit' );
+								$this->package['name'] = __( 'WordPress Admin', 'pomoeditor' );
 								break;
 							case 'admin-network':
-								$this->package['name'] = __( 'WordPress Network Admin', 'pomoedit' );
+								$this->package['name'] = __( 'WordPress Network Admin', 'pomoeditor' );
 								break;
 							case 'continents-cities':
-								$this->package['name'] = __( 'Continent & City Names', 'pomoedit' );
+								$this->package['name'] = __( 'Continent & City Names', 'pomoeditor' );
 								break;
 							case '':
 							case 'core':
-								$this->package['name'] = __( 'WordPress Core', 'pomoedit' );
+								$this->package['name'] = __( 'WordPress Core', 'pomoeditor' );
 								$this->package['slug'] = 'core';
 								break;
 						}

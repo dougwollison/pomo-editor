@@ -52,13 +52,13 @@ function match_path( $dir, $list ) {
  * @return bool Wether or not the path is permitted by the whitelist/blacklist.
  */
 function is_path_permitted( $path ) {
-	// Check if POMOEDIT_SCAN_WHITELIST is defined, set $skip to TRUE if no match
-	if ( defined( 'POMOEDIT_SCAN_WHITELIST' ) && ! match_path( $path, POMOEDIT_SCAN_WHITELIST ) ) {
+	// Check if POMOEDITOR_SCAN_WHITELIST is defined, set $skip to TRUE if no match
+	if ( defined( 'POMOEDITOR_SCAN_WHITELIST' ) && ! match_path( $path, POMOEDITOR_SCAN_WHITELIST ) ) {
 		return false;
 	}
 
-	// Check if POMOEDIT_SCAN_BLACKLIST is defined, set $skip to TRUE if matched
-	if ( defined( 'POMOEDIT_SCAN_BLACKLIST' ) && match_path( $path, POMOEDIT_SCAN_BLACKLIST ) ) {
+	// Check if POMOEDITOR_SCAN_BLACKLIST is defined, set $skip to TRUE if matched
+	if ( defined( 'POMOEDITOR_SCAN_BLACKLIST' ) && match_path( $path, POMOEDITOR_SCAN_BLACKLIST ) ) {
 		return false;
 	}
 

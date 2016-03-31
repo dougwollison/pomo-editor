@@ -1,4 +1,4 @@
-/* globals _, Backbone, pomoeditL10n, confirm */
+/* globals _, Backbone, pomoeditorL10n, confirm */
 ( function( $ ) {
 	var POMOEdit = window.POMOEdit = {};
 	var Framework = POMOEdit.Framework = {};
@@ -226,7 +226,7 @@
 		},
 
 		destroy: function() {
-			if ( ! this.isBlank() && ! confirm( pomoeditL10n.ConfirmDelete ) ) {
+			if ( ! this.isBlank() && ! confirm( pomoeditorL10n.ConfirmDelete ) ) {
 				return;
 			}
 
@@ -325,7 +325,7 @@
 
 		close: function( e, noconfirm ) {
 			if ( this.$el.hasClass( 'changed' ) && noconfirm !== true ) {
-				if ( confirm( pomoeditL10n.ConfirmCancel ) ) {
+				if ( confirm( pomoeditorL10n.ConfirmCancel ) ) {
 					// Reset
 					this.renderSource();
 					this.renderTranslation();

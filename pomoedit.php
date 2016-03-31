@@ -1,14 +1,14 @@
 <?php
 /*
 Plugin Name: PO/MO Edit
-Plugin URI: https://github.com/dougwollison/pomoedit
+Plugin URI: https://github.com/dougwollison/pomoeditor
 Description: Edit gettext po/mo files within WordPress.
 Version: 1.0.0
 Author: Doug Wollison
 Author URI: http://dougw.me
 Tags: pomo, po file, mo file, gettext, file editor
 License: GPL2
-Text Domain: pomoedit
+Text Domain: pomoeditor
 Domain Path: /languages
 */
 
@@ -39,7 +39,7 @@ define( 'PME_PLUGIN_DIR', dirname( PME_PLUGIN_FILE ) );
 // =========================
 
 require( PME_PLUGIN_DIR . '/includes/autoloader.php' );
-require( PME_PLUGIN_DIR . '/includes/functions-pomoedit.php' );
+require( PME_PLUGIN_DIR . '/includes/functions-pomoeditor.php' );
 
 // =========================
 // ! Setup

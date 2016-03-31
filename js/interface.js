@@ -1,4 +1,4 @@
-/* globals _, POMOEdit, pomoeditL10n, alert, confirm */
+/* globals _, POMOEdit, pomoeditorL10n, alert, confirm */
 jQuery( function( $ ) {
 	var $filters = {
 		type: $( '#filter_by_type' ),
@@ -6,29 +6,29 @@ jQuery( function( $ ) {
 		lang: $( '#filter_by_language' )
 	};
 
-	$( '#pomoedit_translations' ).on( 'click', '.pme-source .pme-input[readonly]', function() {
-		alert( pomoeditL10n.SourceEditingNotice );
+	$( '#pomoeditor_translations' ).on( 'click', '.pme-source .pme-input[readonly]', function() {
+		alert( pomoeditorL10n.SourceEditingNotice );
 	} );
-	$( '#pomoedit_translations' ).on( 'click', '.pme-context .pme-input[readonly]', function() {
-		alert( pomoeditL10n.ContextEditingNotice );
+	$( '#pomoeditor_translations' ).on( 'click', '.pme-context .pme-input[readonly]', function() {
+		alert( pomoeditorL10n.ContextEditingNotice );
 	} );
 
-	$( '#pomoedit_advanced' ).click( function() {
+	$( '#pomoeditor_advanced' ).click( function() {
 		if ( POMOEdit.advanced ) {
 			return;
 		}
 
-		if ( ! confirm( pomoeditL10n.ConfirmAdvancedEditing ) ) {
+		if ( ! confirm( pomoeditorL10n.ConfirmAdvancedEditing ) ) {
 			return;
 		}
 
 		POMOEdit.advanced = true;
 		$( this ).addClass( 'active' );
 		$( '.pme-input' ).attr( 'readonly', false );
-		$( 'body' ).addClass( 'pomoedit-advanced-mode' );
+		$( 'body' ).addClass( 'pomoeditor-advanced-mode' );
 	} );
 
-	$( '.pomoedit-filter' ).change( function() {
+	$( '.pomoeditor-filter' ).change( function() {
 		var filter = {
 			type: $filters.type.val(),
 			slug: $filters.slug.val(),
@@ -84,9 +84,9 @@ jQuery( function( $ ) {
 		} );
 	} );
 
-	$( '#pomoedit_editor' ).submit( function( e ) {
+	$( '#pomoeditor' ).submit( function( e ) {
 		if ( $( '.pme-translation.changed' ).length > 0 ) {
-			if ( ! confirm( pomoeditL10n.ConfirmSave ) ) {
+			if ( ! confirm( pomoeditorL10n.ConfirmSave ) ) {
 				return;
 			}
 		}
@@ -95,10 +95,10 @@ jQuery( function( $ ) {
 			translation.view.close( null, true );
 		} );
 
-		$( '#submit' ).text( pomoeditL10n.Saving );
+		$( '#submit' ).text( pomoeditorL10n.Saving );
 
 		var Project = POMOEdit.Project;
-		var $storage = $('<textarea name="pomoedit_data"></textarea>').hide().appendTo(this);
+		var $storage = $('<textarea name="pomoeditor_data"></textarea>').hide().appendTo(this);
 
 		var data = {
 			entries: [],

@@ -59,7 +59,7 @@ final class Backend extends Handler {
 	 */
 	public static function load_textdomain() {
 		// Load the textdomain
-		load_plugin_textdomain( 'pomoedit', false, dirname( PME_PLUGIN_FILE ) . '/languages' );
+		load_plugin_textdomain( 'pomoeditor', false, dirname( PME_PLUGIN_FILE ) . '/languages' );
 	}
 
 	// =========================
@@ -78,11 +78,11 @@ final class Backend extends Handler {
 		$version = $plugin['new_version'];
 
 		// Check if there's a notice about the update
-		$transient = "pomoedit-update-notice-{$version}";
+		$transient = "pomoeditor-update-notice-{$version}";
 		$notice = get_transient( $transient );
 		if ( $notice === false ) {
 			// Hasn't been saved, fetch it from the SVN repo
-			$notice = file_get_contents( "http://plugins.svn.wordpress.org/pomoedit/assets/notice-{$version}.txt" ) ?: '';
+			$notice = file_get_contents( "http://plugins.svn.wordpress.org/pomoeditor/assets/notice-{$version}.txt" ) ?: '';
 
 			// Save the notice
 			set_transient( $transient, $notice, YEAR_IN_SECONDS );
@@ -105,26 +105,26 @@ final class Backend extends Handler {
 	 */
 	public static function enqueue_assets(){
 		// Only bother if we're viewing the editor screen
-		if ( get_current_screen()->id != 'tools_page_pomoedit' ) {
+		if ( get_current_screen()->id != 'tools_page_pomoeditor' ) {
 			return;
 		}
 
 		// Interface styling
-		wp_enqueue_style( 'pomoedit-interface', plugins_url( 'css/interface.css', PME_PLUGIN_FILE ), '1.0.0', 'screen' );
+		wp_enqueue_style( 'pomoeditor-interface', plugins_url( 'css/interface.css', PME_PLUGIN_FILE ), '1.0.0', 'screen' );
 
 		// Interface javascript
-		wp_enqueue_script( 'pomoedit-framework-js', plugins_url( 'js/framework.js', PME_PLUGIN_FILE ), array( 'backbone' ), '1.0.0' );
-		wp_enqueue_script( 'pomoedit-interface-js', plugins_url( 'js/interface.js', PME_PLUGIN_FILE ), array( 'pomoedit-framework-js' ), '1.0.0' );
+		wp_enqueue_script( 'pomoeditor-framework-js', plugins_url( 'js/framework.js', PME_PLUGIN_FILE ), array( 'backbone' ), '1.0.0' );
+		wp_enqueue_script( 'pomoeditor-interface-js', plugins_url( 'js/interface.js', PME_PLUGIN_FILE ), array( 'pomoeditor-framework-js' ), '1.0.0' );
 
 		// Localize the javascript
-		wp_localize_script( 'pomoedit-interface-js', 'pomoeditL10n', array(
-			'SourceEditingNotice' => __( 'You should not edit the source text; errors may occur with displaying the translated text if you do.', 'pomoedit' ),
-			'ContextEditingNotice' => __( 'You should not edit the context; errors may occur with displaying the translated text if you do.', 'pomoedit' ),
-			'ConfirmAdvancedEditing' => __( 'Are you sure you want enable advanced editing? You must ensure the associated PHP code is updated with the new source text and context values.', 'pomoedit' ),
-			'ConfirmCancel' => __( 'Are you sure you want to discard your changes?', 'pomoedit' ),
-			'ConfirmDelete' => __( 'Are you sure you want to delete this entry? It cannot be undone.', 'pomoedit' ),
-			'ConfirmSave' => __( 'You have uncommitted translation changes, do you want to discard them before saving?', 'pomoedit' ),
-			'Saving' => __( 'Saving Translations...', 'pomoedit' ),
+		wp_localize_script( 'pomoeditor-interface-js', 'pomoeditorL10n', array(
+			'SourceEditingNotice' => __( 'You should not edit the source text; errors may occur with displaying the translated text if you do.', 'pomoeditor' ),
+			'ContextEditingNotice' => __( 'You should not edit the context; errors may occur with displaying the translated text if you do.', 'pomoeditor' ),
+			'ConfirmAdvancedEditing' => __( 'Are you sure you want enable advanced editing? You must ensure the associated PHP code is updated with the new source text and context values.', 'pomoeditor' ),
+			'ConfirmCancel' => __( 'Are you sure you want to discard your changes?', 'pomoeditor' ),
+			'ConfirmDelete' => __( 'Are you sure you want to delete this entry? It cannot be undone.', 'pomoeditor' ),
+			'ConfirmSave' => __( 'You have uncommitted translation changes, do you want to discard them before saving?', 'pomoeditor' ),
+			'Saving' => __( 'Saving Translations...', 'pomoeditor' ),
 		) );
 	}
 }

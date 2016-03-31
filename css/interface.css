@@ -1,22 +1,22 @@
-#pomoedit_projects td.column-pmeproject-file {
+#pomoeditor_projects td.column-pmeproject-file {
   font-family: Consolas, Monaco, monospace; }
-#pomoedit_projects .column-pmeproject-type {
+#pomoeditor_projects .column-pmeproject-type {
   width: 70px; }
-#pomoedit_projects .column-pmeproject-language {
+#pomoeditor_projects .column-pmeproject-language {
   width: 200px; }
 
-#pomoedit_editor table {
+#pomoeditor table {
   font-family: 'Helvetica Neue', Tahoma, Arial, sans-serif; }
-  #pomoedit_editor table > tbody > tr:hover {
+  #pomoeditor table > tbody > tr:hover {
     background-color: #eee; }
-  #pomoedit_editor table th, #pomoedit_editor table td {
+  #pomoeditor table th, #pomoeditor table td {
     border-left: 1px solid rgba(0, 0, 0, 0.08); }
-#pomoedit_editor .pme-edit-col {
+#pomoeditor .pme-edit-col {
   width: 35px;
   padding: 0;
   border-left: none; }
 
-#pomoedit_translations .pme-context {
+#pomoeditor_translations .pme-context {
   width: 200px; }
 
 .pme-translation td {
@@ -94,7 +94,7 @@
   direction: rtl;
   text-align: right; }
 
-.pomoedit-advanced {
+.pomoeditor-advanced {
   display: none; }
-  .pomoedit-advanced-mode .pomoedit-advanced {
+  .pomoeditor-advanced-mode .pomoeditor-advanced {
     display: block; }

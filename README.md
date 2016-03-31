@@ -1,11 +1,11 @@
-# PO/MO Edit
-PO/MO Edit adds a versatile interface to WordPress for editing and recompiling translation files.
+# PO/MO Editor
+PO/MO Editor adds a versatile interface to WordPress for editing and recompiling translation files.
 
 ## .PO File Searching
 
 Any .po files found within the wp-content directory will be listed for editing, with the associated project name and language identified for easier organization and filtering to find what file you need to edit.
 
-Should you want to limit what directories are scanned, you can define the `POMOEDIT_SCAN_BLACKLIST` and `POMOEDIT_SCAN_WHITELIST` constants with a list of directories to exclude or exclusively include (preferably in your wp-config.php file). Multiple paths can be separated by a colon (:), similar to `$PATH` in Linux.
+Should you want to limit what directories are scanned, you can define the `POMOEDITOR_SCAN_BLACKLIST` and `POMOEDITOR_SCAN_WHITELIST` constants with a list of directories to exclude or exclusively include (preferably in your wp-config.php file). Multiple paths can be separated by a colon (:), similar to `$PATH` in Linux.
 
 ## Basic and Advanced File Editing
 
