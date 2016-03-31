@@ -13,8 +13,7 @@ namespace POMOEdit;
 /**
  * The Main System
  *
- * Sets up the database table aliases, the Registry,
- * and all the Handler classes.
+ * Sets up all the Handler classes.
  *
  * @api
  *
