@@ -124,36 +124,6 @@ final class Projects implements \Iterator {
 	// =========================
 
 	/**
-	 * Check if the current directory matches one of the provided paths.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $dir  The directory to match.
-	 * @param string $list The list of directories to match against (colon-separated).
-	 *
-	 * @return bool Wether or not the directory is within one of the ones listed.
-	 */
-	private static function match_path( $dir, $list ) {
-		// Split the list into individual directories
-		$list = explode( ':', $list );
-
-		// Loop through, see if $dir is within any of them
-		foreach ( $list as $path ) {
-			// If not an absolute path, prefix with WP_CONTENT_DIR
-			if ( strpos( $path, '/' ) !== 0 ) {
-				$path = WP_CONTENT_DIR . '/' . $path;
-			}
-
-			// Test if $dir starts with the path
-			if ( strpos( $dir, rtrim( $path, '/' ) ) === 0 ) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
 	 * Setup the collection and add any projects passed.
 	 *
 	 * @since 1.0.0
@@ -190,15 +160,7 @@ final class Projects implements \Iterator {
 			return;
 		}
 
-		$skip = false;
-		// Check if POMOEDIT_SCAN_WHITELIST is defined, set $skip to TRUE if no match
-		if ( defined( 'POMOEDIT_SCAN_WHITELIST' ) && ! static::match_path( $dir, POMOEDIT_SCAN_WHITELIST ) ) {
-			$skip = true;
-		}
-		// Check if POMOEDIT_SCAN_BLACKLIST is defined, set $skip to TRUE if matched
-		if ( defined( 'POMOEDIT_SCAN_BLACKLIST' ) && static::match_path( $dir, POMOEDIT_SCAN_BLACKLIST ) ) {
-			$skip = true;
-		}
+		$skip = ! is_path_permitted( $dir );
 
 		foreach ( scandir( $dir ) as $file ) {
 			if ( substr( $file, 0, 1 ) == '.' ) {

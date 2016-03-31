@@ -117,6 +117,10 @@ final class Manager extends Handler {
 		if ( ! file_exists( $path ) ) {
 			wp_die( sprintf( __( 'That file cannot be found: %s', 'pomoedit' ), $path ), 404 );
 		}
+		// Check the file is within permitted path
+		elseif ( ! is_path_permitted( $path ) ) {
+			wp_die( __( 'That file is not within one of the permitted paths.', 'pomoedit' ), 403 );
+		}
 		// Check if the file is being updated
 		elseif ( isset( $_POST['pomoedit_data'] ) ) {
 			// Load

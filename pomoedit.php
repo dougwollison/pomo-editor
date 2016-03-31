@@ -39,6 +39,7 @@ define( 'PME_PLUGIN_DIR', dirname( PME_PLUGIN_FILE ) );
 // =========================
 
 require( PME_PLUGIN_DIR . '/includes/autoloader.php' );
+require( PME_PLUGIN_DIR . '/includes/functions-pomoedit.php' );
 
 // =========================
 // ! Setup
