@@ -115,15 +115,19 @@ final class Manager extends Handler {
 		$file = $_REQUEST['pomoedit_file'];
 		$path = realpath( WP_CONTENT_DIR . '/' . $file );
 		if ( strtolower( pathinfo( $path, PATHINFO_EXTENSION ) ) != 'po' ) {
-			wp_die( __( 'The requested file is not supported.', 'pomoedit' ), 400 );
+			wp_die( sprintf( __( 'The requested file is not supported: %s', 'pomoedit' ), $path ), 400 );
 		}
 		// Check the file is a .po file
 		elseif ( ! file_exists( $path ) ) {
-			wp_die( sprintf( __( 'That file cannot be found: %s', 'pomoedit' ), $path ), 404 );
+			wp_die( sprintf( __( 'The requested file cannot be found: %s', 'pomoedit' ), $path ), 404 );
 		}
 		// Check the file is within permitted path
 		elseif ( ! is_path_permitted( $path ) ) {
-			wp_die( __( 'That file is not within one of the permitted paths.', 'pomoedit' ), 403 );
+			wp_die( sprintf( __( 'The requested file is not within one of the permitted paths: %s', 'pomoedit' ), $path ), 403 );
+		}
+		// Check the file is writable
+		elseif ( ! is_writable( $path ) ) {
+			wp_die( sprintf( __( 'The requested file is not writable: %s', 'pomoedit' ), $path ), 403 );
 		}
 		// Check if the file is being updated
 		elseif ( isset( $_POST['pomoedit_data'] ) ) {
@@ -440,6 +444,7 @@ final class Manager extends Handler {
 			return;
 		}
 
+		// Print update notice if changes were saved
 		if ( isset( $_GET['changes-saved'] ) && $_GET['changes-saved'] ) {
 			?>
 			<div class="updated notice is-dismissible">
