@@ -378,11 +378,22 @@
 
 			// Generate the rows for each entry
 			this.collection.each( this.addEntry.bind( this ) );
+
+			// Copy the header row to the footer
+			this.$el.find( 'tfoot' ).html( this.$el.find( 'thead' ).html() );
 		},
 
-		addEntry: function( entry ) {
-			// Create a blank entry if no valid Translation was provided
-			if ( ! ( entry instanceof this.entryModel ) ) {
+		addEntry: function( e ) {
+			var entry, event;
+
+			// If e was an itself, assing it to entry, assume no event
+			if ( e instanceof this.entryModel ) {
+				entry = e;
+				event = false;
+			}
+			// Otherwise, it's the event, and create a blank entry
+			else {
+				event = e;
 				entry = new this.entryModel();
 				this.collection.add( entry );
 			}
@@ -392,7 +403,13 @@
 				model: entry,
 				template: this.rowTemplate,
 			} );
-			row.$el.appendTo( this.$el.find( 'tbody' ) );
+
+			var $tbody = this.$el.find( 'tbody' );
+			if ( event && $( event.target ).parents( 'thead' ).length > 0 ) {
+				$tbody.prepend( row.$el );
+			} else {
+				$tbody.append( row.$el );
+			}
 
 			return row;
 		}
