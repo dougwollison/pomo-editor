@@ -34,7 +34,7 @@ final class Backend extends Handler {
 	 */
 	public static function register_hooks() {
 		// Don't do anything if not in the backend
-		if ( ! is_backend() ) {
+		if ( ! is_admin() ) {
 			return;
 		}
 
