@@ -99,7 +99,7 @@ jQuery( function( $ ) {
 		$( '#submit' ).text( pomoeditorL10n.Saving );
 
 		var Project = POMOEditor.Project;
-		var $storage = $('<textarea name="pomoeditor_data"></textarea>').hide().appendTo(this);
+		var $storage = $('<textarea name="podata"></textarea>').hide().appendTo(this);
 
 		var data = {
 			entries: [],

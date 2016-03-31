@@ -29,14 +29,14 @@ As a precaution, the system will backup the original files before overwriting th
 
 == Installation ==
 
-1. Upload the contents of `pomoeditor.tar.gz` to your `/wp-content/plugins/` directory
+1. Upload the contents of `pomo-editor.tar.gz` to your `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Go into the plugin interface page under Tools > PO/MO Editor.
 4. Start editing your gettext files.
 
 == Changelog ==
 
-**Details on each release can be found [on the GitHub releases page](https://github.com/dougwollison/pomoeditor/releases) for this project.**
+**Details on each release can be found [on the GitHub releases page](https://github.com/dougwollison/pomo-editor/releases) for this project.**
 
 = 1.0 =
 Initial public release.

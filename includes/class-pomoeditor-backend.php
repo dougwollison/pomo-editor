@@ -59,7 +59,7 @@ final class Backend extends Handler {
 	 */
 	public static function load_textdomain() {
 		// Load the textdomain
-		load_plugin_textdomain( 'pomoeditor', false, dirname( PME_PLUGIN_FILE ) . '/languages' );
+		load_plugin_textdomain( 'pomo-editor', false, dirname( PME_PLUGIN_FILE ) . '/languages' );
 	}
 
 	// =========================
@@ -82,7 +82,7 @@ final class Backend extends Handler {
 		$notice = get_transient( $transient );
 		if ( $notice === false ) {
 			// Hasn't been saved, fetch it from the SVN repo
-			$notice = file_get_contents( "http://plugins.svn.wordpress.org/pomoeditor/assets/notice-{$version}.txt" ) ?: '';
+			$notice = file_get_contents( "http://plugins.svn.wordpress.org/pomo-editor/assets/notice-{$version}.txt" ) ?: '';
 
 			// Save the notice
 			set_transient( $transient, $notice, YEAR_IN_SECONDS );
@@ -105,7 +105,7 @@ final class Backend extends Handler {
 	 */
 	public static function enqueue_assets(){
 		// Only bother if we're viewing the editor screen
-		if ( get_current_screen()->id != 'tools_page_pomoeditor' ) {
+		if ( get_current_screen()->id != 'tools_page_pomo-editor' ) {
 			return;
 		}
 
@@ -118,13 +118,13 @@ final class Backend extends Handler {
 
 		// Localize the javascript
 		wp_localize_script( 'pomoeditor-interface-js', 'pomoeditorL10n', array(
-			'SourceEditingNotice' => __( 'You should not edit the source text; errors may occur with displaying the translated text if you do.', 'pomoeditor' ),
-			'ContextEditingNotice' => __( 'You should not edit the context; errors may occur with displaying the translated text if you do.', 'pomoeditor' ),
-			'ConfirmAdvancedEditing' => __( 'Are you sure you want enable advanced editing? You may break some of your translations if you change the source text or context values.', 'pomoeditor' ),
-			'ConfirmCancel' => __( 'Are you sure you want to discard your changes?', 'pomoeditor' ),
-			'ConfirmDelete' => __( 'Are you sure you want to delete this entry? It cannot be undone.', 'pomoeditor' ),
-			'ConfirmSave' => __( 'You have uncommitted translation changes, do you want to discard them before saving?', 'pomoeditor' ),
-			'Saving' => __( 'Saving Translations...', 'pomoeditor' ),
+			'SourceEditingNotice' => __( 'You should not edit the source text; errors may occur with displaying the translated text if you do.', 'pomo-editor' ),
+			'ContextEditingNotice' => __( 'You should not edit the context; errors may occur with displaying the translated text if you do.', 'pomo-editor' ),
+			'ConfirmAdvancedEditing' => __( 'Are you sure you want enable advanced editing? You may break some of your translations if you change the source text or context values.', 'pomo-editor' ),
+			'ConfirmCancel' => __( 'Are you sure you want to discard your changes?', 'pomo-editor' ),
+			'ConfirmDelete' => __( 'Are you sure you want to delete this entry? It cannot be undone.', 'pomo-editor' ),
+			'ConfirmSave' => __( 'You have uncommitted translation changes, do you want to discard them before saving?', 'pomo-editor' ),
+			'Saving' => __( 'Saving Translations...', 'pomo-editor' ),
 		) );
 	}
 }
