@@ -350,8 +350,8 @@
 			}
 
 			this.model.set( 'translations', [
-				this.$el.find( '.pme-translation .pme-input.pme-singular' ).val(),
-				this.$el.find( '.pme-translation .pme-input.pme-plural' ).val()
+				this.$el.find( '.pme-translated .pme-input.pme-singular' ).val(),
+				this.$el.find( '.pme-translated .pme-input.pme-plural' ).val()
 			] );
 
 			this.$el.removeClass( 'changed' );
