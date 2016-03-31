@@ -1,8 +1,8 @@
 <?php
 /**
- * POMOEdit Internal Functions
+ * POMOEditor Internal Functions
  *
- * @package POMOEdit
+ * @package POMOEditor
  * @subpackage Utilities
  *
  * @internal
@@ -10,7 +10,7 @@
  * @since 1.0.0
  */
 
-namespace POMOEdit;
+namespace POMOEditor;
 
 /**
  * Check if the current directory matches one of the provided paths.

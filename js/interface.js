@@ -1,4 +1,4 @@
-/* globals _, POMOEdit, pomoeditorL10n, alert, confirm */
+/* globals _, POMOEditor, pomoeditorL10n, alert, confirm */
 jQuery( function( $ ) {
 	var $filters = {
 		type: $( '#filter_by_type' ),
@@ -14,7 +14,7 @@ jQuery( function( $ ) {
 	} );
 
 	$( '#pomoeditor_advanced' ).click( function() {
-		if ( POMOEdit.advanced ) {
+		if ( POMOEditor.advanced ) {
 			return;
 		}
 
@@ -22,7 +22,7 @@ jQuery( function( $ ) {
 			return;
 		}
 
-		POMOEdit.advanced = true;
+		POMOEditor.advanced = true;
 		$( this ).addClass( 'active' );
 		$( '.pme-input' ).attr( 'readonly', false );
 		$( 'body' ).addClass( 'pomoeditor-advanced-mode' );
@@ -41,7 +41,7 @@ jQuery( function( $ ) {
 			lang: []
 		};
 
-		_( POMOEdit.List.children ).each( function( view ) {
+		_( POMOEditor.List.children ).each( function( view ) {
 			view.$el.show();
 
 			var type = view.model.get( 'pkginfo' ).type,
@@ -91,13 +91,13 @@ jQuery( function( $ ) {
 			}
 		}
 
-		POMOEdit.Project.Translations.each( function( translation ) {
+		POMOEditor.Project.Translations.each( function( translation ) {
 			translation.view.close( null, true );
 		} );
 
 		$( '#submit' ).text( pomoeditorL10n.Saving );
 
-		var Project = POMOEdit.Project;
+		var Project = POMOEditor.Project;
 		var $storage = $('<textarea name="pomoeditor_data"></textarea>').hide().appendTo(this);
 
 		var data = {
@@ -109,7 +109,7 @@ jQuery( function( $ ) {
 		} );
 
 		// If in advanced editing mode, include the headers/metadata
-		if ( POMOEdit.advanced ) {
+		if ( POMOEditor.advanced ) {
 			data.headers = {};
 			data.metadata = {};
 

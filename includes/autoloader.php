@@ -1,15 +1,15 @@
 <?php
 /**
- * POMOEdit Autoloading System
+ * POMOEditor Autoloading System
  *
- * @package POMOEdit
+ * @package POMOEditor
  *
  * @internal
  *
  * @since 1.0.0
  */
 
-namespace POMOEdit_Autoloader;
+namespace POMOEditor_Autoloader;
 
 /**
  * Handle file locating and loading.
@@ -43,7 +43,7 @@ function find( $type, $name ) {
 }
 
 /**
- * Find/load an POMOEdit class.
+ * Find/load an POMOEditor class.
  *
  * Will automatically initailize if it's a Functional sub-class.
  *
@@ -60,7 +60,7 @@ function find_class( $class ) {
 }
 
 /**
- * Find/load an POMOEdit abstract class.
+ * Find/load an POMOEditor abstract class.
  *
  * @internal
  *

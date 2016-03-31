@@ -1,20 +1,20 @@
 <?php
 /**
- * POMOEdit Exception
+ * POMOEditor Exception
  *
- * @package POMOEdit
+ * @package POMOEditor
  * @subpackage Helpers
  *
  * @since 1.0.0
  */
 
-namespace POMOEdit;
+namespace POMOEditor;
 
 /**
  * The Exceptional Exception
  *
  * Used in the event of a serious error within
- * the POMOEdit system.
+ * the POMOEditor system.
  *
  * @api
  *

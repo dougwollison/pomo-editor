@@ -1,14 +1,14 @@
 <?php
 /**
- * POMOEdit Backend Functionality
+ * POMOEditor Backend Functionality
  *
- * @package POMOEdit
+ * @package POMOEditor
  * @subpackage Handlers
  *
  * @since 1.0.0
  */
 
-namespace POMOEdit;
+namespace POMOEditor;
 
 /**
  * The Backend Functionality

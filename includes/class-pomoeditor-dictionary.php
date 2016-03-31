@@ -1,14 +1,14 @@
 <?php
 /**
- * POMOEdit Constants Dictionary
+ * POMOEditor Constants Dictionary
  *
- * @package POMOEdit
+ * @package POMOEditor
  * @subpackage Helpers
  *
  * @since 1.0.0
  */
 
-namespace POMOEdit;
+namespace POMOEditor;
 
 /**
  * The Constants Dictionary
@@ -16,7 +16,7 @@ namespace POMOEdit;
  * Stores complex constants for reference purposes,
  * as well as utilities that utilize them.
  *
- * @package POMOEdit
+ * @package POMOEditor
  * @subpackage Helpers
  *
  * @api

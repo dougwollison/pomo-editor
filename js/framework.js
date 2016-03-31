@@ -1,13 +1,13 @@
 /* globals _, Backbone, pomoeditorL10n, confirm */
 ( function( $ ) {
-	var POMOEdit = window.POMOEdit = {};
-	var Framework = POMOEdit.Framework = {};
+	var POMOEditor = window.POMOEditor = {};
+	var Framework = POMOEditor.Framework = {};
 
 	// =========================
 	// ! Miscellaneous
 	// =========================
 
-	POMOEdit.advanced = false; // Wether or not advanced editing is enabled
+	POMOEditor.advanced = false; // Wether or not advanced editing is enabled
 
 	// =========================
 	// ! Models/Collections
@@ -243,7 +243,7 @@
 
 		updateName: function( e ) {
 			// Only upate if advanced editing is enabled
-			if ( POMOEdit.advanced ) {
+			if ( POMOEditor.advanced ) {
 				this.model.set( 'name', $( e.target ).val() );
 			}
 		},
@@ -251,7 +251,7 @@
 		updateValue: function( e ) {
 			console.log(e.target);
 			// Only upate if advanced editing is enabled
-			if ( POMOEdit.advanced ) {
+			if ( POMOEditor.advanced ) {
 				this.model.set( 'value', $( e.target ).val() );
 			}
 		}
@@ -343,7 +343,7 @@
 
 		save: function() {
 			// Only save context/source changes if advanced editing is enabled
-			if ( POMOEdit.advanced ) {
+			if ( POMOEditor.advanced ) {
 				this.model.set( 'context', this.$el.find( '.pme-context .pme-input' ).val() );
 				this.model.set( 'singular', this.$el.find( '.pme-source .pme-input.pme-singular' ).val() );
 				this.model.set( 'plural', this.$el.find( '.pme-source .pme-input.pme-plural' ).val() );
@@ -421,7 +421,7 @@
 
 		addEntry: function( entry ) {
 			// Abort if adding a new entry while not in advanced editing mode
-			if ( ! ( entry instanceof this.entryModel ) && ! POMOEdit.advanced ) {
+			if ( ! ( entry instanceof this.entryModel ) && ! POMOEditor.advanced ) {
 				return;
 			}
 

@@ -1,14 +1,14 @@
 <?php
 /**
- * POMOEdit Project Model
+ * POMOEditor Project Model
  *
- * @package POMOEdit
+ * @package POMOEditor
  * @subpackage Structures
  *
  * @since 1.0.0
  */
 
-namespace POMOEdit;
+namespace POMOEditor;
 
 /**
  * The Project Model
@@ -16,7 +16,7 @@ namespace POMOEdit;
  * A model representing a project file, it's
  * PO data, and it's package information.
  *
- * @package POMOEdit
+ * @package POMOEditor
  * @subpackage Structures
  *
  * @api

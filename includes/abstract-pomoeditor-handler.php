@@ -1,8 +1,8 @@
 <?php
 /**
- * POMOEdit Abstract Handler
+ * POMOEditor Abstract Handler
  *
- * @package POMOEdit
+ * @package POMOEditor
  * @subpackage Abstracts
  *
  * @internal
@@ -10,7 +10,7 @@
  * @since 1.0.0
  */
 
-namespace POMOEdit;
+namespace POMOEditor;
 
 /**
  * The Handler Framework

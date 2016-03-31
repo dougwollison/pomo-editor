@@ -1,14 +1,14 @@
 <?php
 /**
- * POMOEdit System
+ * POMOEditor System
  *
- * @package POMOEdit
+ * @package POMOEditor
  * @subpackage Handlers
  *
  * @since 1.0.0
  */
 
-namespace POMOEdit;
+namespace POMOEditor;
 
 /**
  * The Main System

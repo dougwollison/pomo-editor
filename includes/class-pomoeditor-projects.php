@@ -1,14 +1,14 @@
 <?php
 /**
- * POMOEdit Projects Collection
+ * POMOEditor Projects Collection
  *
- * @package POMOEdit
+ * @package POMOEditor
  * @subpackage Structures
  *
  * @since 1.0.0
  */
 
-namespace POMOEdit;
+namespace POMOEditor;
 
 /**
  * The Projects Collection
@@ -17,7 +17,7 @@ namespace POMOEdit;
  * Works like an array within `foreach` loops, and includes
  * methods for sorting, filtering, and searching for projects.
  *
- * @package POMOEdit
+ * @package POMOEditor
  * @subpackage Structures
  *
  * @api
@@ -275,7 +275,7 @@ final class Projects implements \Iterator {
 	 * @param string $filter Optional. The property to filter by.
 	 * @param string $value  Optional. A specific value to filter by (defaults to TRUE).
 	 *
-	 * @return POMOEdit\Projects A new collection of projects
+	 * @return POMOEditor\Projects A new collection of projects
 	 */
 	public function filter( $filter = null, $value = null ) {
 		return $this;

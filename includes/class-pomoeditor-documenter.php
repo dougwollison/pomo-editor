@@ -1,14 +1,14 @@
 <?php
 /**
- * POMOEdit Documentation Utility
+ * POMOEditor Documentation Utility
  *
- * @package POMOEdit
+ * @package POMOEditor
  * @subpackage Helpers
  *
  * @since 1.0.0
  */
 
-namespace POMOEdit;
+namespace POMOEditor;
 
 /**
  * The Documenter System

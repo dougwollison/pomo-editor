@@ -1,20 +1,20 @@
 <?php
 /**
- * POMOEdit Manager Funtionality
+ * POMOEditor Manager Funtionality
  *
- * @package POMOEdit
+ * @package POMOEditor
  * @subpackage Handlers
  *
  * @since 1.0.0
  */
 
-namespace POMOEdit;
+namespace POMOEditor;
 
 /**
  * The Management System
  *
  * Hooks into the backend to add the interfaces for
- * managing the configuration of POMOEdit.
+ * managing the configuration of POMOEditor.
  *
  * @internal Used by the System.
  *
@@ -80,7 +80,7 @@ final class Manager extends Handler {
 		}
 
 		// If the file is specified, setup the interface help tabs
-		if ( isset( $_GET['pomoeditor_file'] ) ) {
+		if ( isset( $_GET['pofile'] ) ) {
 			Documenter::setup_help_tabs( 'editor' );
 		}
 		// Otherwise, assume it's the index
@@ -102,17 +102,17 @@ final class Manager extends Handler {
 	 */
 	public static function process_request() {
 		// Skip if no file is specified
-		if ( ! isset( $_REQUEST['pomoeditor_file'] ) ) {
+		if ( ! isset( $_REQUEST['pofile'] ) ) {
 			return;
 		}
 
 		// If file was specified via $_POST, check for manage nonce action
-		if ( isset( $_POST['pomoeditor_file'] ) && ( ! isset( $_POST['_pomoeditor_nonce'] ) || ! wp_verify_nonce( $_POST['_pomoeditor_nonce'], 'pomoeditor-manage-' . md5( $_POST['pomoeditor_file'] ) ) ) ) {
+		if ( isset( $_POST['pofile'] ) && ( ! isset( $_POST['_pomoeditor_nonce'] ) || ! wp_verify_nonce( $_POST['_pomoeditor_nonce'], 'pomoeditor-manage-' . md5( $_POST['pofile'] ) ) ) ) {
 			wp_die( __( 'Cheatin&#8217; uh?' ), 403 );
 		}
 
 		// Check if the file exists...
-		$file = $_REQUEST['pomoeditor_file'];
+		$file = $_REQUEST['pofile'];
 		$path = realpath( WP_CONTENT_DIR . '/' . $file );
 		if ( strtolower( pathinfo( $path, PATHINFO_EXTENSION ) ) != 'po' ) {
 			wp_die( sprintf( __( 'The requested file is not supported: %s', 'pomoeditor' ), $path ), 400 );
@@ -142,7 +142,7 @@ final class Manager extends Handler {
 			$project->export();
 
 			// Redirect
-			wp_redirect( admin_url( "tools.php?page=pomoeditor&pomoeditor_file={$file}&changes-saved=true" ) );
+			wp_redirect( admin_url( "tools.php?page=pomoeditor&pofile={$file}&changes-saved=true" ) );
 			exit;
 		}
 	}
@@ -162,7 +162,7 @@ final class Manager extends Handler {
 			<h2><?php echo get_admin_page_title(); ?></h2>
 
 			<?php
-			if ( isset( $_REQUEST['pomoeditor_file'] ) ) {
+			if ( isset( $_REQUEST['pofile'] ) ) {
 				static::project_editor();
 			} else {
 				static::project_index();
@@ -225,7 +225,7 @@ final class Manager extends Handler {
 		</table>
 
 		<script type="text/template" id="pomoeditor_item_template">
-			<td class="column-pmeproject-file"><a href="<?php echo admin_url( "tools.php?page={$plugin_page}&pomoeditor_file=" ); ?><%= file.dirname %>/<%= file.basename %>" target="_blank">
+			<td class="column-pmeproject-file"><a href="<?php echo admin_url( "tools.php?page={$plugin_page}&pofile=" ); ?><%= file.dirname %>/<%= file.basename %>" target="_blank">
 				<%= file.dirname %>/<strong><%= file.basename %></strong>
 			</a></td>
 			<td class="column-pmeproject-title"><%= pkginfo.name %></td>
@@ -234,12 +234,12 @@ final class Manager extends Handler {
 		</script>
 
 		<script>
-		POMOEdit.Projects = new POMOEdit.Framework.Projects(<?php echo json_encode( $projects->dump() ); ?>);
+		POMOEditor.Projects = new POMOEditor.Framework.Projects(<?php echo json_encode( $projects->dump() ); ?>);
 
-		POMOEdit.List = new POMOEdit.Framework.ProjectsList( {
+		POMOEditor.List = new POMOEditor.Framework.ProjectsList( {
 			el: document.getElementById( 'pomoeditor_projects' ),
 
-			collection: POMOEdit.Projects,
+			collection: POMOEditor.Projects,
 
 			itemTemplate: document.getElementById( 'pomoeditor_item_template' ),
 		} );
@@ -257,7 +257,7 @@ final class Manager extends Handler {
 	protected static function project_editor() {
 		global $plugin_page;
 
-		$file = $_REQUEST['pomoeditor_file'];
+		$file = $_REQUEST['pofile'];
 		// Load
 		$path = realpath( WP_CONTENT_DIR . '/' . $file );
 		$project = new Project( $path );
@@ -267,7 +267,7 @@ final class Manager extends Handler {
 		$direction = in_array( substr( $project->language( true ), 0, 2 ), Dictionary::$rtl_languages ) ? 'rtl' : 'ltr';
 		?>
 		<form method="post" action="tools.php?page=<?php echo $plugin_page; ?>" id="pomoeditor">
-			<input type="hidden" name="pomoeditor_file" value="<?php echo $file; ?>" />
+			<input type="hidden" name="pofile" value="<?php echo $file; ?>" />
 			<?php wp_nonce_field( 'pomoeditor-manage-' . md5( $file ), '_pomoeditor_nonce' ); ?>
 
 			<h2><?php printf( __( 'Editing: <code>%s</code>', 'pomoeditor' ), $file ); ?></h2>
@@ -383,28 +383,28 @@ final class Manager extends Handler {
 			</script>
 
 			<script>
-			POMOEdit.Project = new POMOEdit.Framework.Project(<?php echo json_encode( $project->dump() ); ?>);
+			POMOEditor.Project = new POMOEditor.Framework.Project(<?php echo json_encode( $project->dump() ); ?>);
 
-			POMOEdit.HeadersEditor = new POMOEdit.Framework.RecordsEditor( {
+			POMOEditor.HeadersEditor = new POMOEditor.Framework.RecordsEditor( {
 				el: document.getElementById( 'pomoeditor_headers' ),
 
-				collection: POMOEdit.Project.Headers,
+				collection: POMOEditor.Project.Headers,
 
 				rowTemplate: document.getElementById( 'pomoeditor_record_template' ),
 			} );
 
-			POMOEdit.MetadataEditor = new POMOEdit.Framework.RecordsEditor( {
+			POMOEditor.MetadataEditor = new POMOEditor.Framework.RecordsEditor( {
 				el: document.getElementById( 'pomoeditor_metadata' ),
 
-				collection: POMOEdit.Project.Metadata,
+				collection: POMOEditor.Project.Metadata,
 
 				rowTemplate: document.getElementById( 'pomoeditor_record_template' ),
 			} );
 
-			POMOEdit.TranslationsEditor = new POMOEdit.Framework.TranslationsEditor( {
+			POMOEditor.TranslationsEditor = new POMOEditor.Framework.TranslationsEditor( {
 				el: document.getElementById( 'pomoeditor_translations' ),
 
-				collection: POMOEdit.Project.Translations,
+				collection: POMOEditor.Project.Translations,
 
 				rowTemplate: document.getElementById( 'pomoeditor_translation_template' ),
 			} );
@@ -420,7 +420,7 @@ final class Manager extends Handler {
 	 */
 	public static function print_notices() {
 		// Return if not on the editor page
-		if ( get_current_screen()->id != 'tools_page_pomoeditor' || ! isset( $_GET['pomoeditor_file'] ) ) {
+		if ( get_current_screen()->id != 'tools_page_pomoeditor' || ! isset( $_GET['pofile'] ) ) {
 			return;
 		}
 

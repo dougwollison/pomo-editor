@@ -45,4 +45,4 @@ require( PME_PLUGIN_DIR . '/includes/functions-pomoeditor.php' );
 // ! Setup
 // =========================
 
-POMOEdit\System::setup();
+POMOEditor\System::setup();
