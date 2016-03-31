@@ -399,6 +399,14 @@ final class Project {
 			$mo->$key = $val;
 		}
 
+		// Ensure backups exist
+		if ( ! file_exists( "{$po_file}.bak" ) ) {
+			copy( $po_file, "{$po_file}.bak" );
+		}
+		if ( ! file_exists( "{$mo_file}.bak" ) ) {
+			copy( $mo_file, "{$mo_file}.bak" );
+		}
+
 		// Export the PO file
 		$this->po->export_to_file( $po_file );
 
