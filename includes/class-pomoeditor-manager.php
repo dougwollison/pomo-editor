@@ -277,6 +277,10 @@ final class Manager extends Handler {
 			<?php printf( __( '<strong>Language:</strong> %1$s', 'pomoeditor' ), $project->language() ); ?>
 			</p>
 
+			<p>
+				<button type="button" id="pomoeditor_advanced" class="button button-secondary"><?php _e( 'Enable Advanced Editing', 'pomoeditor' ); ?></button>
+			</p>
+
 			<h3><?php _e( 'Translations', 'pomoeditor' ); ?></h3>
 
 			<table id="pomoeditor_translations" class="fixed striped widefat pme-direction-<?php echo $direction; ?>">
@@ -328,7 +332,6 @@ final class Manager extends Handler {
 
 			<p class="submit">
 				<button type="submit" id="submit" class="button button-primary"><?php _e( 'Save Translations', 'pomoeditor' ); ?></button>
-				<button type="button" id="pomoeditor_advanced" class="button button-secondary"><?php _e( 'Enable Advanced Editing', 'pomoeditor' ); ?></button>
 			</p>
 
 			<script type="text/template" id="pomoeditor_record_template">

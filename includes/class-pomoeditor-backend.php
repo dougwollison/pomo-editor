@@ -120,7 +120,7 @@ final class Backend extends Handler {
 		wp_localize_script( 'pomoeditor-interface-js', 'pomoeditorL10n', array(
 			'SourceEditingNotice' => __( 'You should not edit the source text; errors may occur with displaying the translated text if you do.', 'pomoeditor' ),
 			'ContextEditingNotice' => __( 'You should not edit the context; errors may occur with displaying the translated text if you do.', 'pomoeditor' ),
-			'ConfirmAdvancedEditing' => __( 'Are you sure you want enable advanced editing? You must ensure the associated PHP code is updated with the new source text and context values.', 'pomoeditor' ),
+			'ConfirmAdvancedEditing' => __( 'Are you sure you want enable advanced editing? You may break some of your translations if you change the source text or context values.', 'pomoeditor' ),
 			'ConfirmCancel' => __( 'Are you sure you want to discard your changes?', 'pomoeditor' ),
 			'ConfirmDelete' => __( 'Are you sure you want to delete this entry? It cannot be undone.', 'pomoeditor' ),
 			'ConfirmSave' => __( 'You have uncommitted translation changes, do you want to discard them before saving?', 'pomoeditor' ),
