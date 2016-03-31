@@ -114,7 +114,11 @@ final class Manager extends Handler {
 		// Check if the file exists...
 		$file = $_REQUEST['pomoedit_file'];
 		$path = realpath( WP_CONTENT_DIR . '/' . $file );
-		if ( ! file_exists( $path ) ) {
+		if ( strtolower( pathinfo( $path, PATHINFO_EXTENSION ) ) != 'po' ) {
+			wp_die( __( 'The requested file is not supported.', 'pomoedit' ), 400 );
+		}
+		// Check the file is a .po file
+		elseif ( ! file_exists( $path ) ) {
 			wp_die( sprintf( __( 'That file cannot be found: %s', 'pomoedit' ), $path ), 404 );
 		}
 		// Check the file is within permitted path
