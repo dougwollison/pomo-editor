@@ -534,6 +534,7 @@ final class Dictionary {
 			$country = "[{$country_code}]";
 		}
 
-		return $country ? sprintf( '%s (%s)', $language, $country ) : $language;
+		/* Translators: %1$s = language name (possibly ISO code), %2$s = country name (possibly ISO code) */
+		return $country ? sprintf( '%1$s (%2$s)', $language, $country ) : $language;
 	}
 }

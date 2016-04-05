@@ -115,18 +115,22 @@ final class Manager extends Handler {
 		$file = $_REQUEST['pofile'];
 		$path = realpath( WP_CONTENT_DIR . '/' . $file );
 		if ( strtolower( pathinfo( $path, PATHINFO_EXTENSION ) ) != 'po' ) {
+			/* Translators: %s = full path to file */
 			wp_die( sprintf( __( 'The requested file is not supported: %s', 'pomo-editor' ), $path ), 400 );
 		}
 		// Check the file is a .po file
 		elseif ( ! file_exists( $path ) ) {
+			/* Translators: %s = full path to file */
 			wp_die( sprintf( __( 'The requested file cannot be found: %s', 'pomo-editor' ), $path ), 404 );
 		}
 		// Check the file is within permitted path
 		elseif ( ! is_path_permitted( $path ) ) {
+			/* Translators: %s = full path to file */
 			wp_die( sprintf( __( 'The requested file is not within one of the permitted paths: %s', 'pomo-editor' ), $path ), 403 );
 		}
 		// Check the file is writable
 		elseif ( ! is_writable( $path ) ) {
+			/* Translators: %s = full path to file */
 			wp_die( sprintf( __( 'The requested file is not writable: %s', 'pomo-editor' ), $path ), 403 );
 		}
 		// Check if the file is being updated
@@ -271,11 +275,18 @@ final class Manager extends Handler {
 			<input type="hidden" name="pofile" value="<?php echo $file; ?>" />
 			<?php wp_nonce_field( 'pomoeditor-manage-' . md5( $file ), '_pomoeditor_nonce' ); ?>
 
-			<h2><?php printf( __( 'Editing: <code>%s</code>', 'pomo-editor' ), $file ); ?></h2>
+			<h2><?php
+			/* Translators: %1$s = filename */
+			printf( __( 'Editing: <code>%s</code>', 'pomo-editor' ), $file ); ?></h2>
 
 			<p>
-			<?php printf( __( '<strong>Package:</strong> %1$s (%2$s)', 'pomo-editor' ), $project->package( 'name' ), $project->package( 'type' ) ); ?><br />
-			<?php printf( __( '<strong>Language:</strong> %1$s', 'pomo-editor' ), $project->language() ); ?>
+				<?php
+				/* Translators: %1$s = package name, %2$s = package type (system, theme, plugin) */
+				printf( __( '<strong>Package:</strong> %1$s (%2$s)', 'pomo-editor' ), $project->package( 'name' ), $project->package( 'type' ) ); ?>
+				<br />
+				<?php
+				/* Translators: %1$s = language name */
+				printf( __( '<strong>Language:</strong> %1$s', 'pomo-editor' ), $project->language() ); ?>
 			</p>
 
 			<p>
