@@ -250,6 +250,7 @@ final class Manager extends Handler {
 	/**
 	 * Output the Project Editor interface.
 	 *
+	 * @since 1.1.0 Updated add buttons to be advanced-mode-only.
 	 * @since 1.0.0
 	 *
 	 * @global string $plugin_page The slug of the current admin page.
@@ -287,7 +288,7 @@ final class Manager extends Handler {
 				<thead>
 					<tr>
 						<th class="pme-edit-col">
-							<button type="button" title="<?php _e( 'Add Translation Entry', 'pomo-editor' ); ?>" class="pme-button pme-add"><?php _e( 'Add Translation Entry', 'pomo-editor' ); ?></button>
+							<button type="button" title="<?php _e( 'Add Translation Entry', 'pomo-editor' ); ?>" class="pme-button pme-add pomoeditor-advanced"><?php _e( 'Add Translation Entry', 'pomo-editor' ); ?></button>
 						</th>
 						<th class="pme-source"><?php _e( 'Source Text', 'pomo-editor' ); ?></th>
 						<th class="pme-translation"><?php _e( 'Translated Text', 'pomo-editor' ); ?></th>

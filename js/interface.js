@@ -24,8 +24,13 @@ jQuery( function( $ ) {
 
 		POMOEditor.advanced = true;
 		$( this ).addClass( 'active' );
-		$( '.pme-input' ).attr( 'readonly', false );
 		$( 'body' ).addClass( 'pomoeditor-advanced-mode' );
+
+		// Turn off read-only on all fields and strip from templates
+		$( '.pme-input' ).attr( 'readonly', false );
+		POMOEditor.HeadersEditor.rowTemplate = POMOEditor.HeadersEditor.rowTemplate.replace( /readonly/g, '' );
+		POMOEditor.MetadataEditor.rowTemplate = POMOEditor.MetadataEditor.rowTemplate.replace( /readonly/g, '' );
+		POMOEditor.TranslationsEditor.rowTemplate = POMOEditor.TranslationsEditor.rowTemplate.replace( /readonly/g, '' );
 	} );
 
 	$( '.pomoeditor-filter' ).change( function() {

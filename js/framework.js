@@ -386,6 +386,9 @@
 		initialize: function( options ) {
 			// Save the row template
 			this.rowTemplate = options.rowTemplate;
+			if ( this.rowTemplate instanceof HTMLElement ) {
+				this.rowTemplate = this.rowTemplate.innerHTML;
+			}
 
 			// Generate the rows for each entry
 			this.collection.each( this.addEntry.bind( this ) );
@@ -396,6 +399,11 @@
 
 		addEntry: function( e ) {
 			var entry, event;
+
+			// Abort if adding a new entry while not in advanced editing mode
+			if ( ! ( e instanceof this.entryModel ) && ! POMOEditor.advanced ) {
+				return;
+			}
 
 			// If e was an itself, assing it to entry, assume no event
 			if ( e instanceof this.entryModel ) {
@@ -430,12 +438,7 @@
 		entryModel: Record,
 		entryView: RecordRow,
 
-		addEntry: function( entry ) {
-			// Abort if adding a new entry while not in advanced editing mode
-			if ( ! ( entry instanceof this.entryModel ) && ! POMOEditor.advanced ) {
-				return;
-			}
-
+		addEntry: function( e ) {
 			Editor.prototype.addEntry.apply( this, arguments );
 		}
 	} );
@@ -444,7 +447,7 @@
 		entryModel: Translation,
 		entryView: TranslationRow,
 
-		addEntry: function() {
+		addEntry: function( e ) {
 			var row = Editor.prototype.addEntry.apply( this, arguments );
 
 			// If newly generated, open for editing
