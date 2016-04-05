@@ -504,6 +504,7 @@ final class Dictionary {
 	/**
 	 * Identify a language/country.
 	 *
+	 * @since 1.1.0 Improved sprintf call for localization purposes.
 	 * @since 1.0.0
 	 *
 	 * @param string $tag The tag to identify.

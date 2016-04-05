@@ -98,6 +98,7 @@ final class Manager extends Handler {
 	 *
 	 * Also save changes to it if posted.
 	 *
+	 * @since 1.1.0 Improved sprintf calls for localization purposes.
 	 * @since 1.0.0
 	 */
 	public static function process_request() {
@@ -254,7 +255,8 @@ final class Manager extends Handler {
 	/**
 	 * Output the Project Editor interface.
 	 *
-	 * @since 1.1.0 Updated add buttons to be advanced-mode-only.
+	 * @since 1.1.0 Updated add buttons to be advanced-mode-only,
+	 *              improved printf calls for localization purposes.
 	 * @since 1.0.0
 	 *
 	 * @global string $plugin_page The slug of the current admin page.
