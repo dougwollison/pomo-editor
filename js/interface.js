@@ -28,42 +28,44 @@ jQuery( function( $ ) {
 
 		// Turn off read-only on all fields and strip from templates
 		$( '.pme-input' ).attr( 'readonly', false );
-		POMOEditor.HeadersEditor.rowTemplate = POMOEditor.HeadersEditor.rowTemplate.replace( /readonly/g, '' );
-		POMOEditor.MetadataEditor.rowTemplate = POMOEditor.MetadataEditor.rowTemplate.replace( /readonly/g, '' );
+		POMOEditor.HeadersEditor.rowTemplate      = POMOEditor.HeadersEditor.rowTemplate.replace( /readonly/g, '' );
+		POMOEditor.MetadataEditor.rowTemplate     = POMOEditor.MetadataEditor.rowTemplate.replace( /readonly/g, '' );
 		POMOEditor.TranslationsEditor.rowTemplate = POMOEditor.TranslationsEditor.rowTemplate.replace( /readonly/g, '' );
 	} );
 
 	$( '.pomoeditor-filter' ).change( function() {
-		var filter = {
+		var filter, visible;
+
+		filter = {
 			type: $filters.type.val(),
 			slug: $filters.slug.val(),
 			lang: $filters.lang.val()
 		};
 
-		var visible = {
+		visible = {
 			type: [],
 			slug: [],
 			lang: []
 		};
 
 		_( POMOEditor.List.children ).each( function( view ) {
-			view.$el.show();
-
 			var type = view.model.get( 'pkginfo' ).type,
 				slug = view.model.get( 'pkginfo' ).slug,
 				lang = view.model.get( 'language' ).code;
 
-			if ( filter.type && type !== filter.type ){
+			view.$el.show();
+
+			if ( filter.type && type !== filter.type ) {
 				view.$el.hide();
 				return;
 			}
 
-			if ( filter.slug && slug !== filter.slug ){
+			if ( filter.slug && slug !== filter.slug ) {
 				view.$el.hide();
 				return;
 			}
 
-			if ( filter.lang && lang !== filter.lang ){
+			if ( filter.lang && lang !== filter.lang ) {
 				view.$el.hide();
 				return;
 			}
@@ -90,6 +92,8 @@ jQuery( function( $ ) {
 	} );
 
 	$( '#pomoeditor' ).submit( function( e ) {
+		var Project, $storage, data;
+
 		if ( $( '.pme-translation.changed' ).length > 0 ) {
 			if ( ! confirm( pomoeditorL10n.ConfirmSave ) ) {
 				e.preventDefault();
@@ -103,11 +107,11 @@ jQuery( function( $ ) {
 
 		$( '#submit' ).text( pomoeditorL10n.Saving );
 
-		var Project = POMOEditor.Project;
-		var $storage = $('<textarea name="podata"></textarea>').hide().appendTo(this);
+		Project = POMOEditor.Project;
+		$storage = $( '<textarea name="podata"></textarea>' ).hide().appendTo( this );
 
-		var data = {
-			entries: [],
+		data = {
+			entries: []
 		};
 
 		Project.Translations.each( function( entry ) {
