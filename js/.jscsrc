@@ -1,0 +1,6 @@
+{
+	"preset": "wordpress",
+
+	// We want to have aligned object values for neatness
+	"disallowSpaceAfterObjectKeys": false
+}

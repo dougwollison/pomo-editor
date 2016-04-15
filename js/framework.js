@@ -1,22 +1,19 @@
 /* globals _, Backbone, pomoeditorL10n, confirm */
 ( function( $ ) {
-	var POMOEditor = window.POMOEditor = {};
+	var POMOEditor = window.POMOEditor = {
+		advanced: false	// Wether or not advanced editing is enabled
+	};
+
+	// =========================
+	// ! Backbone Stuff
+	// =========================
+
 	var Framework = POMOEditor.Framework = {};
-
-	// =========================
-	// ! Miscellaneous
-	// =========================
-
-	POMOEditor.advanced = false; // Wether or not advanced editing is enabled
-
-	// =========================
-	// ! Models/Collections
-	// =========================
 
 	var Record = Framework.Record = Backbone.Model.extend( {
 		defaults: {
-			name: '',
-			value: '',
+			name  : '',
+			value : ''
 		}
 	} );
 
@@ -24,10 +21,15 @@
 		model: Record,
 
 		reset: function( models, options ) {
+			var _models, k;
+
 			if ( ! ( models instanceof Array ) ) {
-				var _models = [];
-				for ( var k in models ) {
-					_models.push( { name: k, value: models[ k ] } );
+				_models = [];
+				for ( k in models ) {
+					_models.push( {
+						name: k,
+						value: models[ k ]
+					} );
 				}
 				models = _models;
 			}
@@ -38,15 +40,15 @@
 
 	var Translation = Framework.Translation = Backbone.Model.extend( {
 		defaults: {
-			is_plural: false,
-			context: '',
-			singular: '',
-			plural: '',
-			translations: [],
-			translator_comments: '',
-			extracted_comments: '',
-			references: [],
-			flags: [],
+			is_plural           : false,
+			context             : '',
+			singular            : '',
+			plural              : '',
+			translations        : [],
+			translator_comments : '',
+			extracted_comments  : '',
+			references          : [],
+			flags               : []
 		},
 
 		initialize: function() {
@@ -71,7 +73,7 @@
 		key: function() {
 			var key;
 
-			if ( this.get( 'singular' ) === null || this.get( 'singular' ) === '' ) {
+			if ( null === this.get( 'singular' ) || '' === this.get( 'singular' ) ) {
 				key = this.cid;
 			}
 
@@ -102,27 +104,24 @@
 
 	var Project = Framework.Project = Backbone.Model.extend( {
 		defaults: {
-			file: {},
-			language: {},
-			pkginfo: {},
+			file     : {},
+			language : {},
+			pkginfo  : {}
 		},
 
 		constructor: function( attributes, options ) {
-			this.Headers = new Records();
-			this.Metadata = new Records();
+			this.Headers      = new Records();
+			this.Metadata     = new Records();
 			this.Translations = new Translations();
 
 			if ( attributes.po_headers ) {
 				this.Headers.reset( attributes.po_headers );
-				//delete attributes.po_headers;
 			}
 			if ( attributes.po_metadata ) {
 				this.Metadata.reset( attributes.po_metadata );
-				//delete attributes.po_metadata;
 			}
 			if ( attributes.po_entries ) {
 				this.Translations.reset( attributes.po_entries );
-				//delete attributes.po_entries;
 			}
 
 			Backbone.Model.call( this, attributes, options );
@@ -191,12 +190,12 @@
 		className: 'pme-row',
 
 		events: {
-			'click .pme-delete': 'destroy',
-			'change .pme-input': 'save',
+			'click .pme-delete' : 'destroy',
+			'change .pme-input' : 'save'
 		},
 
 		isBlank: function() {
-			return this.$el.find( 'input,textarea' ).val() === '';
+			return '' === this.$el.find( 'input,textarea' ).val();
 		},
 
 		remove: function() {
@@ -236,22 +235,19 @@
 
 	var RecordRow = Framework.RecordRow = EditorRow.extend( {
 		events: {
-			'click .pme-delete': 'destroy',
-			'keyup .pme-name-input': 'updateName',
-			'keyup .pme-value-input': 'updateValue',
+			'click .pme-delete'      : 'destroy',
+			'keyup .pme-name-input'  : 'updateName',
+			'keyup .pme-value-input' : 'updateValue'
 		},
 
 		updateName: function( e ) {
-			// Only upate if advanced editing is enabled
-			if ( POMOEditor.advanced ) {
+			if ( POMOEditor.advanced ) { // Only update name in advanced mode
 				this.model.set( 'name', $( e.target ).val() );
 			}
 		},
 
 		updateValue: function( e ) {
-			console.log(e.target);
-			// Only upate if advanced editing is enabled
-			if ( POMOEditor.advanced ) {
+			if ( POMOEditor.advanced ) { // Only update value in advanced mode
 				this.model.set( 'value', $( e.target ).val() );
 			}
 		}
@@ -263,17 +259,17 @@
 		className: 'pme-translation',
 
 		events: {
-			'click .pme-delete': 'destroy',
-			'click .pme-edit': 'toggle',
-			'click .pme-save': 'save',
-			'click .pme-cancel': 'close',
-			'keyup .pme-input': 'checkChanges',
+			'click .pme-delete' : 'destroy',
+			'click .pme-edit'   : 'toggle',
+			'click .pme-save'   : 'save',
+			'click .pme-cancel' : 'close',
+			'keyup .pme-input'  : 'checkChanges'
 		},
 
 		initialize: function() {
-			this.$el.toggleClass( 'has-context', this.model.get( 'context' ) !== null );
+			this.$el.toggleClass( 'has-context', null !== this.model.get( 'context' ) );
 			this.$el.toggleClass( 'has-plural', this.model.get( 'is_plural' ) );
-			this.$el.toggleClass( 'no-plural', !this.model.get( 'is_plural' ) );
+			this.$el.toggleClass( 'no-plural', ! this.model.get( 'is_plural' ) );
 
 			this.listenTo( this.model, 'change:singular change:plural', this.renderSource );
 			this.listenTo( this.model, 'change:translations', this.renderTranslation );
@@ -282,8 +278,8 @@
 		},
 
 		renderSource: function() {
-			var singular = this.model.get( 'singular' );
-			var plural = this.model.get( 'plural' );
+			var singular = this.model.get( 'singular' ),
+				plural = this.model.get( 'plural' );
 
 			this.$el.find( '.pme-source .pme-preview.pme-singular' ).html( singular );
 			this.$el.find( '.pme-source .pme-input.pme-singular' ).val( singular );
@@ -310,16 +306,19 @@
 		},
 
 		checkChanges: function() {
-			var context = this.model.get( 'context' );
-			var singular = this.model.get( 'singular' );
-			var plural = this.model.get( 'plural' );
-			var translations = this.model.get( 'translations' );
+			var context, singular, plural, translations;
 
-			if ( this.$el.find( '.pme-context .pme-input' ).val() !== context
-			|| this.$el.find( '.pme-source .pme-input.pme-singular' ).val() !== singular
-			|| this.$el.find( '.pme-source .pme-input.pme-singular' ).val() !== plural
-			|| this.$el.find( '.pme-translated .pme-input.pme-singular' ).val() !== this.model.get( translations[0] )
-			|| this.$el.find( '.pme-translated .pme-input.pme-singular' ).val() !== this.model.get( translations[1] ) ) {
+			context      = this.model.get( 'context' );
+			singular     = this.model.get( 'singular' );
+			plural       = this.model.get( 'plural' );
+			translations = this.model.get( 'translations' );
+
+			if ( context  !== this.$el.find( '.pme-context .pme-input' ).val() ||
+				 singular !== this.$el.find( '.pme-source .pme-input.pme-singular' ).val() ||
+				 plural   !== this.$el.find( '.pme-source .pme-input.pme-singular' ).val() ||
+				 this.model.get( translations[0] ) !== this.$el.find( '.pme-translated .pme-input.pme-singular' ).val() ||
+				 this.model.get( translations[1] ) !== this.$el.find( '.pme-translated .pme-input.pme-singular' ).val() )
+			{
 				this.$el.addClass( 'changed' );
 			}
 		},
@@ -335,9 +334,10 @@
 		},
 
 		close: function( e, noconfirm ) {
-			if ( this.$el.hasClass( 'changed' ) && noconfirm !== true ) {
+			if ( this.$el.hasClass( 'changed' ) && true !== noconfirm ) {
+
+				// Need to confirm closing without saving changes
 				if ( confirm( pomoeditorL10n.ConfirmCancel ) ) {
-					// Reset
 					this.renderSource();
 					this.renderTranslation();
 					this.renderContext();
@@ -353,8 +353,7 @@
 		},
 
 		save: function() {
-			// Only save context/source changes if advanced editing is enabled
-			if ( POMOEditor.advanced ) {
+			if ( POMOEditor.advanced ) { // Only save context/source if in advanced mode
 				this.model.set( 'context', this.$el.find( '.pme-context .pme-input' ).val() );
 				this.model.set( 'singular', this.$el.find( '.pme-source .pme-input.pme-singular' ).val() );
 				this.model.set( 'plural', this.$el.find( '.pme-source .pme-input.pme-plural' ).val() );
@@ -378,14 +377,15 @@
 
 	var Editor = Framework.Editor = Backbone.View.extend( {
 		events: {
-			'click .pme-add': 'addEntry',
+			'click .pme-add': 'addEntry'
 		},
 
 		entryView: Backbone.View,
 
 		initialize: function( options ) {
-			// Save the row template
 			this.rowTemplate = options.rowTemplate;
+
+			// If the row template is an element, get the inner HTML
 			if ( this.rowTemplate instanceof HTMLElement ) {
 				this.rowTemplate = this.rowTemplate.innerHTML;
 			}
@@ -398,7 +398,7 @@
 		},
 
 		addEntry: function( e ) {
-			var entry, event;
+			var entry, event, row, $tbody;
 
 			// Abort if adding a new entry while not in advanced editing mode
 			if ( ! ( e instanceof this.entryModel ) && ! POMOEditor.advanced ) {
@@ -410,6 +410,7 @@
 				entry = e;
 				event = false;
 			}
+
 			// Otherwise, it's the event, and create a blank entry
 			else {
 				event = e;
@@ -418,12 +419,12 @@
 			}
 
 			// Creat the row and add it
-			var row = new this.entryView( {
+			row = new this.entryView( {
 				model: entry,
-				template: this.rowTemplate,
+				template: this.rowTemplate
 			} );
 
-			var $tbody = this.$el.find( 'tbody' );
+			$tbody = this.$el.find( 'tbody' );
 			if ( event && $( event.target ).parents( 'thead' ).length > 0 ) {
 				$tbody.prepend( row.$el );
 			} else {
@@ -435,8 +436,8 @@
 	} );
 
 	var RecordsEditor = Framework.RecordsEditor = Editor.extend( {
-		entryModel: Record,
-		entryView: RecordRow,
+		entryModel : Record,
+		entryView  : RecordRow,
 
 		addEntry: function( e ) {
 			Editor.prototype.addEntry.apply( this, arguments );
@@ -444,8 +445,8 @@
 	} );
 
 	var TranslationsEditor = Framework.TranslationsEditor = Editor.extend( {
-		entryModel: Translation,
-		entryView: TranslationRow,
+		entryModel : Translation,
+		entryView  : TranslationRow,
 
 		addEntry: function( e ) {
 			var row = Editor.prototype.addEntry.apply( this, arguments );
