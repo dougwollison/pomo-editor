@@ -26,9 +26,12 @@
 			border-left: 1px solid rgba(#000, .08);
 		}
 	}
-	.pme-edit-col {
+	.pme-edit-col,
+	.pme-info-col {
 		width: 35px;
 		padding: 0;
+	}
+	.pme-edit-col {
 		border-left: none;
 	}
 }
@@ -49,7 +52,8 @@
 		}
 
 		.pme-actions,
-		.pme-inputs {
+		.pme-inputs,
+		.pme-comments {
 			display: none;
 		}
 
@@ -59,7 +63,8 @@
 				display: none;
 			}
 			.pme-actions,
-			.pme-inputs {
+			.pme-inputs,
+			.pme-comments {
 				display: block;
 			}
 		}
@@ -89,6 +94,16 @@
 					display: block;
 				}
 			}
+
+		.pme-comments {
+			padding: 5px 0 0;
+			font-family: Consolas, Monaco, monospace;
+			font-size: .8em;
+
+			&:empty {
+				display: none !important;
+			}
+		}
 
 		.pme-button {
 			display: block;
@@ -138,6 +153,17 @@
 
 				&:after {
 					content: '\f132';
+				}
+			}
+			.pme-info {
+				display: none;
+
+				&:after {
+					content: '\f348';
+				}
+
+				.has-comments & {
+					display: block;
 				}
 			}
 

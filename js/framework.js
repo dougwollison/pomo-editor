@@ -203,6 +203,7 @@
 		},
 
 		initialize: function( options ) {
+
 			this.model.view = this;
 
 			if ( options.template ) {
@@ -216,6 +217,8 @@
 			this.listenTo( this.model, 'destroy', this.remove );
 
 			this.render();
+
+			this.$el.data( 'model', this.model );
 		},
 
 		render: function() {
@@ -270,6 +273,7 @@
 			this.$el.toggleClass( 'has-context', null !== this.model.get( 'context' ) );
 			this.$el.toggleClass( 'has-plural', this.model.get( 'is_plural' ) );
 			this.$el.toggleClass( 'no-plural', ! this.model.get( 'is_plural' ) );
+			this.$el.toggleClass( 'has-comments', '' !== this.model.get( 'translator_comments' ) || '' !== this.model.get( 'extracted_comments' ) || this.model.get( 'references' ).length > 0 || this.model.get( 'flags' ).length > 0 );
 
 			this.listenTo( this.model, 'change:singular change:plural', this.renderSource );
 			this.listenTo( this.model, 'change:translations', this.renderTranslation );

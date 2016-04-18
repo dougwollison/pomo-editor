@@ -301,7 +301,7 @@ final class Manager extends Handler {
 				<thead>
 					<tr>
 						<th class="pme-edit-col">
-							<button type="button" title="<?php _e( 'Add Translation Entry', 'pomo-editor' ); ?>" class="pme-button pme-add pomoeditor-advanced"><?php _e( 'Add Translation Entry', 'pomo-editor' ); ?></button>
+							<button type="button" title="<?php _e( 'Add Translation Entry', 'pomo-editor' ); ?>" class="pme-button pme-add pomoeditor-advanced"><?php _e( 'Add Entry', 'pomo-editor' ); ?></button>
 						</th>
 						<th class="pme-source"><?php _e( 'Source Text', 'pomo-editor' ); ?></th>
 						<th class="pme-translation"><?php _e( 'Translated Text', 'pomo-editor' ); ?></th>
@@ -378,6 +378,7 @@ final class Manager extends Handler {
 						<textarea class="pme-input pme-singular" title="<?php _e( 'Singular', 'pomo-editor' ); ?>" rows="4" readonly><%- singular %></textarea>
 						<textarea class="pme-input pme-plural" title="<?php _e( 'Plural', 'pomo-editor' ); ?>" rows="4" readonly><%- plural %></textarea>
 					</div>
+					<div class="pme-comments"><%- extracted_comments %></div>
 				</td>
 				<td class="pme-translated">
 					<div class="pme-previews">
@@ -388,6 +389,7 @@ final class Manager extends Handler {
 						<textarea class="pme-input pme-singular" title="<?php _e( 'Singular', 'pomo-editor' ); ?>" rows="4"><%- translations[0] %></textarea>
 						<textarea class="pme-input pme-plural" title="<?php _e( 'Plural', 'pomo-editor' ); ?>" rows="4"><%- translations[1] %></textarea>
 					</div>
+					<div class="pme-comments"><%- translator_comments %></div>
 				</td>
 				<td class="pme-context">
 					<div class="pme-previews">
@@ -396,6 +398,7 @@ final class Manager extends Handler {
 					<div class="pme-inputs">
 						<textarea class="pme-input" rows="4" readonly><%- context %></textarea>
 					</div>
+					<div class="pme-comments"><% print( references.join( '<br /> ' ) ); %></div>
 				</td>
 			</script>
 

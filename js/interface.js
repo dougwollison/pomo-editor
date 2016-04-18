@@ -1,4 +1,4 @@
-/* globals _, POMOEditor, pomoeditorL10n, alert, confirm */
+/* globals _, POMOEditor, pomoeditorL10n, alert, confirm, tb_show */
 jQuery( function( $ ) {
 	var $filters = {
 		type: $( '#filter_by_type' ),
