@@ -40,6 +40,16 @@
 	.pme-context {
 		width: 200px;
 	}
+
+	.screen-reader-text {
+		position: relative;
+		margin: 0;
+		height: auto;
+		width: auto;
+		clip: auto;
+		overflow: visible;
+		opacity: .75;
+	}
 }
 	.pme-translation {
 		td {
