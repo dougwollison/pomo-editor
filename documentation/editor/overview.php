@@ -13,3 +13,5 @@ printf( __( 'By default, editing the source text and context is disabled, since 
 <p><?php _e( 'When you’re done editing translation entries, click the <strong>Save Translations</strong> button to update the .po file and regenerate the .mo file.', 'pomo-editor' ); ?> <em><?php _e( 'It is recommended you backup the original translation files to be safe, in the event an error occurs with updating/compiling.', 'pomo-editor' ); ?></em></p>
 
 <p><?php _e( 'Some entries include a <em>context</em> qualifier, which allows multiple translations of the same basic text for different uses. The context for an entry cannot be changed.', 'pomo-editor' ); ?></p>
+
+<p><?php _e( 'When editing a translation entry, you can also view the <em>developer comments</em> and <em>code references</em>, as well as leave/edit your own comments under the translation. Like the source text and context, you can edit the developer comment and code references in Advanced Editing Mode.', 'pomoe-editor' ); ?></p>
