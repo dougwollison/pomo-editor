@@ -78,6 +78,7 @@
 			&[readonly] {
 				background: transparent;
 				background: rgba(#fff, .5);
+				border-color: rgba(#ddd, .5);
 				box-shadow: none;
 			}
 
@@ -91,7 +92,8 @@
 				padding-top: 5px;
 				margin-top: 5px;
 
-				.has-plural.open & {
+				.has-plural &.pme-preview,
+				.has-plural.open &.pme-input {
 					display: block;
 				}
 			}
