@@ -42,8 +42,7 @@
 .pme-translation.open .pme-previews {
   display: none; }
 .pme-translation.open .pme-actions,
-.pme-translation.open .pme-inputs,
-.pme-translation.open .pme-comments {
+.pme-translation.open .pme-inputs {
   display: block; }
 
 .pme-input {
