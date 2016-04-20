@@ -380,7 +380,8 @@ final class Manager extends Handler {
 						<textarea class="pme-input pme-plural" title="<?php _e( 'Plural', 'pomo-editor' ); ?>" rows="4" readonly></textarea>
 					</div>
 					<div class="pme-comments pme-extracted-comments">
-						<textarea class="pme-input" title="<?php _e( 'Developer Comments', 'pomo-editor' ); ?>" rows="4" readonly></textarea>
+						<div class="pme-preview pomoeditor-basic"></div>
+						<textarea class="pme-input pomoeditor-advanced" title="<?php _e( 'Developer Comments', 'pomo-editor' ); ?>" rows="4" readonly></textarea>
 					</div>
 				</td>
 				<td class="pme-translated">
@@ -404,7 +405,8 @@ final class Manager extends Handler {
 						<textarea class="pme-input" rows="4" readonly></textarea>
 					</div>
 					<div class="pme-comments pme-references">
-						<textarea class="pme-input" title="<?php _e( 'Code References', 'pomo-editor' ); ?>" rows="4" readonly></textarea>
+						<ul class="pme-preview pomoeditor-basic"></ul>
+						<textarea class="pme-input pomoeditor-advanced" title="<?php _e( 'Code References', 'pomo-editor' ); ?>" rows="4" readonly></textarea>
 					</div>
 				</td>
 			</script>

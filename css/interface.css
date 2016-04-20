@@ -71,8 +71,11 @@
   padding: 5px 0 0;
   font-family: Consolas, Monaco, monospace;
   font-size: .8em; }
-  .pme-comments .pme-input {
+  .pme-comments .pme-input,
+  .pme-comments .pme-preview {
     font-size: 1em; }
+  .pme-comments .pme-preview {
+    margin: 0; }
 
 .has-extracted-comments.open .pme-extracted-comments,
 .has-translator-comments.open .pme-translator-comments,
@@ -127,3 +130,8 @@
   display: none; }
   .pomoeditor-advanced-mode .pomoeditor-advanced {
     display: block; }
+
+.pomoeditor-basic {
+  display: block; }
+  .pomoeditor-advanced-mode .pomoeditor-basic {
+    display: none; }
