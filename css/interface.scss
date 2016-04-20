@@ -111,10 +111,11 @@
 		.pme-comments {
 			display: none;
 			padding: 5px 0 0;
+			font-family: Consolas, Monaco, monospace;
+			font-size: .8em;
 
 			.pme-input {
-				font-family: Consolas, Monaco, monospace;
-				font-size: .8em;
+				font-size: 1em;
 			}
 		}
 			.has-extracted-comments.open .pme-extracted-comments,
@@ -125,6 +126,14 @@
 			.pme-references .pme-input {
 				white-space: nowrap;
 			}
+
+		.pme-reference-links {
+			a {
+				display: block;
+				line-height: 1.2em;
+				margin: 5px 0 0;
+			}
+		}
 
 		.pme-button {
 			display: block;

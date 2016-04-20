@@ -372,39 +372,42 @@ final class Manager extends Handler {
 				</td>
 				<td class="pme-source">
 					<div class="pme-previews">
-						<div class="pme-preview pme-singular" title="<?php _e( 'Singular', 'pomo-editor' ); ?>"><%= singular %></div>
-						<div class="pme-preview pme-plural" title="<?php _e( 'Plural', 'pomo-editor' ); ?>"><%= plural %></div>
+						<div class="pme-preview pme-singular" title="<?php _e( 'Singular', 'pomo-editor' ); ?>"></div>
+						<div class="pme-preview pme-plural" title="<?php _e( 'Plural', 'pomo-editor' ); ?>"></div>
 					</div>
 					<div class="pme-inputs">
-						<textarea class="pme-input pme-singular" title="<?php _e( 'Singular', 'pomo-editor' ); ?>" rows="4" readonly><%- singular %></textarea>
-						<textarea class="pme-input pme-plural" title="<?php _e( 'Plural', 'pomo-editor' ); ?>" rows="4" readonly><%- plural %></textarea>
+						<textarea class="pme-input pme-singular" title="<?php _e( 'Singular', 'pomo-editor' ); ?>" rows="4" readonly></textarea>
+						<textarea class="pme-input pme-plural" title="<?php _e( 'Plural', 'pomo-editor' ); ?>" rows="4" readonly></textarea>
 					</div>
 					<div class="pme-comments pme-extracted-comments">
-						<textarea class="pme-input" title="<?php _e( 'Developer Comments', 'pomo-editor' ); ?>" rows="4" readonly><%- extracted_comments.replace( /[\t\ ]+/g, ' ' ) %></textarea>
+						<textarea class="pme-input" title="<?php _e( 'Developer Comments', 'pomo-editor' ); ?>" rows="4" readonly></textarea>
 					</div>
 				</td>
 				<td class="pme-translated">
 					<div class="pme-previews">
-						<div class="pme-preview pme-singular" title="<?php _e( 'Singular', 'pomo-editor' ); ?>"><%= translations[0] %></div>
-						<div class="pme-preview pme-plural" title="<?php _e( 'Plural', 'pomo-editor' ); ?>"><%= translations[1] %></div>
+						<div class="pme-preview pme-singular" title="<?php _e( 'Singular', 'pomo-editor' ); ?>"></div>
+						<div class="pme-preview pme-plural" title="<?php _e( 'Plural', 'pomo-editor' ); ?>"></div>
 					</div>
 					<div class="pme-inputs">
-						<textarea class="pme-input pme-singular" title="<?php _e( 'Singular', 'pomo-editor' ); ?>" rows="4"><%- translations[0] %></textarea>
-						<textarea class="pme-input pme-plural" title="<?php _e( 'Plural', 'pomo-editor' ); ?>" rows="4"><%- translations[1] %></textarea>
+						<textarea class="pme-input pme-singular" title="<?php _e( 'Singular', 'pomo-editor' ); ?>" rows="4"></textarea>
+						<textarea class="pme-input pme-plural" title="<?php _e( 'Plural', 'pomo-editor' ); ?>" rows="4"></textarea>
 					</div>
 					<div class="pme-comments pme-translator-comments">
-						<textarea class="pme-input" title="<?php _e( 'Translator Comments', 'pomo-editor' ); ?>" rows="4"><%- translator_comments.replace( /[\t\ ]+/g, ' ' ) %></textarea>
+						<textarea class="pme-input" title="<?php _e( 'Translator Comments', 'pomo-editor' ); ?>" rows="4"></textarea>
 					</div>
 				</td>
 				<td class="pme-context">
 					<div class="pme-previews">
-						<div class="pme-preview"><%= context %></div>
+						<div class="pme-preview"></div>
 					</div>
 					<div class="pme-inputs">
-						<textarea class="pme-input" rows="4" readonly><%- context %></textarea>
+						<textarea class="pme-input" rows="4" readonly></textarea>
 					</div>
 					<div class="pme-comments pme-references">
-						<textarea class="pme-input" title="<?php _e( 'Code References', 'pomo-editor' ); ?>" rows="4" readonly><% print( _.escape( references.join( '\n' ) ) ); %></textarea>
+						<div class="pme-reference-links"></div>
+						<div class="pomoeditor-advanced">
+							<textarea class="pme-input" title="<?php _e( 'Code References', 'pomo-editor' ); ?>" rows="4" readonly></textarea>
+						</div>
 					</div>
 				</td>
 			</script>

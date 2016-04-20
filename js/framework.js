@@ -278,9 +278,19 @@
 
 			this.listenTo( this.model, 'change:singular change:plural', this.renderSource );
 			this.listenTo( this.model, 'change:translations', this.renderTranslation );
+			this.listenTo( this.model, 'change:context', this.renderContext );
 			this.listenTo( this.model, 'change:extracted_comments change:translator_comments change:references', this.renderComments );
 
 			EditorRow.prototype.initialize.apply( this, arguments );
+		},
+
+		render: function() {
+			EditorRow.prototype.render.apply( this );
+
+			this.renderSource();
+			this.renderTranslation();
+			this.renderContext();
+			this.renderComments();
 		},
 
 		renderSource: function() {
@@ -312,9 +322,16 @@
 		},
 
 		renderComments: function() {
+			var references = this.model.get( 'references' ), $list, i;
+
 			this.$el.find( '.pme-extracted-comments .pme-input' ).val( this.model.get( 'extracted_comments' ) );
 			this.$el.find( '.pme-translator-comments .pme-input' ).val( this.model.get( 'translator_comments' ) );
-			this.$el.find( '.pme-references .pme-input' ).val( this.model.get( 'references' ).join( '\n' ) );
+			this.$el.find( '.pme-references .pme-input' ).val( references.join( '\n' ) );
+
+			$list = this.$el.find( '.pme-reference-links' ).empty();
+			for ( i in references ) {
+				$list.append( '<a href="#">' + references[i] + '</a>' );
+			}
 		},
 
 		checkChanges: function() {
@@ -359,6 +376,7 @@
 					this.renderSource();
 					this.renderTranslation();
 					this.renderContext();
+					this.renderComments();
 					this.$el.removeClass( 'changed' );
 				} else {
 					return;
