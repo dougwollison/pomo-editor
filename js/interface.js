@@ -26,7 +26,7 @@ jQuery( function( $ ) {
 		}
 
 		POMOEditor.advanced = true;
-		$( this ).addClass( 'active' );
+		$( this ).addClass( 'active' ).text( pomoeditorL10n.AdvancedEditingEnabled );
 		$( 'body' ).addClass( 'pomoeditor-advanced-mode' );
 
 		// Turn off read-only on all fields and strip from templates
@@ -104,7 +104,7 @@ jQuery( function( $ ) {
 			}
 		}
 
-		$( '#submit' ).text( pomoeditorL10n.Saving );
+		$( '#submit' ).text( pomoeditorL10n.SavingTranslations );
 
 		POMOEditor.Project.Translations.each( function( translation ) {
 			translation.view.close( null, true );

@@ -163,14 +163,14 @@
 					content: '\f132';
 				}
 			}
-			.pme-info {
+			.pme-viewrefs {
 				display: none;
 
 				&:after {
-					content: '\f348';
+					content: '\f475';
 				}
 
-				.has-comments & {
+				.has-references & {
 					display: block;
 				}
 			}

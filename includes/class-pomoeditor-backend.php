@@ -123,7 +123,8 @@ final class Backend extends Handler {
 			'ConfirmCancel' => __( 'Are you sure you want to discard your changes?', 'pomo-editor' ),
 			'ConfirmDelete' => __( 'Are you sure you want to delete this entry? It cannot be undone.', 'pomo-editor' ),
 			'ConfirmSave' => __( 'You have uncommitted translation changes, do you want to discard them before saving?', 'pomo-editor' ),
-			'Saving' => __( 'Saving Translations...', 'pomo-editor' ),
+			'AdvancedEditingEnabled' => __( 'Advanced Editing Enabled', 'pomo-editor' ),
+			'SavingTranslations' => __( 'Saving Translations...', 'pomo-editor' ),
 		) );
 	}
 }

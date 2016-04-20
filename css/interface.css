@@ -104,11 +104,11 @@
   .pme-add:after {
     content: '\f132'; }
 
-.pme-info {
+.pme-viewrefs {
   display: none; }
-  .pme-info:after {
-    content: '\f348'; }
-  .has-comments .pme-info {
+  .pme-viewrefs:after {
+    content: '\f475'; }
+  .has-references .pme-viewrefs {
     display: block; }
 
 .pme-direction-ltr .pme-translated {
