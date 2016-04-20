@@ -112,6 +112,9 @@
 			.has-references.open .pme-references {
 				display: block;
 			}
+			.pme-references .pme-input {
+				white-space: nowrap;
+			}
 
 		.pme-button {
 			display: block;
@@ -161,17 +164,6 @@
 
 				&:after {
 					content: '\f132';
-				}
-			}
-			.pme-viewrefs {
-				display: none;
-
-				&:after {
-					content: '\f475';
-				}
-
-				.has-references & {
-					display: block;
 				}
 			}
 

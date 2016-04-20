@@ -71,6 +71,9 @@
 .has-references.open .pme-references {
   display: block; }
 
+.pme-references .pme-input {
+  white-space: nowrap; }
+
 .pme-button {
   display: block;
   font: 0/0 a;
@@ -103,13 +106,6 @@
   padding-top: 2px; }
   .pme-add:after {
     content: '\f132'; }
-
-.pme-viewrefs {
-  display: none; }
-  .pme-viewrefs:after {
-    content: '\f475'; }
-  .has-references .pme-viewrefs {
-    display: block; }
 
 .pme-direction-ltr .pme-translated {
   direction: ltr;
