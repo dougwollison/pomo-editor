@@ -274,7 +274,7 @@
 			this.$el.toggleClass( 'has-plural', this.model.get( 'is_plural' ) );
 			this.$el.toggleClass( 'has-extracted-comments', '' !== this.model.get( 'extracted_comments' ) );
 			this.$el.toggleClass( 'has-translator-comments', '' !== this.model.get( 'translator_comments' ) );
-			this.$el.toggleClass( 'has-references', '' !== this.model.get( 'references' ).length > 0 );
+			this.$el.toggleClass( 'has-references', this.model.get( 'references' ).length > 0 );
 
 			this.listenTo( this.model, 'change:singular change:plural', this.renderSource );
 			this.listenTo( this.model, 'change:translations', this.renderTranslation );
