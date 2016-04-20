@@ -404,10 +404,7 @@ final class Manager extends Handler {
 						<textarea class="pme-input" rows="4" readonly></textarea>
 					</div>
 					<div class="pme-comments pme-references">
-						<div class="pme-reference-links"></div>
-						<div class="pomoeditor-advanced">
-							<textarea class="pme-input" title="<?php _e( 'Code References', 'pomo-editor' ); ?>" rows="4" readonly></textarea>
-						</div>
+						<textarea class="pme-input" title="<?php _e( 'Code References', 'pomo-editor' ); ?>" rows="4" readonly></textarea>
 					</div>
 				</td>
 			</script>

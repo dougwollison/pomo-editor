@@ -322,16 +322,9 @@
 		},
 
 		renderComments: function() {
-			var references = this.model.get( 'references' ), $list, i;
-
 			this.$el.find( '.pme-extracted-comments .pme-input' ).val( this.model.get( 'extracted_comments' ) );
 			this.$el.find( '.pme-translator-comments .pme-input' ).val( this.model.get( 'translator_comments' ) );
-			this.$el.find( '.pme-references .pme-input' ).val( references.join( '\n' ) );
-
-			$list = this.$el.find( '.pme-reference-links' ).empty();
-			for ( i in references ) {
-				$list.append( '<a href="#">' + references[i] + '</a>' );
-			}
+			this.$el.find( '.pme-references .pme-input' ).val( this.model.get( 'references' ).join( '\n' ) );
 		},
 
 		checkChanges: function() {
