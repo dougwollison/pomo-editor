@@ -76,7 +76,8 @@
 			margin: 0;
 
 			&[readonly] {
-				background: #fefefe;
+				background: transparent;
+				background: rgba(#fff, .5);
 				box-shadow: none;
 			}
 
@@ -90,20 +91,25 @@
 				padding-top: 5px;
 				margin-top: 5px;
 
-				.has-plural & {
+				.has-plural.open & {
 					display: block;
 				}
 			}
 
 		.pme-comments {
+			display: none;
 			padding: 5px 0 0;
-			font-family: Consolas, Monaco, monospace;
-			font-size: .8em;
 
-			&:empty {
-				display: none !important;
+			.pme-input {
+				font-family: Consolas, Monaco, monospace;
+				font-size: .8em;
 			}
 		}
+			.has-extracted-comments.open .pme-extracted-comments,
+			.has-translator-comments.open .pme-translator-comments,
+			.has-references.open .pme-references {
+				display: block;
+			}
 
 		.pme-button {
 			display: block;

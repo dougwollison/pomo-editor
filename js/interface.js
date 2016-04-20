@@ -6,11 +6,14 @@ jQuery( function( $ ) {
 		lang: $( '#filter_by_language' )
 	};
 
-	$( '#pomoeditor_translations' ).on( 'click', '.pme-source .pme-input[readonly]', function() {
+	$( '#pomoeditor_translations' ).on( 'click', '.pme-source .pme-inputs .pme-input[readonly]', function() {
 		alert( pomoeditorL10n.SourceEditingNotice );
 	} );
-	$( '#pomoeditor_translations' ).on( 'click', '.pme-context .pme-input[readonly]', function() {
+	$( '#pomoeditor_translations' ).on( 'click', '.pme-context .pme-inputs .pme-input[readonly]', function() {
 		alert( pomoeditorL10n.ContextEditingNotice );
+	} );
+	$( '#pomoeditor_translations' ).on( 'click', '.pme-comments .pme-input[readonly]', function() {
+		alert( pomoeditorL10n.CommentEditingNotice );
 	} );
 
 	$( '#pomoeditor_advanced' ).click( function() {
@@ -101,11 +104,11 @@ jQuery( function( $ ) {
 			}
 		}
 
+		$( '#submit' ).text( pomoeditorL10n.Saving );
+
 		POMOEditor.Project.Translations.each( function( translation ) {
 			translation.view.close( null, true );
 		} );
-
-		$( '#submit' ).text( pomoeditorL10n.Saving );
 
 		Project = POMOEditor.Project;
 		$storage = $( '<textarea name="podata"></textarea>' ).hide().appendTo( this );

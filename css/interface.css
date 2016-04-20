@@ -44,7 +44,8 @@
   max-width: 100%;
   margin: 0; }
   .pme-input[readonly] {
-    background: #fefefe;
+    background: transparent;
+    background: rgba(255, 255, 255, 0.5);
     box-shadow: none; }
   .pme-input + .pme-input {
     margin-top: 5px; }
@@ -54,15 +55,20 @@
   border-top: 1px solid rgba(0, 0, 0, 0.08);
   padding-top: 5px;
   margin-top: 5px; }
-  .has-plural .pme-plural {
+  .has-plural.open .pme-plural {
     display: block; }
 
 .pme-comments {
-  padding: 5px 0 0;
-  font-family: Consolas, Monaco, monospace;
-  font-size: .8em; }
-  .pme-comments:empty {
-    display: none !important; }
+  display: none;
+  padding: 5px 0 0; }
+  .pme-comments .pme-input {
+    font-family: Consolas, Monaco, monospace;
+    font-size: .8em; }
+
+.has-extracted-comments.open .pme-extracted-comments,
+.has-translator-comments.open .pme-translator-comments,
+.has-references.open .pme-references {
+  display: block; }
 
 .pme-button {
   display: block;

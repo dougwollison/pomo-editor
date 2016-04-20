@@ -272,11 +272,13 @@
 		initialize: function() {
 			this.$el.toggleClass( 'has-context', null !== this.model.get( 'context' ) );
 			this.$el.toggleClass( 'has-plural', this.model.get( 'is_plural' ) );
-			this.$el.toggleClass( 'no-plural', ! this.model.get( 'is_plural' ) );
-			this.$el.toggleClass( 'has-comments', '' !== this.model.get( 'translator_comments' ) || '' !== this.model.get( 'extracted_comments' ) || this.model.get( 'references' ).length > 0 || this.model.get( 'flags' ).length > 0 );
+			this.$el.toggleClass( 'has-extracted-comments', '' !== this.model.get( 'extracted_comments' ) );
+			this.$el.toggleClass( 'has-translator-comments', '' !== this.model.get( 'translator_comments' ) );
+			this.$el.toggleClass( 'has-references', '' !== this.model.get( 'references' ).length > 0 );
 
 			this.listenTo( this.model, 'change:singular change:plural', this.renderSource );
 			this.listenTo( this.model, 'change:translations', this.renderTranslation );
+			this.listenTo( this.model, 'change:extracted_comments change:translator_comments change:references', this.renderComments );
 
 			EditorRow.prototype.initialize.apply( this, arguments );
 		},
@@ -309,19 +311,31 @@
 			this.$el.find( '.pme-context .pme-input' ).val( context );
 		},
 
-		checkChanges: function() {
-			var context, singular, plural, translations;
+		renderComments: function() {
+			this.$el.find( '.pme-extracted-comments .pme-input' ).val( this.model.get( 'extracted_comments' ) );
+			this.$el.find( '.pme-translator-comments .pme-input' ).val( this.model.get( 'translator_comments' ) );
+			this.$el.find( '.pme-references .pme-input' ).val( this.model.get( 'references' ).join( '\n' ) );
+		},
 
-			context      = this.model.get( 'context' );
-			singular     = this.model.get( 'singular' );
-			plural       = this.model.get( 'plural' );
-			translations = this.model.get( 'translations' );
+		checkChanges: function() {
+			var context, singular, plural, translations, extracted_comments, translator_comments, references;
+
+			context              = this.model.get( 'context' );
+			singular             = this.model.get( 'singular' );
+			plural               = this.model.get( 'plural' );
+			translations         = this.model.get( 'translations' );
+			extracted_comments   = this.model.get( 'extracted_comments' );
+			translator_comments  = this.model.get( 'translator_comments' );
+			references           = this.model.get( 'references' ).join( '\n' );
 
 			if ( context  !== this.$el.find( '.pme-context .pme-input' ).val() ||
 				 singular !== this.$el.find( '.pme-source .pme-input.pme-singular' ).val() ||
 				 plural   !== this.$el.find( '.pme-source .pme-input.pme-singular' ).val() ||
-				 this.model.get( translations[0] ) !== this.$el.find( '.pme-translated .pme-input.pme-singular' ).val() ||
-				 this.model.get( translations[1] ) !== this.$el.find( '.pme-translated .pme-input.pme-singular' ).val() )
+				 translations[0] !== this.$el.find( '.pme-translated .pme-input.pme-singular' ).val() ||
+				 translations[1] !== this.$el.find( '.pme-translated .pme-input.pme-singular' ).val() ||
+				 extracted_comments  !== this.$el.find( '.pme-extracted-comments .pme-input' ).val() ||
+				 translator_comments !== this.$el.find( '.pme-translator-comments .pme-input' ).val() ||
+				 references          !== this.$el.find( '.pme-references .pme-input' ).val() )
 			{
 				this.$el.addClass( 'changed' );
 			}
@@ -361,12 +375,17 @@
 				this.model.set( 'context', this.$el.find( '.pme-context .pme-input' ).val() );
 				this.model.set( 'singular', this.$el.find( '.pme-source .pme-input.pme-singular' ).val() );
 				this.model.set( 'plural', this.$el.find( '.pme-source .pme-input.pme-plural' ).val() );
+
+				this.model.set( 'extracted_comments', this.$el.find( '.pme-extracted-comments .pme-input' ).val() );
+				this.model.set( 'references', this.$el.find( '.pme-references .pme-input' ).val().split( '\n' ) );
 			}
 
 			this.model.set( 'translations', [
 				this.$el.find( '.pme-translated .pme-input.pme-singular' ).val(),
 				this.$el.find( '.pme-translated .pme-input.pme-plural' ).val()
 			] );
+
+			this.model.set( 'translator_comments', this.$el.find( '.pme-translator-comments .pme-input' ).val() );
 
 			this.$el.removeClass( 'changed' );
 			this.close();

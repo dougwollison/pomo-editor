@@ -255,6 +255,7 @@ final class Manager extends Handler {
 	/**
 	 * Output the Project Editor interface.
 	 *
+	 * @since 1.2.0 Added comments/reference display/editing.
 	 * @since 1.1.0 Updated add buttons to be advanced-mode-only,
 	 *              improved printf calls for localization purposes.
 	 * @since 1.0.0
@@ -378,7 +379,9 @@ final class Manager extends Handler {
 						<textarea class="pme-input pme-singular" title="<?php _e( 'Singular', 'pomo-editor' ); ?>" rows="4" readonly><%- singular %></textarea>
 						<textarea class="pme-input pme-plural" title="<?php _e( 'Plural', 'pomo-editor' ); ?>" rows="4" readonly><%- plural %></textarea>
 					</div>
-					<div class="pme-comments"><%- extracted_comments %></div>
+					<div class="pme-comments pme-extracted-comments">
+						<textarea class="pme-input" title="<?php _e( 'Developer Comments', 'pomo-editor' ); ?>" rows="4" readonly><%- extracted_comments.replace( /[\t\ ]+/g, ' ' ) %></textarea>
+					</div>
 				</td>
 				<td class="pme-translated">
 					<div class="pme-previews">
@@ -389,7 +392,9 @@ final class Manager extends Handler {
 						<textarea class="pme-input pme-singular" title="<?php _e( 'Singular', 'pomo-editor' ); ?>" rows="4"><%- translations[0] %></textarea>
 						<textarea class="pme-input pme-plural" title="<?php _e( 'Plural', 'pomo-editor' ); ?>" rows="4"><%- translations[1] %></textarea>
 					</div>
-					<div class="pme-comments"><%- translator_comments %></div>
+					<div class="pme-comments pme-translator-comments">
+						<textarea class="pme-input" title="<?php _e( 'Translator Comments', 'pomo-editor' ); ?>" rows="4"><%- translator_comments.replace( /[\t\ ]+/g, ' ' ) %></textarea>
+					</div>
 				</td>
 				<td class="pme-context">
 					<div class="pme-previews">
@@ -398,7 +403,9 @@ final class Manager extends Handler {
 					<div class="pme-inputs">
 						<textarea class="pme-input" rows="4" readonly><%- context %></textarea>
 					</div>
-					<div class="pme-comments"><% print( references.join( '<br /> ' ) ); %></div>
+					<div class="pme-comments pme-references">
+						<textarea class="pme-input" title="<?php _e( 'Code References', 'pomo-editor' ); ?>" rows="4" readonly><% print( _.escape( references.join( '\n' ) ) ); %></textarea>
+					</div>
 				</td>
 			</script>
 
