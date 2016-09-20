@@ -34,6 +34,15 @@ define( 'PME_PLUGIN_FILE', __FILE__ );
  */
 define( 'PME_PLUGIN_DIR', dirname( PME_PLUGIN_FILE ) );
 
+/**
+ * Storage directory for all edited PO/MO files.
+ *
+ * @since 1.0.0
+ *
+ * @var string
+ */
+define( 'PME_CONTENT_DIR', WP_CONTENT_DIR  . '/pomo-editor' );
+
 // =========================
 // ! Includes
 // =========================
