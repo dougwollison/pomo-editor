@@ -28,6 +28,7 @@ final class Backend extends Handler {
 	/**
 	 * Register hooks.
 	 *
+	 * @since 1.2.0 Added MO file update notice.
 	 * @since 1.0.0
 	 */
 	public static function register_hooks() {
@@ -44,6 +45,9 @@ final class Backend extends Handler {
 
 		// Script/Style Enqueues
 		static::add_action( 'admin_enqueue_scripts', 'enqueue_assets' );
+
+		// Notices
+		static::add_action( 'admin_notices', 'maybe_print_mofile_update_notice' );
 	}
 
 	// =========================
@@ -126,5 +130,76 @@ final class Backend extends Handler {
 			'AdvancedEditingEnabled' => __( 'Advanced Editing Enabled', 'pomo-editor' ),
 			'SavingTranslations' => __( 'Saving Translations...', 'pomo-editor' ),
 		) );
+	}
+
+	// =========================
+	// ! Notices
+	// =========================
+
+	/**
+	 * Helper function; recursively scan the PME content directory for MO files.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param string $dir   Optional The directory to scan.
+	 * @param array  $files Optional The list of files to append to.
+	 *
+	 * @return array The found files.
+	 */
+	protected static function scan_pme_content_dir( $dir = PME_CONTENT_DIR, $files = array() ) {
+		foreach ( scandir( $dir ) as $file ) {
+			if ( substr( $file, 0, 1 ) == '.' ) {
+				continue;
+			}
+
+			$path = "$dir/$file";
+			// If it's a directory (but not a link) scan it, append the results
+			if ( is_dir( $path ) && ! is_link( $path ) ) {
+				$files += self::scan_pme_content_dir( $path, $files );
+			} else
+			// If it's a file with the .mo extension, append it to the list
+			if ( is_file( $path ) && substr( $file, -3 ) === '.mo' ) {
+				$files[] = $path;
+			}
+		}
+
+		return $files;
+	}
+
+	/**
+	 * Print notice if any original project files have been updated.
+	 *
+	 * Checks all files in the PME content directory to see if their
+	 * orignals have a newer modification time.
+	 *
+	 * @since 1.2.0
+	 */
+	public static function maybe_print_mofile_update_notice() {
+		// Get all the files found
+		$pme_mofiles = self::scan_pme_content_dir();
+
+		$files_to_edit = array();
+		// Loop through them and check their originals for updates
+		foreach ( $pme_mofiles as $file ) {
+			$original = str_replace( PME_CONTENT_DIR, WP_CONTENT_DIR, $file );
+			if ( filemtime( $original ) > filemtime( $file ) ) {
+				$file = substr( $file, strlen( WP_CONTENT_DIR . '/' ) );
+				$file = substr( $file, 0, -3 ) . '.po';
+				$files_to_edit[] = $file;
+			}
+		}
+
+		if ( $files_to_edit ) {
+			?>
+			<div class="error notice is-dismissible">
+				<p><strong><?php _e( 'One or more translation files have had their originals updated. Please update your edited versions of them.', 'pomo-editor' ); ?></strong></p>
+				<ul>
+					<?php foreach ( $files_to_edit as $file ) : ?>
+						<li><a href="<?php echo admin_url( "tools.php?page=pomo-editor&pofile={$file}&changes-saved=true" ); ?>" target="_blank"><?php echo $file; ?></a></li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+			<?php
+		}
 	}
 }
