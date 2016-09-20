@@ -98,6 +98,7 @@ final class Manager extends Handler {
 	 *
 	 * Also save changes to it if posted.
 	 *
+	 * @since 1.2.0 Added custom save destination; under PME content directory.
 	 * @since 1.1.0 Improved sprintf calls for localization purposes.
 	 * @since 1.0.0
 	 */
@@ -112,39 +113,49 @@ final class Manager extends Handler {
 			wp_die( __( 'Cheatin&#8217; uh?' ), 403 );
 		}
 
-		// Check if the file exists...
+		// Create the source/destination paths
 		$file = $_REQUEST['pofile'];
-		$path = realpath( WP_CONTENT_DIR . '/' . $file );
-		if ( strtolower( pathinfo( $path, PATHINFO_EXTENSION ) ) != 'po' ) {
+		$source = realpath( WP_CONTENT_DIR . '/' . $file );
+
+		// Check that the source exists
+		if ( strtolower( pathinfo( $source, PATHINFO_EXTENSION ) ) != 'po' ) {
 			/* Translators: %s = full path to file */
-			wp_die( sprintf( __( 'The requested file is not supported: %s', 'pomo-editor' ), $path ), 400 );
+			wp_die( sprintf( __( 'The requested file is not supported: %s', 'pomo-editor' ), $source ), 400 );
 		}
 		// Check the file is a .po file
-		elseif ( ! file_exists( $path ) ) {
+		elseif ( ! file_exists( $source ) ) {
 			/* Translators: %s = full path to file */
-			wp_die( sprintf( __( 'The requested file cannot be found: %s', 'pomo-editor' ), $path ), 404 );
+			wp_die( sprintf( __( 'The requested file cannot be found: %s', 'pomo-editor' ), $source ), 404 );
 		}
 		// Check the file is within permitted path
-		elseif ( ! is_path_permitted( $path ) ) {
+		elseif ( ! is_path_permitted( $source ) ) {
 			/* Translators: %s = full path to file */
-			wp_die( sprintf( __( 'The requested file is not within one of the permitted paths: %s', 'pomo-editor' ), $path ), 403 );
+			wp_die( sprintf( __( 'The requested file is not within one of the permitted paths: %s', 'pomo-editor' ), $source ), 403 );
 		}
 		// Check the file is writable
-		elseif ( ! is_writable( $path ) ) {
+		elseif ( ! is_writable( $source ) ) {
 			/* Translators: %s = full path to file */
-			wp_die( sprintf( __( 'The requested file is not writable: %s', 'pomo-editor' ), $path ), 403 );
+			wp_die( sprintf( __( 'The requested file is not writable: %s', 'pomo-editor' ), $source ), 403 );
 		}
 		// Check if the file is being updated
 		elseif ( isset( $_POST['podata'] ) ) {
 			// Load
-			$project = new Project( $path );
+			$project = new Project( $source );
 			$project->load();
 
 			// Update
 			$project->update( json_decode( stripslashes( $_POST['podata'] ), true ), true );
 
+			// Create destination from $source
+			$destination = $source;
+			// If the destination isn't already in the PME content directory, prepend it
+			if ( strpos( $file, 'pomo-editor/' ) !== 0 ) {
+				$destination = str_replace( WP_CONTENT_DIR, PME_CONTENT_DIR, $source );
+				$file = 'pomo-editor/' . $file;
+			}
+
 			// Save
-			$project->export();
+			$project->export( $destination );
 
 			// Redirect
 			wp_redirect( admin_url( "tools.php?page=pomo-editor&pofile={$file}&changes-saved=true" ) );
@@ -213,6 +224,10 @@ final class Manager extends Handler {
 					<option value="<?php echo $language; ?>"><?php echo $label; ?></option>
 					<?php endforeach; ?>
 				</select>
+				<label>
+					<input type="checkbox" id="filter_modded_only" class="pomoeditor-filter" />
+					<?php _e( 'Show Edited Files Only', 'pomo-editor' ); ?>
+				</label>
 			</div>
 		</div>
 
@@ -255,7 +270,8 @@ final class Manager extends Handler {
 	/**
 	 * Output the Project Editor interface.
 	 *
-	 * @since 1.2.0 Added comments/reference display/editing.
+	 * @since 1.2.0 Added comments/reference display/editing,
+	 *              Added Original link on PME edited versions.
 	 * @since 1.1.0 Updated add buttons to be advanced-mode-only,
 	 *              improved printf calls for localization purposes.
 	 * @since 1.0.0
@@ -281,6 +297,12 @@ final class Manager extends Handler {
 			<h2><?php
 			/* Translators: %1$s = filename */
 			printf( __( 'Editing: <code>%s</code>', 'pomo-editor' ), $file ); ?></h2>
+
+			<?php if ( $project->is_modded() ) : $original = $project->file(); ?>
+				<p><?php
+				/* Translators: %1$s = filename, %2$s = URL */
+				printf( __( 'Original: <a href="%2$s" target="_blank">%1$s</a>', 'pomo-editor' ), $original, admin_url( "tools.php?page=pomo-editor&pofile={$original}&changes-saved=true" ) ); ?></p>
+			<?php endif; ?>
 
 			<p>
 				<?php
