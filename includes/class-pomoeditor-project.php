@@ -72,6 +72,19 @@ final class Project {
 	);
 
 	/**
+	 * Wether or not this is a modded project file.
+	 *
+	 * @internal
+	 *
+	 * @since 1.2.0
+	 *
+	 * @access protected
+	 *
+	 * @var bool
+	 */
+	protected $is_modded = false;
+
+	/**
 	 * The PO interface.
 	 *
 	 * @internal
@@ -104,6 +117,7 @@ final class Project {
 	/**
 	 * Get the file of the project, relative to the wp-content directory if applicable.
 	 *
+	 * @since 1.2.0 Added stripping for PME content directory prefix.
 	 * @since 1.0.0
 	 *
 	 * @return string The file path.
@@ -112,7 +126,12 @@ final class Project {
 		if ( strpos( $this->filename, WP_CONTENT_DIR ) === false ) {
 			return $this->filename;
 		} else {
-			return substr( $this->filename, strlen( WP_CONTENT_DIR . '/' ) );
+			if ( strpos( $this->filename, PME_CONTENT_DIR ) === 0 ) {
+				$file = substr( $this->filename, strlen( PME_CONTENT_DIR . '/' ) );
+			} else {
+				$file = substr( $this->filename, strlen( WP_CONTENT_DIR . '/' ) );
+			}
+			return $file;
 		}
 	}
 
@@ -144,6 +163,17 @@ final class Project {
 		} else {
 			return Dictionary::identify_language( $this->language );
 		}
+	}
+
+	/**
+	 * Get the is_modded status.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @return bool The value of $this->is_modded.
+	 */
+	public function is_modded() {
+		return $this->is_modded;
 	}
 
 	// =========================
@@ -217,6 +247,7 @@ final class Project {
 	 * Will examine it's location on the server and determine if
 	 * it is a theme, plugin, or core package.
 	 *
+	 * @since 1.2.0 Added is_modded check.
 	 * @since 1.0.0
 	 */
 	public function identify() {
@@ -236,6 +267,9 @@ final class Project {
 			$this->package['type'] = 'unknown';
 			return;
 		}
+
+		// Check if modded (under the PME content directory)
+		$this->is_modded = strpos( $this->filename, PME_CONTENT_DIR ) === 0;
 
 		// Remove the preceeding path of the content directory, split into path parts
 		$path = $this->file();
@@ -360,6 +394,7 @@ final class Project {
 	/**
 	 * Save the PO file and compile corresponding MO file.
 	 *
+	 * @since 1.2.0 Removed .bak creation, added destination directory generating.
 	 * @since 1.0.0
 	 *
 	 * @uses \PO::export_to_file() to save the updated PO file.
@@ -399,13 +434,8 @@ final class Project {
 			$mo->$key = $val;
 		}
 
-		// Ensure backups exist
-		if ( ! file_exists( "{$po_file}.bak" ) ) {
-			copy( $po_file, "{$po_file}.bak" );
-		}
-		if ( ! file_exists( "{$mo_file}.bak" ) ) {
-			copy( $mo_file, "{$mo_file}.bak" );
-		}
+		// Ensure the parent directory exists
+		wp_mkdir_p( dirname( $po_file ) );
 
 		// Export the PO file
 		$this->po->export_to_file( $po_file );
@@ -419,16 +449,20 @@ final class Project {
 	 *
 	 * The entries are exported as a numeric array.
 	 *
+	 * @since 1.2.0 Added is_modded property.
 	 * @since 1.0.0
+	 *
+	 * @return array The project data.
 	 */
 	public function dump() {
 		$data = array(
-			'file' => pathinfo( $this->file() ),
-			'language' => array(
-				'code' => $this->language,
-				'name' => $this->language(),
+			'file'      => pathinfo( $this->file() ),
+			'language'  => array(
+				'code'  => $this->language,
+				'name'  => $this->language(),
 			),
-			'pkginfo' => $this->package,
+			'pkginfo'   => $this->package,
+			'is_modded' => $this->is_modded,
 		);
 
 		// Add PO info if loaded
