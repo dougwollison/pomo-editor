@@ -147,13 +147,15 @@ final class Projects implements \Iterator {
 	/**
 	 * Scan a directory for projects, add them.
 	 *
+	 * @since 1.2.0 Added PME content directory to scan list.
 	 * @since 1.0.0
 	 *
 	 * @param string $dir The directory (should be absolute). Defaults to languages, themes, and plugins.
 	 */
 	public function scan( $dir = null ) {
 		if ( is_null( $dir ) ) {
-			// Scan the languages, themes, and plugins directories
+			// Scan the PME content, languages, themes, and plugins directories
+			$this->scan( PME_CONTENT_DIR );
 			$this->scan( WP_CONTENT_DIR . '/languages' );
 			$this->scan( WP_CONTENT_DIR . '/themes' );
 			$this->scan( WP_CONTENT_DIR . '/plugins' );
