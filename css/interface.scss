@@ -4,6 +4,16 @@
 	td.column-pmeproject-file {
 		font-family: Consolas, Monaco, monospace;
 	}
+		.pme-is-modded {
+			.column-pmeproject-file a {
+				&:before {
+					font-family: dashicons;
+					content: '\f464';
+					font-size: 1.2em;
+					vertical-align: top;
+				}
+			}
+		}
 	.column-pmeproject-type {
 		width: 70px;
 	}

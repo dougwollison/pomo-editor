@@ -176,6 +176,7 @@
 		render: function( fresh ) {
 			var template = this.template( this.model.attributes );
 			this.$el.html( template );
+			this.$el.toggleClass( 'pme-is-modded', this.model.get( 'is_modded' ) );
 			return this;
 		}
 	} );

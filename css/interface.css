@@ -1,5 +1,10 @@
 #pomoeditor_projects td.column-pmeproject-file {
   font-family: Consolas, Monaco, monospace; }
+#pomoeditor_projects .pme-is-modded .column-pmeproject-file a:before {
+  font-family: dashicons;
+  content: '\f464';
+  font-size: 1.2em;
+  vertical-align: top; }
 #pomoeditor_projects .column-pmeproject-type {
   width: 70px; }
 #pomoeditor_projects .column-pmeproject-language {

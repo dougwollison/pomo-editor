@@ -1,9 +1,10 @@
-/* globals _, POMOEditor, pomoeditorL10n, alert, confirm, tb_show */
+/* globals _, POMOEditor, pomoeditorL10n, alert, confirm */
 jQuery( function( $ ) {
 	var $filters = {
-		type: $( '#filter_by_type' ),
-		slug: $( '#filter_by_package' ),
-		lang: $( '#filter_by_language' )
+		type:   $( '#filter_by_type' ),
+		slug:   $( '#filter_by_package' ),
+		lang:   $( '#filter_by_language' ),
+		modded: $( '#filter_modded_only' )
 	};
 
 	$( '#pomoeditor_translations' ).on( 'click', '.pme-source .pme-inputs .pme-input[readonly]', function() {
@@ -40,21 +41,24 @@ jQuery( function( $ ) {
 		var filter, visible;
 
 		filter = {
-			type: $filters.type.val(),
-			slug: $filters.slug.val(),
-			lang: $filters.lang.val()
+			type:   $filters.type.val(),
+			slug:   $filters.slug.val(),
+			lang:   $filters.lang.val(),
+			modded: $filters.modded.is( ':checked' )
 		};
 
 		visible = {
-			type: [],
-			slug: [],
-			lang: []
+			type:   [],
+			slug:   [],
+			lang:   [],
+			modded: []
 		};
 
 		_( POMOEditor.List.children ).each( function( view ) {
-			var type = view.model.get( 'pkginfo' ).type,
-				slug = view.model.get( 'pkginfo' ).slug,
-				lang = view.model.get( 'language' ).code;
+			var type   = view.model.get( 'pkginfo' ).type,
+				slug   = view.model.get( 'pkginfo' ).slug,
+				lang   = view.model.get( 'language' ).code,
+				modded = view.model.get( 'is_modded' );
 
 			view.$el.show();
 
@@ -69,6 +73,11 @@ jQuery( function( $ ) {
 			}
 
 			if ( filter.lang && lang !== filter.lang ) {
+				view.$el.hide();
+				return;
+			}
+
+			if ( filter.modded !== modded ) {
 				view.$el.hide();
 				return;
 			}
