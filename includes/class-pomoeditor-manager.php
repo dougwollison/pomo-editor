@@ -37,10 +37,10 @@ final class Manager extends Handler {
 		}
 
 		// Settings & Pages
-		static::add_action( 'admin_menu', 'add_menu_pages' );
-		static::add_action( 'admin_init', 'process_request' );
-		static::add_action( 'admin_head', 'display_help_tabs' );
-		static::add_action( 'admin_notices', 'print_notices' );
+		self::add_action( 'admin_menu', 'add_menu_pages' );
+		self::add_action( 'admin_init', 'process_request' );
+		self::add_action( 'admin_head', 'display_help_tabs' );
+		self::add_action( 'admin_notices', 'print_notices' );
 	}
 
 	// =========================
@@ -179,9 +179,9 @@ final class Manager extends Handler {
 
 			<?php
 			if ( isset( $_REQUEST['pofile'] ) ) {
-				static::project_editor();
+				self::project_editor();
 			} else {
-				static::project_index();
+				self::project_index();
 			}
 			?>
 		</div>

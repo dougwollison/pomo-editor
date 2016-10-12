@@ -522,15 +522,15 @@ final class Dictionary {
 		$language = $country = null;
 
 		// Determine language name
-		if ( isset( static::$language_codes[ $language_code ] ) ) {
-			$language = static::$language_codes[ $language_code ];
+		if ( isset( self::$language_codes[ $language_code ] ) ) {
+			$language = self::$language_codes[ $language_code ];
 		} else {
 			$language = "[{$language_code}]";
 		}
 
 		// Determin country name if applicable
-		if ( $country_code && isset( static::$country_codes[ $country_code ] ) ) {
-			$country = static::$country_codes[ $country_code ];
+		if ( $country_code && isset( self::$country_codes[ $country_code ] ) ) {
+			$country = self::$country_codes[ $country_code ];
 		} elseif ( $country_code ) {
 			$country = "[{$country_code}]";
 		}

@@ -46,7 +46,7 @@ final class System extends Handler {
 		}
 
 		// Register global hooks
-		static::register_hooks();
+		self::register_hooks();
 	}
 
 	// =========================
@@ -59,7 +59,7 @@ final class System extends Handler {
 	 * @since 1.2.0
 	 */
 	public static function register_hooks() {
-		static::add_filter( 'load_textdomain_mofile', 'rewrite_textdomain_mofile', 10 );
+		self::add_filter( 'load_textdomain_mofile', 'rewrite_textdomain_mofile', 10 );
 	}
 
 	// =========================
