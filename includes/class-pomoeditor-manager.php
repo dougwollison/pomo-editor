@@ -68,14 +68,16 @@ final class Manager extends Handler {
 	/**
 	 * Setup the help tabs based on what's being displayed for the page.
 	 *
+	 * @since 1.2.1 Added check for NULL screen.
 	 * @since 1.0.0
 	 *
 	 * @uses Documenter::setup_help_tabs() to display the appropriate help tabs.
 	 */
 	public static function display_help_tabs() {
 		$screen = get_current_screen();
-		// Abort if not the admin page for this plugin
-		if ( $screen->id != 'tools_page_pomo-editor' ) {
+
+		// Abort if no screen or not the admin page for this plugin
+		if ( ! $screen ||  $screen->id != 'tools_page_pomo-editor' ) {
 			return;
 		}
 
