@@ -268,7 +268,7 @@ final class Manager extends Handler {
 		</table>
 
 		<script type="text/template" id="pomoeditor_item_template">
-			<td class="column-pmeproject-file"><a href="<?php echo admin_url( "tools.php?page={$plugin_page}&pofile=" ); ?><%= file.dirname %>/<%= file.basename %>" target="_blank">
+			<td class="column-pmeproject-file"><a href="<?php echo admin_url( "tools.php?page={$plugin_page}&pofile=" ); ?><%= editpath %>" target="_blank">
 				<%= file.dirname %>/<strong><%= file.basename %></strong>
 			</a></td>
 			<td class="column-pmeproject-title"><%= pkginfo.name %></td>
@@ -277,6 +277,8 @@ final class Manager extends Handler {
 		</script>
 
 		<script>
+		POMOEditor.MODDED_BASE_DIR = '<?php echo basename( PME_CONTENT_DIR ); ?>/';
+
 		POMOEditor.Projects = new POMOEditor.Framework.Projects(<?php echo json_encode( $projects->dump() ); ?>);
 
 		POMOEditor.List = new POMOEditor.Framework.ProjectsList( {

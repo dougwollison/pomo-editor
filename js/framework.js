@@ -104,12 +104,13 @@
 
 	var Project = Framework.Project = Backbone.Model.extend( {
 		defaults: {
-			file     : {},
-			language : {},
-			pkginfo  : {}
+			file      : {},
+			language  : {},
+			pkginfo   : {},
+			is_modded : false
 		},
 
-		constructor: function( attributes, options ) {
+		initialize: function( attributes ) {
 			this.Headers      = new Records();
 			this.Metadata     = new Records();
 			this.Translations = new Translations();
@@ -124,8 +125,11 @@
 				this.Translations.reset( attributes.po_entries );
 			}
 
-			Backbone.Model.call( this, attributes, options );
-		}
+			var file = this.get( 'file' );
+			var editpath = ( attributes.is_modded ? POMOEditor.MODDED_BASE_DIR : '' ) + file.dirname + '/' + file.basename;
+
+			this.set( 'editpath', editpath );
+		},
 	} );
 
 	var Projects = Framework.Projects = Backbone.Collection.extend( {
