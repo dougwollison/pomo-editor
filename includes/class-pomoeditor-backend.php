@@ -113,11 +113,11 @@ final class Backend extends Handler {
 		}
 
 		// Interface styling
-		wp_enqueue_style( 'pomoeditor-interface', plugins_url( 'css/interface.css', PME_PLUGIN_FILE ), '1.0.0', 'screen' );
+		wp_enqueue_style( 'pomoeditor-interface', plugins_url( 'css/interface.css', PME_PLUGIN_FILE ), '1.3.0', 'screen' );
 
 		// Interface javascript
-		wp_enqueue_script( 'pomoeditor-framework-js', plugins_url( 'js/framework.js', PME_PLUGIN_FILE ), array( 'backbone' ), '1.0.0' );
-		wp_enqueue_script( 'pomoeditor-interface-js', plugins_url( 'js/interface.js', PME_PLUGIN_FILE ), array( 'pomoeditor-framework-js' ), '1.0.0' );
+		wp_enqueue_script( 'pomoeditor-framework-js', plugins_url( 'js/framework.js', PME_PLUGIN_FILE ), array( 'backbone' ), '1.3.0' );
+		wp_enqueue_script( 'pomoeditor-interface-js', plugins_url( 'js/interface.js', PME_PLUGIN_FILE ), array( 'pomoeditor-framework-js' ), '1.3.0' );
 
 		// Localize the javascript
 		wp_localize_script( 'pomoeditor-interface-js', 'pomoeditorL10n', array(
