@@ -45,19 +45,25 @@ function match_path( $dir, $list ) {
 /**
  * Check if a path is permitted by the whitelist/blacklist.
  *
+ * @since 1.2.1 Updated to check against the storage directory.
  * @since 1.0.0
  *
- * @param string $dir The directory to check.
+ * @param string $path The path to check.
  *
  * @return bool Wether or not the path is permitted by the whitelist/blacklist.
  */
 function is_path_permitted( $path ) {
-	// Check if POMOEDITOR_SCAN_WHITELIST is defined, set $skip to TRUE if no match
+	// If it's in the storage directory, automatically return true
+	if ( match_path( $path, PME_CONTENT_DIR ) ) {
+		return true;
+	}
+
+	// Check if POMOEDITOR_SCAN_WHITELIST is defined; make sure it's in it
 	if ( defined( 'POMOEDITOR_SCAN_WHITELIST' ) && ! match_path( $path, POMOEDITOR_SCAN_WHITELIST ) ) {
 		return false;
 	}
 
-	// Check if POMOEDITOR_SCAN_BLACKLIST is defined, set $skip to TRUE if matched
+	// Check if POMOEDITOR_SCAN_BLACKLIST is defined; make sure it isn't in it
 	if ( defined( 'POMOEDITOR_SCAN_BLACKLIST' ) && match_path( $path, POMOEDITOR_SCAN_BLACKLIST ) ) {
 		return false;
 	}
