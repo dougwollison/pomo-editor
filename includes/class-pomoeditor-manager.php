@@ -336,7 +336,7 @@ final class Manager extends Handler {
 				<button type="button" id="pomoeditor_advanced" class="button button-secondary"><?php _e( 'Enable Advanced Editing', 'pomo-editor' ); ?></button>
 
 				<?php if ( $project->is_modded() ) : ?>
-					<button type="submit" id="pomoeditor_revert" class="button button-secondary hide-if-no-js" value="<?php echo wp_create_nonce( 'pomoeditor-delete-' . md5( $file ) ); ?>"><?php _e( 'Revert to Original', 'pomo-editor' ); ?></button>
+					<button type="submit" id="pomoeditor_revert" class="button button-secondary hide-if-no-js" value="<?php echo wp_create_nonce( 'pomoeditor-revert-' . md5( $file ) ); ?>"><?php _e( 'Revert to Original', 'pomo-editor' ); ?></button>
 				<?php endif; ?>
 			</p>
 
