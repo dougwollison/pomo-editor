@@ -247,7 +247,7 @@ final class Manager extends Handler {
 					<option value="<?php echo $language; ?>"><?php echo $label; ?></option>
 					<?php endforeach; ?>
 				</select>
-				<label>
+				<label class="pomoeditor-toggle">
 					<input type="checkbox" id="filter_modded_only" class="pomoeditor-filter" />
 					<?php _e( 'Show Edited Files Only', 'pomo-editor' ); ?>
 				</label>
