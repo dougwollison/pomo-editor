@@ -117,7 +117,7 @@ final class Manager extends Handler {
 		}
 
 		// Create the source/destination paths
-		$file = $_POST['pofile'];
+		$file = $_REQUEST['pofile'];
 		$source = realpath( WP_CONTENT_DIR . '/' . $file );
 
 		// Check that the source exists
