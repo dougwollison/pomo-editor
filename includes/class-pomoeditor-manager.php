@@ -139,25 +139,39 @@ final class Manager extends Handler {
 			/* Translators: %s = full path to file */
 			wp_die( sprintf( __( 'The requested file is not writable: %s', 'pomo-editor' ), $source ), 403 );
 		}
-		// Check if the file is being updated
-		elseif ( isset( $_POST['podata'] ) ) {
+		else {
 			// Load
 			$project = new Project( $source );
 			$project->load();
 
-			// Update
-			$project->update( json_decode( stripslashes( $_POST['podata'] ), true ), true );
+			// Check if the revert nonce is present, validate it and delete the file if it checks out
+			if ( isset( $_POST['_pomoeditor_revert'] ) ) {
+				if ( ! $project->is_modded() || ! wp_verify_nonce( $_POST['_pomoeditor_revert'], 'pomoeditor-revert-' . md5( $_POST['pofile'] ) ) ) {
+					wp_die( __( 'Cheatin&#8217; uh?' ), 403 );
+				}
 
-			// Create destination from $source
-			$destination = $source;
-			// If the destination isn't already in the PME content directory, prepend it
-			if ( strpos( $file, 'pomo-editor/' ) !== 0 ) {
-				$destination = str_replace( WP_CONTENT_DIR, PME_CONTENT_DIR, $source );
-				$file = 'pomo-editor/' . $file;
+				// Switch to the original for the redirect
+				$file = $project->file();
+
+				// Delete the modded file
+				unlink( $source );
 			}
+			// Check if the file is being updated
+			elseif ( isset( $_POST['podata'] ) ) {
+				// Update
+				$project->update( json_decode( stripslashes( $_POST['podata'] ), true ), true );
 
-			// Save
-			$project->export( $destination );
+				// Create destination from $source
+				$destination = $source;
+				// If the destination isn't already in the PME content directory, prepend it
+				if ( strpos( $file, 'pomo-editor/' ) !== 0 ) {
+					$destination = str_replace( WP_CONTENT_DIR, PME_CONTENT_DIR, $source );
+					$file = 'pomo-editor/' . $file;
+				}
+
+				// Save
+				$project->export( $destination );
+			}
 
 			// Redirect
 			wp_redirect( admin_url( "tools.php?page=pomo-editor&pofile={$file}&changes-saved=true" ) );
@@ -318,6 +332,10 @@ final class Manager extends Handler {
 
 			<p>
 				<button type="button" id="pomoeditor_advanced" class="button button-secondary"><?php _e( 'Enable Advanced Editing', 'pomo-editor' ); ?></button>
+
+				<?php if ( $project->is_modded() ) : ?>
+					<button type="submit" id="pomoeditor_revert" class="button button-secondary hide-if-no-js" value="<?php echo wp_create_nonce( 'pomoeditor-delete-' . md5( $file ) ); ?>"><?php _e( 'Revert to Original', 'pomo-editor' ); ?></button>
+				<?php endif; ?>
 			</p>
 
 			<h3><?php _e( 'Translations', 'pomo-editor' ); ?></h3>

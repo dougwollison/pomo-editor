@@ -37,6 +37,12 @@ jQuery( function( $ ) {
 		POMOEditor.TranslationsEditor.rowTemplate = POMOEditor.TranslationsEditor.rowTemplate.replace( /readonly/g, '' );
 	} );
 
+	$( '#pomoeditor_revert' ).click( function( e ) {
+		if ( ! confirm( pomoeditorL10n.RevertWarning ) ) {
+			e.preventDefault();
+		}
+	} ).attr( 'name', '_pomoeditor_revert' );
+
 	$( '.pomoeditor-filter' ).change( function() {
 		var filter, visible;
 

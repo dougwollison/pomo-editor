@@ -129,6 +129,7 @@ final class Backend extends Handler {
 			'ConfirmSave' => __( 'You have uncommitted translation changes, do you want to discard them before saving?', 'pomo-editor' ),
 			'AdvancedEditingEnabled' => __( 'Advanced Editing Enabled', 'pomo-editor' ),
 			'SavingTranslations' => __( 'Saving Translations...', 'pomo-editor' ),
+			'RevertWarning' => __( 'Are you sure you want to revert? The modified version will be deleted and cannot be recovered.', 'pomo-editor' ),
 		) );
 	}
 
