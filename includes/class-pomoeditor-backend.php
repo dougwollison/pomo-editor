@@ -103,6 +103,7 @@ final class Backend extends Handler {
 	/**
 	 * Enqueue necessary styles and scripts.
 	 *
+	 * @since 1.3.0 Added revert warning text.
 	 * @since 1.0.0
 	 */
 	public static function enqueue_assets(){

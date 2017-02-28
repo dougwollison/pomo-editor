@@ -45,7 +45,7 @@ function match_path( $dir, $list ) {
 /**
  * Check if a path is permitted by the whitelist/blacklist.
  *
- * @since 1.2.1 Updated to check against the storage directory.
+ * @since 1.3.0 Updated to check against the storage directory.
  * @since 1.0.0
  *
  * @param string $path The path to check.

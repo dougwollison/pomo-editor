@@ -100,13 +100,14 @@ final class Manager extends Handler {
 	 *
 	 * Also save changes to it if posted.
 	 *
+	 * @since 1.3.0 Added reversion handling.
 	 * @since 1.2.0 Added custom save destination; under PME content directory.
 	 * @since 1.1.0 Improved sprintf calls for localization purposes.
 	 * @since 1.0.0
 	 */
 	public static function process_request() {
 		// Skip if no file is specified
-		if ( ! isset( $_REQUEST['pofile'] ) ) {
+		if ( ! isset( $_POST['pofile'] ) ) {
 			return;
 		}
 
@@ -116,7 +117,7 @@ final class Manager extends Handler {
 		}
 
 		// Create the source/destination paths
-		$file = $_REQUEST['pofile'];
+		$file = $_POST['pofile'];
 		$source = realpath( WP_CONTENT_DIR . '/' . $file );
 
 		// Check that the source exists
@@ -286,6 +287,7 @@ final class Manager extends Handler {
 	/**
 	 * Output the Project Editor interface.
 	 *
+	 * @since 1.3.0 Added revert button.
 	 * @since 1.2.0 Added comments/reference display/editing,
 	 *              Added Original link on PME edited versions.
 	 * @since 1.1.0 Updated add buttons to be advanced-mode-only,
@@ -297,7 +299,7 @@ final class Manager extends Handler {
 	protected static function project_editor() {
 		global $plugin_page;
 
-		$file = $_REQUEST['pofile'];
+		$file = $_GET['pofile'];
 		// Load
 		$path = realpath( WP_CONTENT_DIR . '/' . $file );
 		$project = new Project( $path );
