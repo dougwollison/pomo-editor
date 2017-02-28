@@ -147,7 +147,7 @@ final class Manager extends Handler {
 
 			// Check if the revert nonce is present, validate it and delete the file if it checks out
 			if ( isset( $_GET['_pomoeditor_revert'] ) ) {
-				if ( ! $project->is_modded() || ! wp_verify_nonce( $_POST['_pomoeditor_revert'], 'pomoeditor-revert-' . md5( $_POST['pofile'] ) ) ) {
+				if ( ! $project->is_modded() || ! wp_verify_nonce( $_GET['_pomoeditor_revert'], 'pomoeditor-revert-' . md5( $_GET['pofile'] ) ) ) {
 					wp_die( __( 'Cheatin&#8217; uh?' ), 403 );
 				}
 
