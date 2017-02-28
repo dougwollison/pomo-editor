@@ -147,6 +147,7 @@ final class Projects implements \Iterator {
 	/**
 	 * Scan a directory for projects, add them.
 	 *
+	 * @since 1.2.1 Added check to make sure directory exists.
 	 * @since 1.2.0 Added PME content directory to scan list.
 	 * @since 1.0.0
 	 *
@@ -159,6 +160,12 @@ final class Projects implements \Iterator {
 			$this->scan( WP_CONTENT_DIR . '/languages' );
 			$this->scan( WP_CONTENT_DIR . '/themes' );
 			$this->scan( WP_CONTENT_DIR . '/plugins' );
+			return;
+		}
+
+
+		// Abort if the directory doesn't exist.
+		if ( ! file_exists( $dir ) || ! is_dir( $dir ) ) {
 			return;
 		}
 
