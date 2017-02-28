@@ -107,7 +107,7 @@ final class Manager extends Handler {
 	 */
 	public static function process_request() {
 		// Skip if no file is specified
-		if ( ! isset( $_POST['pofile'] ) ) {
+		if ( ! isset( $_REQUEST['pofile'] ) ) {
 			return;
 		}
 
@@ -146,7 +146,7 @@ final class Manager extends Handler {
 			$project->load();
 
 			// Check if the revert nonce is present, validate it and delete the file if it checks out
-			if ( isset( $_POST['_pomoeditor_revert'] ) ) {
+			if ( isset( $_GET['_pomoeditor_revert'] ) ) {
 				if ( ! $project->is_modded() || ! wp_verify_nonce( $_POST['_pomoeditor_revert'], 'pomoeditor-revert-' . md5( $_POST['pofile'] ) ) ) {
 					wp_die( __( 'Cheatin&#8217; uh?' ), 403 );
 				}
@@ -176,6 +176,8 @@ final class Manager extends Handler {
 				$project->export( $destination );
 
 				$notice = 'revert-file';
+			} else {
+				return;
 			}
 
 			// Redirect
