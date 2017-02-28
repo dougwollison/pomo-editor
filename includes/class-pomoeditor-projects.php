@@ -51,6 +51,17 @@ final class Projects implements \Iterator {
 	 */
 	protected $items = array();
 
+	/**
+	 * A reference list of modded versions of projects.
+	 *
+	 * @internal
+	 *
+	 * @since 1.3.0
+	 *
+	 * @var array
+	 */
+	protected $modded_versions = array();
+
 	// =========================
 	// ! Iterator Methods
 	// =========================
@@ -147,7 +158,7 @@ final class Projects implements \Iterator {
 	/**
 	 * Scan a directory for projects, add them.
 	 *
-	 * @since 1.2.1 Added check to make sure directory exists.
+	 * @since 1.3.0 Added check to make sure directory exists, auto-sorting.
 	 * @since 1.2.0 Added PME content directory to scan list.
 	 * @since 1.0.0
 	 *
@@ -160,6 +171,7 @@ final class Projects implements \Iterator {
 			$this->scan( WP_CONTENT_DIR . '/languages' );
 			$this->scan( WP_CONTENT_DIR . '/themes' );
 			$this->scan( WP_CONTENT_DIR . '/plugins' );
+			$this->sort();
 			return;
 		}
 
@@ -248,8 +260,9 @@ final class Projects implements \Iterator {
 	}
 
 	/**
-	 * Sort the object index.
+	 * Sort the object index by package property.
 	 *
+	 * @since 1.3.0 Actually implemented sorting by package property.
 	 * @since 1.0.0
 	 *
 	 * @param string $field Optional. The field to sort by (defaults to list_order).
@@ -258,15 +271,16 @@ final class Projects implements \Iterator {
 	 * @return self.
 	 */
 	public function sort( $field = 'name', $order = 'asc' ) {
-		return $this;
-
 		usort( $this->items, function( $a, $b ) use ( $field ) {
-			if ( $a->$field == $b->$field ) {
-				return 0;
+			$a_value = $a->package( $field );
+			$b_value = $b->package( $field );
+
+			if ( $a_value == $b_value ) {
+				return $a->file() > $b->file() ? 1 : 0;
 			}
 
-			return $a->$field > $b->$field ? 1 : -1;
-		});
+			return $a_value > $b_value ? 1 : -1;
+		} );
 
 		// If not in ascending order, reverse the array
 		if ( $order != 'asc' ) {
@@ -387,6 +401,7 @@ final class Projects implements \Iterator {
 	/**
 	 * Add a project to the index.
 	 *
+	 * @since 1.3.0 Added check/skip of files with modded counterparts.
 	 * @since 1.0.0
 	 *
 	 * @param array|Project $project The project to add.
@@ -400,9 +415,14 @@ final class Projects implements \Iterator {
 			$project = new Project( $project );
 		}
 
-		// Add to the index if successful
-		if ( $project ) {
+		// Add to the index if successful and has no modded counterpart
+		if ( $project && ! isset( $this->modded_items[ $project->file() ] ) ) {
 			$this->items[] = $project;
+		}
+
+		// Also add to the modded listing if applicable
+		if ( $project->is_modded() ) {
+			$this->modded_items[ $project->file() ] = $project;
 		}
 
 		if ( $sort ) {
