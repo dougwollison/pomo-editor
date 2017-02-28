@@ -157,7 +157,7 @@ final class Manager extends Handler {
 				// Delete the modded file
 				unlink( $source );
 
-				$notice = 'changes-saved';
+				$notice = 'file-reverted';
 			}
 			// Check if the file is being updated
 			elseif ( isset( $_POST['podata'] ) ) {
@@ -175,7 +175,7 @@ final class Manager extends Handler {
 				// Save
 				$project->export( $destination );
 
-				$notice = 'revert-file';
+				$notice = 'changes-saved';
 			} else {
 				return;
 			}
