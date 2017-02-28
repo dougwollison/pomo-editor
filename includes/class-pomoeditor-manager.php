@@ -156,6 +156,8 @@ final class Manager extends Handler {
 
 				// Delete the modded file
 				unlink( $source );
+
+				$notice = 'changes-saved';
 			}
 			// Check if the file is being updated
 			elseif ( isset( $_POST['podata'] ) ) {
@@ -172,10 +174,12 @@ final class Manager extends Handler {
 
 				// Save
 				$project->export( $destination );
+
+				$notice = 'revert-file';
 			}
 
 			// Redirect
-			wp_redirect( admin_url( "tools.php?page=pomo-editor&pofile={$file}&changes-saved=true" ) );
+			wp_redirect( admin_url( "tools.php?page=pomo-editor&pofile={$file}&{$notice}=true" ) );
 			exit;
 		}
 	}
@@ -316,10 +320,19 @@ final class Manager extends Handler {
 			/* Translators: %1$s = filename */
 			printf( __( 'Editing: <code>%s</code>', 'pomo-editor' ), $file ); ?></h2>
 
-			<?php if ( $project->is_modded() ) : $original = $project->file(); ?>
-				<p><?php
-				/* Translators: %1$s = filename, %2$s = URL */
-				printf( __( 'Original: <a href="%2$s" target="_blank">%1$s</a>', 'pomo-editor' ), $original, admin_url( "tools.php?page=pomo-editor&pofile={$original}&changes-saved=true" ) ); ?></p>
+			<?php if ( $project->is_modded() ) :
+				$original = $project->file();
+				$edit_link = admin_url( "tools.php?page=pomo-editor&pofile={$original}" );
+				$revert_nonce = wp_create_nonce( 'pomoeditor-revert-' . md5( $file ) );
+				$revert_link = admin_url( "tools.php?page=pomo-editor&pofile={$file}&_pomoeditor_revert={$revert_nonce}" );
+				?>
+				<p>
+					<?php
+					/* Translators: %1$s = filename, %2$s = URL */
+					printf( __( 'Original: <a href="%2$s" target="_blank">%1$s</a>', 'pomo-editor' ), $original, $edit_link );
+					?>
+					(<a href="<?php echo $revert_link; ?>" id="pomoeditor_revert" class="hide-if-no-js"><?php _e( 'Revert', 'pomo-editor' ); ?></a>)
+				</p>
 			<?php endif; ?>
 
 			<p>
@@ -334,10 +347,6 @@ final class Manager extends Handler {
 
 			<p>
 				<button type="button" id="pomoeditor_advanced" class="button button-secondary"><?php _e( 'Enable Advanced Editing', 'pomo-editor' ); ?></button>
-
-				<?php if ( $project->is_modded() ) : ?>
-					<button type="submit" id="pomoeditor_revert" class="button button-secondary hide-if-no-js" value="<?php echo wp_create_nonce( 'pomoeditor-revert-' . md5( $file ) ); ?>"><?php _e( 'Revert to Original', 'pomo-editor' ); ?></button>
-				<?php endif; ?>
 			</p>
 
 			<h3><?php _e( 'Translations', 'pomo-editor' ); ?></h3>
@@ -495,6 +504,15 @@ final class Manager extends Handler {
 		// Return if not on the editor page
 		if ( get_current_screen()->id != 'tools_page_pomo-editor' || ! isset( $_GET['pofile'] ) ) {
 			return;
+		}
+
+		// Print update notice if changes were saved
+		if ( isset( $_GET['file-reverted'] ) && $_GET['file-reverted'] ) {
+			?>
+			<div class="updated notice is-dismissible">
+				<p><strong><?php _e( 'Translations reverted to originals.', 'pomo-editor' ); ?></strong></p>
+			</div>
+			<?php
 		}
 
 		// Print update notice if changes were saved

@@ -140,3 +140,8 @@
   display: block; }
   .pomoeditor-advanced-mode .pomoeditor-basic {
     display: none; }
+
+.pomoeditor-revert {
+  color: #a00; }
+  .pomoeditor-revert:hover {
+    color: #f00; }

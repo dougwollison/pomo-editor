@@ -216,3 +216,11 @@
 		display: none;
 	}
 }
+
+.pomoeditor-revert {
+	color: #a00;
+
+	&:hover {
+		color: #f00;
+	}
+}

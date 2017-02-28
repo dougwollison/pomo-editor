@@ -41,7 +41,7 @@ jQuery( function( $ ) {
 		if ( ! confirm( pomoeditorL10n.RevertWarning ) ) {
 			e.preventDefault();
 		}
-	} ).attr( 'name', '_pomoeditor_revert' );
+	} );
 
 	$( '.pomoeditor-filter' ).change( function() {
 		var filter, visible;
