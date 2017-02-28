@@ -39,7 +39,7 @@ As a precaution, the system will backup the original files before overwriting th
 **Details on each release can be found [on the GitHub releases page](https://github.com/dougwollison/pomo-editor/releases) for this project.**
 
 = 1.3.0 =
-Added revert option (deletes modified version), fixed whitelist handling.
+Added revert option (deletes modified version), fixed projects listing and whitelist handling.
 
 = 1.2.0 =
 Edited files now stored in custom directory, notifications when original is updated, and added comment editing to advanced mode.
