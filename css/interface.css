@@ -141,7 +141,7 @@
   .pomoeditor-advanced-mode .pomoeditor-basic {
     display: none; }
 
-.pomoeditor-revert {
+#pomoeditor_revert {
   color: #a00; }
-  .pomoeditor-revert:hover {
+  #pomoeditor_revert:hover {
     color: #f00; }
