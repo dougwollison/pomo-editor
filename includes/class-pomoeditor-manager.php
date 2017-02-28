@@ -214,6 +214,7 @@ final class Manager extends Handler {
 	/**
 	 * Output the Project Index interface.
 	 *
+	 * @since 1.3.0 Updated to use new editpath property for link; fixed listing of modded files.
 	 * @since 1.0.0
 	 *
 	 * @global string $plugin_page The slug of the current admin page.
