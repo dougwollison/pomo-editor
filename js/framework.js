@@ -139,14 +139,10 @@
 
 		initialize: function( attributes, options ) {
 			this.Headers      = new Records();
-			this.Metadata     = new Records();
 			this.Translations = new Translations();
 
 			if ( attributes.po_headers ) {
 				this.Headers.reset( attributes.po_headers, { parse: options.parse } );
-			}
-			if ( attributes.po_metadata ) {
-				this.Metadata.reset( attributes.po_metadata, { parse: options.parse } );
 			}
 			if ( attributes.po_entries ) {
 				this.Translations.reset( attributes.po_entries, { parse: options.parse } );

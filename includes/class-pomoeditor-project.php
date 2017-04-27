@@ -348,10 +348,11 @@ final class Project {
 	/**
 	 * Update with the provided data.
 	 *
+	 * @since 1.3.1 Dropped metadata updating.
 	 * @since 1.0.0
 	 *
 	 * @param array $data    The data to update with.
-	 * @param bool  $replace Optional Replace all headers/entries/metadata with those provided?
+	 * @param bool  $replace Optional Replace all headers/entries with those provided?
 	 */
 	public function update( $data, $replace = false ) {
 		// Update headers if present
@@ -372,21 +373,6 @@ final class Project {
 
 			foreach ( $data['entries'] as $entry ) {
 				$this->po->add_entry( $entry );
-			}
-		}
-		// Update metadata if present
-		if ( isset( $data['metadata'] ) ) {
-			if ( $replace ) {
-				// Delete all properties other than headers or entries
-				foreach ( get_object_vars( $this->po ) as $prop => $value ) {
-					if ( $prop !== 'headers' && $prop !== 'entries' ) {
-						unset( $this->po->$prop );
-					}
-				}
-			}
-
-			foreach ( $data['metadata'] as $prop => $value ) {
-				$this->po->$prop = $value;
 			}
 		}
 	}
@@ -449,6 +435,7 @@ final class Project {
 	 *
 	 * The entries are exported as a numeric array.
 	 *
+	 * @since 1.3.1 Dropped metadata dumping.
 	 * @since 1.2.0 Added is_modded property.
 	 * @since 1.0.0
 	 *
@@ -469,14 +456,6 @@ final class Project {
 		if ( $this->loaded ) {
 			$data['po_headers'] = $this->po->headers;
 			$data['po_entries'] = array_values( $this->po->entries );
-			$data['po_metadata'] = array();
-
-			// All other properties go in 'po_metadata'
-			foreach ( get_object_vars( $this->po ) as $prop => $value ) {
-				if ( $prop !== 'headers' && $prop !== 'entries' ) {
-					$data['po_metadata'][ $prop ] = $value;
-				}
-			}
 		}
 
 		return $data;

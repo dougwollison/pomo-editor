@@ -297,6 +297,7 @@ final class Manager extends Handler {
 	/**
 	 * Output the Project Editor interface.
 	 *
+	 * @since 1.3.1 Added JSON escaping, dropped metadata editor.
 	 * @since 1.3.0 Added revert button.
 	 * @since 1.2.0 Added comments/reference display/editing,
 	 *              Added Original link on PME edited versions.
@@ -355,23 +356,6 @@ final class Manager extends Handler {
 				<button type="button" id="pomoeditor_advanced" class="button button-secondary"><?php _e( 'Enable Advanced Editing', 'pomo-editor' ); ?></button>
 			</p>
 
-			<h3><?php _e( 'Translations', 'pomo-editor' ); ?></h3>
-
-			<table id="pomoeditor_translations" class="fixed striped widefat pme-direction-<?php echo $direction; ?>">
-				<thead>
-					<tr>
-						<th class="pme-edit-col">
-							<button type="button" title="<?php _e( 'Add Translation Entry', 'pomo-editor' ); ?>" class="pme-button pme-add pomoeditor-advanced"><?php _e( 'Add Entry', 'pomo-editor' ); ?></button>
-						</th>
-						<th class="pme-source"><?php _e( 'Source Text', 'pomo-editor' ); ?></th>
-						<th class="pme-translation"><?php _e( 'Translated Text', 'pomo-editor' ); ?></th>
-						<th class="pme-context"><?php _e( 'Context', 'pomo-editor' ); ?></th>
-					</tr>
-				</thead>
-				<tfoot></tfoot>
-				<tbody></tbody>
-			</table>
-
 			<div class="pomoeditor-advanced">
 				<h3><?php _e( 'Headers', 'pomo-editor' ); ?></h3>
 
@@ -388,21 +372,24 @@ final class Manager extends Handler {
 					<tfoot></tfoot>
 					<tbody></tbody>
 				</table>
-
-				<h3><?php _e( 'Metadata', 'pomo-editor' ); ?></h3>
-
-				<table id="pomoeditor_metadata" class="fixed striped widefat">
-					<thead>
-						<tr>
-							<th class="pme-edit-col">&nbsp;</th>
-							<th class="pme-header-name"><?php _ex( 'Name', 'header name', 'pomo-editor' ); ?></th>
-							<th class="pme-header-value"><?php _ex( 'Value', 'header value', 'pomo-editor' ); ?></th>
-						</tr>
-					</thead>
-					<tfoot></tfoot>
-					<tbody></tbody>
-				</table>
 			</div>
+
+			<h3><?php _e( 'Translations', 'pomo-editor' ); ?></h3>
+
+			<table id="pomoeditor_translations" class="fixed striped widefat pme-direction-<?php echo $direction; ?>">
+				<thead>
+					<tr>
+						<th class="pme-edit-col">
+							<button type="button" title="<?php _e( 'Add Translation Entry', 'pomo-editor' ); ?>" class="pme-button pme-add pomoeditor-advanced"><?php _e( 'Add Entry', 'pomo-editor' ); ?></button>
+						</th>
+						<th class="pme-source"><?php _e( 'Source Text', 'pomo-editor' ); ?></th>
+						<th class="pme-translation"><?php _e( 'Translated Text', 'pomo-editor' ); ?></th>
+						<th class="pme-context"><?php _e( 'Context', 'pomo-editor' ); ?></th>
+					</tr>
+				</thead>
+				<tfoot></tfoot>
+				<tbody></tbody>
+			</table>
 
 			<p class="submit">
 				<button type="submit" id="submit" class="button button-primary"><?php _e( 'Save Translations', 'pomo-editor' ); ?></button>
@@ -477,14 +464,6 @@ final class Manager extends Handler {
 				el: document.getElementById( 'pomoeditor_headers' ),
 
 				collection: POMOEditor.Project.Headers,
-
-				rowTemplate: document.getElementById( 'pomoeditor_record_template' ),
-			} );
-
-			POMOEditor.MetadataEditor = new POMOEditor.Framework.RecordsEditor( {
-				el: document.getElementById( 'pomoeditor_metadata' ),
-
-				collection: POMOEditor.Project.Metadata,
 
 				rowTemplate: document.getElementById( 'pomoeditor_record_template' ),
 			} );
