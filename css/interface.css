@@ -43,6 +43,8 @@
 .pme-translation .pme-inputs,
 .pme-translation .pme-comments {
   display: none; }
+.pme-translation .pme-preview {
+  white-space: pre-wrap; }
 .pme-translation.open .pme-edit,
 .pme-translation.open .pme-previews {
   display: none; }

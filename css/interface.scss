@@ -77,6 +77,10 @@
 			display: none;
 		}
 
+		.pme-preview {
+			white-space: pre-wrap;
+		}
+
 		&.open {
 			.pme-edit,
 			.pme-previews {
