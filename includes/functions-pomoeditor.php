@@ -76,7 +76,7 @@ function is_path_permitted( $path ) {
  *
  * Encode &, < and >
  *
- * @since 1.3.1
+ * @since 1.4.0
  *
  * @param string $text The text to escape.
  *

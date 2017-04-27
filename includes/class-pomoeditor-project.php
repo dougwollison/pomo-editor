@@ -348,7 +348,7 @@ final class Project {
 	/**
 	 * Update with the provided data.
 	 *
-	 * @since 1.3.1 Dropped metadata updating.
+	 * @since 1.4.0 Dropped metadata updating.
 	 * @since 1.0.0
 	 *
 	 * @param array $data    The data to update with.
@@ -435,7 +435,7 @@ final class Project {
 	 *
 	 * The entries are exported as a numeric array.
 	 *
-	 * @since 1.3.1 Dropped metadata dumping.
+	 * @since 1.4.0 Dropped metadata dumping.
 	 * @since 1.2.0 Added is_modded property.
 	 * @since 1.0.0
 	 *

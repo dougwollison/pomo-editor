@@ -297,7 +297,7 @@ final class Manager extends Handler {
 	/**
 	 * Output the Project Editor interface.
 	 *
-	 * @since 1.3.1 Added JSON escaping, dropped metadata editor.
+	 * @since 1.4.0 Added JSON escaping, dropped metadata editor.
 	 * @since 1.3.0 Added revert button.
 	 * @since 1.2.0 Added comments/reference display/editing,
 	 *              Added Original link on PME edited versions.
