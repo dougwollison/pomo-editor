@@ -70,3 +70,28 @@ function is_path_permitted( $path ) {
 
 	return true;
 }
+
+/**
+ * Bare minimum escaping for <script> purposes.
+ *
+ * Encode &, < and >
+ *
+ * @since 1.3.1
+ *
+ * @param string $text The text to escape.
+ *
+ * @return string The escaped text.
+ */
+function escape_html( $html ) {
+	$text = str_replace( array(
+		'&',
+		'<',
+		'>',
+	), array(
+		'&amp;',
+		'&lt;',
+		'&gt;',
+	), $html );
+
+	return $text;
+}

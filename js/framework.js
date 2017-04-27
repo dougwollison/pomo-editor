@@ -4,6 +4,15 @@
 		advanced: false	// Wether or not advanced editing is enabled
 	};
 
+	// XSS-Safe Sanitize Utility
+	function htmlDecode( text ) {
+		if ( typeof text === 'string' ) {
+			var doc = new DOMParser().parseFromString( text, 'text/html' );
+			return doc.documentElement.textContent || doc.body.innerHTML;
+		}
+		return text;
+	}
+
 	// =========================
 	// ! Backbone Stuff
 	// =========================
@@ -14,7 +23,20 @@
 		defaults: {
 			name  : '',
 			value : ''
-		}
+		},
+
+		parse: function( attrs ) {
+			// Unescape attribute values
+			for ( var a in attrs ) {
+				if ( attrs[ a ] instanceof Array ) {
+					attrs[ a ] = attrs[ a ].map( htmlDecode );
+				} else if ( typeof attrs[ a ] === 'string' ) {
+					attrs[ a ] = htmlDecode( attrs[ a ] );
+				}
+			}
+
+			return attrs;
+		},
 	} );
 
 	var Records = Framework.Records = Backbone.Collection.extend( {
@@ -38,7 +60,7 @@
 		}
 	} );
 
-	var Translation = Framework.Translation = Backbone.Model.extend( {
+	var Translation = Framework.Translation = Record.extend( {
 		defaults: {
 			is_plural           : false,
 			context             : '',
@@ -51,17 +73,22 @@
 			flags               : []
 		},
 
-		initialize: function() {
-			if ( ! ( this.attributes.translations instanceof Array ) ) {
-				this.attributes.translations = [];
+		constructor: function( attrs, options ) {
+			// Ensure translations/references/flags are arrays
+			if ( ! ( attrs.translations instanceof Array ) ) {
+				attrs.translations = [];
 			}
-			if ( ! ( this.attributes.references instanceof Array ) ) {
-				this.attributes.references = [];
+			if ( ! ( attrs.references instanceof Array ) ) {
+				attrs.references = [];
 			}
-			if ( ! ( this.attributes.flags instanceof Array ) ) {
-				this.attributes.flags = [];
+			if ( ! ( attrs.flags instanceof Array ) ) {
+				attrs.flags = [];
 			}
 
+			Backbone.Model.call( this, attrs, options );
+		},
+
+		initialize: function() {
 			this.on( 'change:translations', function() {
 				var translations = this.get( 'translations' );
 				if ( ! this.get( 'is_plural' ) ) {
@@ -110,19 +137,19 @@
 			is_modded : false
 		},
 
-		initialize: function( attributes ) {
+		initialize: function( attributes, options ) {
 			this.Headers      = new Records();
 			this.Metadata     = new Records();
 			this.Translations = new Translations();
 
 			if ( attributes.po_headers ) {
-				this.Headers.reset( attributes.po_headers );
+				this.Headers.reset( attributes.po_headers, { parse: options.parse } );
 			}
 			if ( attributes.po_metadata ) {
-				this.Metadata.reset( attributes.po_metadata );
+				this.Metadata.reset( attributes.po_metadata, { parse: options.parse } );
 			}
 			if ( attributes.po_entries ) {
-				this.Translations.reset( attributes.po_entries );
+				this.Translations.reset( attributes.po_entries, { parse: options.parse } );
 			}
 
 			var file = this.get( 'file' );
@@ -302,41 +329,41 @@
 			var singular = this.model.get( 'singular' ),
 				plural = this.model.get( 'plural' );
 
-			this.$el.find( '.pme-source .pme-preview.pme-singular' ).html( singular );
+			this.$el.find( '.pme-source .pme-preview.pme-singular' ).text( singular || '' );
 			this.$el.find( '.pme-source .pme-input.pme-singular' ).val( singular );
 
-			this.$el.find( '.pme-source .pme-preview.pme-plural' ).html( plural );
+			this.$el.find( '.pme-source .pme-preview.pme-plural' ).text( plural || '' );
 			this.$el.find( '.pme-source .pme-input.pme-plural' ).val( plural );
 		},
 
 		renderTranslation: function() {
-			var translations = this.model.get( 'translations' );
+			var translations = this.model.get( 'translations' ) || [];
 
-			this.$el.find( '.pme-translated .pme-preview.pme-singular' ).html( translations[0] );
+			this.$el.find( '.pme-translated .pme-preview.pme-singular' ).text( translations[0] || '' );
 			this.$el.find( '.pme-translated .pme-input.pme-singular' ).val( translations[0] );
 
-			this.$el.find( '.pme-translated .pme-preview.pme-plural' ).html( translations[1] );
+			this.$el.find( '.pme-translated .pme-preview.pme-plural' ).text( translations[1] || '' );
 			this.$el.find( '.pme-translated .pme-input.pme-plural' ).val( translations[1] );
 		},
 
 		renderContext: function() {
 			var context = this.model.get( 'context' );
 
-			this.$el.find( '.pme-context .pme-preview' ).html( context );
+			this.$el.find( '.pme-context .pme-preview' ).text( context || '' );
 			this.$el.find( '.pme-context .pme-input' ).val( context );
 		},
 
 		renderComments: function() {
 			var extracted_comments = this.model.get( 'extracted_comments' ),
 				translator_comments = this.model.get( 'translator_comments' ),
-				references = this.model.get( 'references' );
+				references = this.model.get( 'references' ) || [];
 
 			this.$el.find( '.pme-extracted-comments .pme-input' ).val( extracted_comments );
 			this.$el.find( '.pme-translator-comments .pme-input' ).val( translator_comments );
 			this.$el.find( '.pme-references .pme-input' ).val( references.join( '\n' ) );
 
-			this.$el.find( '.pme-extracted-comments .pme-preview' ).html( extracted_comments );
-			this.$el.find( '.pme-references .pme-preview' ).html( '<li>' + references.join( '</li><li>' ) + '</li>' );
+			this.$el.find( '.pme-extracted-comments .pme-preview' ).text( extracted_comments || '' );
+			this.$el.find( '.pme-references .pme-preview' ).text( references.join( '\n' ) );
 		},
 
 		checkChanges: function() {

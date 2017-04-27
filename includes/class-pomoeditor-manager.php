@@ -162,7 +162,8 @@ final class Manager extends Handler {
 			// Check if the file is being updated
 			elseif ( isset( $_POST['podata'] ) ) {
 				// Update
-				$project->update( json_decode( stripslashes( $_POST['podata'] ), true ), true );
+				$data = json_decode( stripslashes( $_POST['podata'] ), true );
+				$project->update( $data, true );
 
 				// Create destination from $source
 				$destination = $source;
@@ -280,7 +281,7 @@ final class Manager extends Handler {
 		<script>
 		POMOEditor.MODDED_BASE_DIR = '<?php echo basename( PME_CONTENT_DIR ); ?>/';
 
-		POMOEditor.Projects = new POMOEditor.Framework.Projects(<?php echo json_encode( $projects->dump() ); ?>);
+		POMOEditor.Projects = new POMOEditor.Framework.Projects(<?php echo escape_html( json_encode( $projects->dump() ) ); ?>, { parse: true } );
 
 		POMOEditor.List = new POMOEditor.Framework.ProjectsList( {
 			el: document.getElementById( 'pomoeditor_projects' ),
@@ -470,7 +471,7 @@ final class Manager extends Handler {
 			</script>
 
 			<script>
-			POMOEditor.Project = new POMOEditor.Framework.Project(<?php echo json_encode( $project->dump() ); ?>);
+			POMOEditor.Project = new POMOEditor.Framework.Project(<?php echo escape_html( json_encode( $project->dump() ) ); ?>, { parse: true } );
 
 			POMOEditor.HeadersEditor = new POMOEditor.Framework.RecordsEditor( {
 				el: document.getElementById( 'pomoeditor_headers' ),
