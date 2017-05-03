@@ -174,6 +174,7 @@ final class Backend extends Handler {
 	 * Checks all files in the PME content directory to see if their
 	 * orignals have a newer modification time.
 	 *
+	 * @since 1.4.1 Added file_exists check for original .po files.
 	 * @since 1.2.0
 	 */
 	public static function maybe_print_mofile_update_notice() {
@@ -184,7 +185,7 @@ final class Backend extends Handler {
 		// Loop through them and check their originals for updates
 		foreach ( $pme_mofiles as $file ) {
 			$original = str_replace( PME_CONTENT_DIR, WP_CONTENT_DIR, $file );
-			if ( filemtime( $original ) > filemtime( $file ) ) {
+			if ( file_exists( $original ) && filemtime( $original ) > filemtime( $file ) ) {
 				$file = substr( $file, strlen( WP_CONTENT_DIR . '/' ) );
 				$file = substr( $file, 0, -3 ) . '.po';
 				$files_to_edit[] = $file;
