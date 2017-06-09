@@ -412,6 +412,7 @@ final class Manager extends Handler {
 					<button type="button" title="Edit Entry" class="pme-button pme-edit"><?php _e( 'Edit', 'pomo-editor' ); ?></button>
 					<div class="pme-actions">
 						<button type="button" title="Cancel (discard changes)" class="pme-button pme-cancel"><?php _e( 'Cancel', 'pomo-editor' ); ?></button>
+						<button type="button" title="Translate text" class="pme-button pme-translate"><?php _e( 'Translate it', 'pomo-editor' ); ?></button>
 						<button type="button" title="Save Changes" class="pme-button pme-save"><?php _e( 'Save', 'pomo-editor' ); ?></button>
 						<button type="button" title="Delete Entry" class="pme-button pme-delete"><?php _e( 'Delete', 'pomo-editor' ); ?></button>
 					</div>
