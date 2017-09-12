@@ -74,6 +74,8 @@
 		},
 
 		constructor: function( attrs, options ) {
+			attrs = attrs || {}; // default to empty hash
+
 			// Ensure translations/references/flags are arrays
 			if ( ! ( attrs.translations instanceof Array ) ) {
 				attrs.translations = [];
