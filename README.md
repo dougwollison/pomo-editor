@@ -1,3 +1,5 @@
+# *No longer being developed*
+
 # PO/MO Editor
 PO/MO Editor adds a versatile interface to WordPress for editing and recompiling translation files.
 
