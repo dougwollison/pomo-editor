@@ -110,6 +110,9 @@
 .pme-edit:after {
   content: '\f464'; }
 
+.pme-translate:after {
+  content: '\f326'; }
+
 .pme-cancel:after {
   content: '\f158'; }
 

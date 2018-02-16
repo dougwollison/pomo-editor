@@ -294,6 +294,8 @@
 		events: {
 			'click .pme-delete' : 'destroy',
 			'click .pme-edit'   : 'toggle',
+			'click .pme-translate' : 'translateSource',
+			'translation_ready' : 'translation_ready',
 			'click .pme-save'   : 'save',
 			'click .pme-cancel' : 'close',
 			'keyup .pme-input'  : 'checkChanges'
@@ -311,6 +313,8 @@
 			this.listenTo( this.model, 'change:context', this.renderContext );
 			this.listenTo( this.model, 'change:extracted_comments change:translator_comments change:references', this.renderComments );
 
+			this.listenTo( this.model, 'translation_ready', this.translation_ready);
+
 			EditorRow.prototype.initialize.apply( this, arguments );
 		},
 
@@ -321,6 +325,33 @@
 			this.renderTranslation();
 			this.renderContext();
 			this.renderComments();
+		},
+
+		translation_ready: function(txt) {
+			var index, output = "";
+
+			for (index=0; index < txt[0].length; index++){
+			 	output +=	txt[0][index][0];
+			}
+			this.$el.find( '.pme-translated .pme-input.pme-singular' ).val(output);
+		},
+
+		translateSource: function() {
+			var singular = this.model.get( 'singular' ),
+				sourceLang = 'auto',
+				targetLang = 'ru',
+				translate_engine_url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + sourceLang + "&tl=" + targetLang + "&dt=t&q=" + encodeURI(singular),
+				translated_data,
+				save_this = this;
+
+			this.$el.find( '.pme-translated .pme-input.pme-singular' ).val('Translating...');
+			$.ajax({
+				url: translate_engine_url,
+				dataType : 'json',
+				success: function(translated_data){
+					save_this.model.trigger('translation_ready', translated_data);
+				}
+			});
 		},
 
 		renderSource: function() {
